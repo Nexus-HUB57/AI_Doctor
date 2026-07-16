@@ -28,8 +28,6 @@ import {
   InsertSystemMemory,
   systemMemory,
 } from "./schema";
-import { ENV } from './_core/env';
-
 let _db: ReturnType<typeof drizzle> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.

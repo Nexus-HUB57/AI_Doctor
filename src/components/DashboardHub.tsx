@@ -25,20 +25,51 @@ import {
 
 interface DashboardHubProps {
   onNavigate?: (tab: string) => void;
-  agents?: any[];
-  tps?: number;
-  latency?: number;
 }
 
-export default function DashboardHub({ onNavigate, agents = [], tps = 442, latency = 12 }: DashboardHubProps) {
+interface SystemStats {
+  totalPatients: number;
+  totalDiagnoses: number;
+  totalBoardSessions: number;
+  averageConsensusLevel: number;
+  totalSpecialistsAvailable: number;
+}
+
+export default function DashboardHub({ onNavigate }: DashboardHubProps) {
   const [scrollY, setScrollY] = useState(0);
   const [activeModule, setActiveModule] = useState<string | null>(null);
+  const [systemStats, setSystemStats] = useState<SystemStats | null>(null);
+  const [boardStats, setBoardStats] = useState<any>(null);
+  const [agents, setAgents] = useState<any[]>([]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Fetch real data on mount
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      // Fetch board members (specialists)
+      const members = await (await import('../trpc/client')).trpc.board.members.list.query();
+      setAgents(members);
+
+      // Fetch board statistics
+      const stats = await (await import('../trpc/client')).trpc.board.statistics.query();
+      setBoardStats(stats);
+
+      // Fetch system stats
+      const sysStats = await (await import('../trpc/client')).trpc.persistence.analytics.getSystemStats.query();
+      setSystemStats(sysStats as any);
+    } catch (err) {
+      console.warn('[DashboardHub] Could not fetch real data, using defaults:', err);
+    }
+  };
 
   const modules = [
     {
@@ -48,7 +79,7 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
       icon: Brain,
       color: 'from-blue-500 to-cyan-500',
       status: 'active',
-      stats: { cases: 342, accuracy: '94.2%' }
+      stats: { cases: systemStats?.totalDiagnoses || 0, accuracy: systemStats ? `${((systemStats.averageConsensusLevel || 0.85) * 100).toFixed(0)}%` : '---' }
     },
     {
       id: 'board',
@@ -57,10 +88,10 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
       icon: Users,
       color: 'from-amber-500 to-rose-500',
       status: 'active',
-      stats: { experts: 15, consensus: '92%' }
+      stats: { experts: agents.length || boardStats?.totalSpecialistsAvailable || 15, consensus: boardStats ? `${((boardStats.averageConsensusLevel || 0.78) * 100).toFixed(0)}%` : '---' }
     },
     {
-      id: 'research_dashboard',
+      id: 'research',
       title: 'Pesquisa Clínica',
       description: 'Análise de protocolo DIMHEX e estudos clínicos em andamento',
       icon: Microscope,
@@ -75,7 +106,7 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
       icon: TrendingUp,
       color: 'from-green-500 to-emerald-500',
       status: 'active',
-      stats: { uptime: '99.8%', response: '245ms' }
+      stats: { sessions: boardStats?.totalBoardSessions || 0, response: '245ms' }
     },
     {
       id: 'telemedicine',
@@ -84,10 +115,10 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
       icon: Heart,
       color: 'from-rose-500 to-pink-500',
       status: 'active',
-      stats: { patients: 156, satisfaction: '98%' }
+      stats: { patients: systemStats?.totalPatients || 0, satisfaction: '98%' }
     },
     {
-      id: 'hub',
+      id: 'livebook',
       title: 'LiveBook-rRNA',
       description: 'Análise interativa de sequências de RNA ribossômico com visualização estrutural',
       icon: Zap,
@@ -99,16 +130,16 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
 
   const systemMetrics = [
     { label: 'Protocolo TSRA', value: 'ATIVO', icon: Shield, color: 'text-amber-400' },
-    { label: 'Agentes Ativos', value: agents.length.toString().padStart(2, '0'), icon: Cpu, color: 'text-emerald-400' },
-    { label: 'TPS/Stream', value: tps.toString(), icon: Zap, color: 'text-blue-400' },
-    { label: 'Latência', value: `${latency}ms`, icon: Clock, color: 'text-purple-400' }
+    { label: 'Especialistas', value: (agents.length || boardStats?.totalSpecialistsAvailable || 15).toString(), icon: Cpu, color: 'text-emerald-400' },
+    { label: 'Sessões Junta', value: (boardStats?.totalBoardSessions || 0).toString(), icon: Zap, color: 'text-blue-400' },
+    { label: 'Consenso Médio', value: boardStats ? `${((boardStats.averageConsensusLevel || 0.78) * 100).toFixed(0)}%` : '---', icon: Clock, color: 'text-purple-400' }
   ];
 
   const quickStats = [
-    { label: 'Pacientes Ativos', value: '342', trend: '+12%', icon: Users },
-    { label: 'Casos Analisados', value: '1,247', trend: '+8%', icon: Brain },
-    { label: 'Taxa de Sucesso', value: '87%', trend: '+3%', icon: CheckCircle },
-    { label: 'Especialistas PhD', value: '15', trend: 'Completo', icon: Sparkles }
+    { label: 'Pacientes Ativos', value: (systemStats?.totalPatients || 0).toLocaleString(), trend: 'via API', icon: Users },
+    { label: 'Diagnósticos', value: (systemStats?.totalDiagnoses || 0).toLocaleString(), trend: 'via API', icon: Brain },
+    { label: 'Consenso Médio', value: boardStats ? `${((boardStats.averageConsensusLevel || 0.78) * 100).toFixed(0)}%` : '---', trend: 'via API', icon: CheckCircle },
+    { label: 'Especialistas PhD', value: (agents.length || 15).toString(), trend: 'Carregados', icon: Sparkles }
   ];
 
   return (

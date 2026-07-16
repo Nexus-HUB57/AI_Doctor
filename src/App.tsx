@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext';
 import { AuthProvider, useAuth, roleLabels } from './contexts/AuthContext';
 import MainLayout from './components/MainLayout';
@@ -17,10 +17,65 @@ import BlackholePanel from './components/BlackholePanel';
 import OncoResearchPanel from './components/OncoResearchPanel';
 import EradicationPanel from './components/EradicationPanel';
 import FileManager from './components/FileManager';
+import type { Agent, LogMessage } from './types';
+
+// Estado compartilhado para componentes que dependem de props
+const SharedStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sequence, setSequence] = useState('AUGCGAUUCGAUCCGAAUUCGGC');
+  const [agents, setAgents] = useState<Agent[]>([
+    { id: 'a1', name: 'Seq-Parser', role: 'Análise de Motifs', pid: 1001, status: 'ACTIVE', color: '#10b981', description: 'Parser de sequências biológicas', prompt: 'Analise a sequência fornecida' },
+    { id: 'a2', name: 'Fold-Engine', role: 'Predição Estrutural', pid: 1002, status: 'SYNCED', color: '#3b82f6', description: 'Predição de estrutura secundária de rRNA', prompt: 'Prediga a estrutura da sequência' },
+    { id: 'a3', name: 'Mut-Detector', role: 'Detecção de Mutações', pid: 1003, status: 'IDLE', color: '#f59e0b', description: 'Detecção de mutações compensatórias', prompt: 'Detecte mutações na sequência' },
+  ]);
+  const [logs, setLogs] = useState<LogMessage[]>([]);
+
+  const addLog = useCallback((
+    text: string,
+    type: LogMessage['type'] = 'info',
+    agentName?: string
+  ) => {
+    setLogs(prev => [...prev, {
+      id: `log_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+      time: new Date().toLocaleTimeString('pt-BR'),
+      text,
+      type,
+      agentName,
+    }]);
+  }, []);
+
+  const clearLogs = useCallback(() => setLogs([]), []);
+
+  return (
+    <SharedStateContext.Provider value={{ sequence, setSequence, agents, setAgents, addLog, clearLogs, logs }}>
+      {children}
+    </SharedStateContext.Provider>
+  );
+};
+
+interface SharedStateContextType {
+  sequence: string;
+  setSequence: (seq: string) => void;
+  agents: Agent[];
+  setAgents: React.Dispatch<React.SetStateAction<Agent[]>>;
+  addLog: (text: string, type?: LogMessage['type'], agentName?: string) => void;
+  clearLogs: () => void;
+  logs: LogMessage[];
+}
+
+export const SharedStateContext = React.createContext<SharedStateContextType>({
+  sequence: '',
+  setSequence: () => {},
+  agents: [],
+  setAgents: () => {},
+  addLog: () => {},
+  clearLogs: () => {},
+  logs: [],
+});
 
 // Componente para renderizar a aba ativa
 const ActiveTabContent = () => {
   const { activeTab, setActiveTab } = useNavigation();
+  const { sequence, setSequence, agents, setAgents, addLog, clearLogs } = React.useContext(SharedStateContext);
 
   switch (activeTab) {
     case 'dashboard':
@@ -36,15 +91,15 @@ const ActiveTabContent = () => {
     case 'telemedicine':
       return <TelemedicineChatbot />;
     case 'moltbook':
-      return <MoltbookFeed />;
+      return <MoltbookFeed agents={agents} addLog={addLog} />;
     case 'cerebro':
-      return <CerebroPanel />;
+      return <CerebroPanel sequence={sequence} agents={agents} addLog={addLog} />;
     case 'wormhole':
-      return <WormholePanel />;
+      return <WormholePanel sequence={sequence} setSequence={setSequence} addLog={addLog} />;
     case 'blackhole':
-      return <BlackholePanel />;
+      return <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={clearLogs} />;
     case 'onco_research':
-      return <OncoResearchPanel />;
+      return <OncoResearchPanel sequence={sequence} agents={agents} addLog={addLog} />;
     case 'eradication':
       return <EradicationPanel />;
     case 'livebook':
@@ -88,11 +143,13 @@ export default function App() {
   return (
     <AuthProvider>
       <NavigationProvider>
-        <AuthGuard>
-          <MainLayout>
-            <ActiveTabContent />
-          </MainLayout>
-        </AuthGuard>
+        <SharedStateProvider>
+          <AuthGuard>
+            <MainLayout>
+              <ActiveTabContent />
+            </MainLayout>
+          </AuthGuard>
+        </SharedStateProvider>
       </NavigationProvider>
     </AuthProvider>
   );
