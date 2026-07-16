@@ -37,6 +37,9 @@ import CerebroPanel from './components/CerebroPanel';
 import WormholePanel from './components/WormholePanel';
 import BlackholePanel from './components/BlackholePanel';
 import OncoResearchPanel from './components/OncoResearchPanel';
+import DiagnosticPanel from './components/DiagnosticPanel';
+import EradicationPanel from './components/EradicationPanel';
+import ResearchDashboard from './components/ResearchDashboard';
 
 const PRESETS: OrganismPreset[] = [
   {
@@ -71,7 +74,7 @@ const PRESETS: OrganismPreset[] = [
 
 export default function App() {
   // Core states
-  const [activeTab, setActiveTab] = useState<'hub' | 'moltbook' | 'cerebro' | 'wormhole' | 'blackhole' | 'onco_research'>('hub');
+  const [activeTab, setActiveTab] = useState<'hub' | 'moltbook' | 'cerebro' | 'wormhole' | 'blackhole' | 'onco_research' | 'diagnostic' | 'eradication' | 'research_dashboard'>('hub');
   const [sequence, setSequence] = useState<string>(PRESETS[0].sequence);
   const [selectedPresetId, setSelectedPresetId] = useState<string>(PRESETS[0].id);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
@@ -784,12 +787,15 @@ export default function App() {
         <section className="md:col-span-6 flex flex-col gap-4">
           
           {/* Tab Navigation */}
-          <div className="flex bg-zinc-950/80 border border-zinc-900 rounded-lg p-1 gap-1 select-none">
+          <div className="flex bg-zinc-950/80 border border-zinc-900 rounded-lg p-1 gap-1 select-none overflow-x-auto">
             {[
               { id: 'hub', label: 'Hub Central', icon: LayoutGrid, color: 'text-emerald-400' },
               { id: 'moltbook', label: 'Moltbook Feed', icon: MessageSquare, color: 'text-teal-400' },
               { id: 'cerebro', label: 'Cérebro', icon: BrainCircuit, color: 'text-indigo-400' },
               { id: 'onco_research', label: 'Onco-Pesquisa', icon: Microscope, color: 'text-rose-500' },
+              { id: 'diagnostic', label: 'Diagnóstico', icon: Activity, color: 'text-cyan-400' },
+              { id: 'eradication', label: 'Erradicação', icon: Zap, color: 'text-yellow-400' },
+              { id: 'research_dashboard', label: 'Dashboard', icon: TrendingUp, color: 'text-green-400' },
               { id: 'wormhole', label: 'Wormhole', icon: Compass, color: 'text-blue-400' },
               { id: 'blackhole', label: 'Blackhole', icon: Flame, color: 'text-rose-500' }
             ].map(tab => {
@@ -1201,6 +1207,18 @@ export default function App() {
 
           {activeTab === 'blackhole' && (
             <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={() => setLogs([])} />
+          )}
+
+          {activeTab === 'diagnostic' && (
+            <DiagnosticPanel />
+          )}
+
+          {activeTab === 'eradication' && (
+            <EradicationPanel />
+          )}
+
+          {activeTab === 'research_dashboard' && (
+            <ResearchDashboard />
           )}
 
         </section>
