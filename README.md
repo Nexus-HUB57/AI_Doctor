@@ -119,7 +119,12 @@ Para configurar e executar o projeto localmente, siga os passos abaixo:
     npm install
     ```
 
-3.  **Configure o Banco de Dados:**
+3.  **Execute os testes (Fase 6):**
+    ```bash
+    npm test
+    ```
+
+4.  **Configure o Banco de Dados:**
     Crie o banco de dados e as tabelas usando o schema fornecido:
     ```bash
     mysql -u root -p < database_schema.sql

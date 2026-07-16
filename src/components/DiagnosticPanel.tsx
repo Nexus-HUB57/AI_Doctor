@@ -38,7 +38,8 @@ export default function DiagnosticPanel() {
     setIsAnalyzing(true);
     try {
       // 1. Obter recomendação via RAG
-      const ragResult = await trpc.rag.recommendTreatment.query({
+      const ragResult = await trpc.rag.recommendTreatment.mutate({
+        patientId: 'temp_patient',
         tumorType: diagnosis,
         stage: stage,
         patientAge: parseInt(patientAge),

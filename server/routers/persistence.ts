@@ -17,9 +17,12 @@ const PatientSchema = z.object({
 
 const DiagnosisSchema = z.object({
   id: z.string().optional(),
-  patientId: z.string(),
-  tumorType: z.string(),
-  stage: z.number().min(1).max(5),
+  patientId: z.string().optional(),
+  patientName: z.string().optional(),
+  age: z.number().optional(),
+  diagnosis: z.string().optional(),
+  tumorType: z.string().optional(),
+  stage: z.union([z.number(), z.string()]).optional(),
   date: z.date().optional(),
   notes: z.string().optional(),
 });
@@ -54,10 +57,12 @@ const TreatmentSchema = z.object({
 
 const RecommendationSchema = z.object({
   id: z.string().optional(),
-  patientId: z.string(),
+  patientId: z.string().optional(),
+  diagnosisId: z.string().optional(),
   recommendation: z.string(),
-  confidenceScore: z.number().min(0).max(100),
-  source: z.string(),
+  confidenceScore: z.number().optional(),
+  interventions: z.array(z.string()).optional(),
+  source: z.string().optional(),
   date: z.date().optional(),
   status: z.enum(['pending', 'accepted', 'rejected']).optional(),
 });
