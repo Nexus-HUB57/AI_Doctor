@@ -3,6 +3,7 @@ import { persistenceRouter } from './routers/persistence';
 import { literatureRouter } from './routers/literature';
 import { ragRouter } from './routers/rag';
 import { boardRouter } from './routers/board';
+import { telemedicineRouter } from './routers/telemedicine';
 
 /**
  * Agregação de todos os routers tRPC
@@ -13,6 +14,7 @@ export const appRouter = router({
   literature: literatureRouter,
   rag: ragRouter,
   board: boardRouter,
+  telemedicine: telemedicineRouter,
 });
 
 export type AppRouter = typeof appRouter;
