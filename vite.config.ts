@@ -19,9 +19,10 @@ export default defineConfig(() => {
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
     test: {
-      environment: 'node',
+      environment: 'jsdom',
       globals: true,
-      include: ['server/**/*.test.ts', 'src/**/*.test.ts'],
+      include: ['server/**/*.test.ts', 'src/**/*.test.{ts,tsx}'],
+      setupFiles: ['./src/test-setup.ts'],
     },
   };
 });
