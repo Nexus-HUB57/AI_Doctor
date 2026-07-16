@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Sparkles,
   User,
+  Users,
   Info,
   MessageSquare,
   Flame,
@@ -40,6 +41,8 @@ import OncoResearchPanel from './components/OncoResearchPanel';
 import DiagnosticPanel from './components/DiagnosticPanel';
 import EradicationPanel from './components/EradicationPanel';
 import ResearchDashboard from './components/ResearchDashboard';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
+import MedicalBoardPanel from './components/MedicalBoardPanel';
 
 const PRESETS: OrganismPreset[] = [
   {
@@ -74,7 +77,7 @@ const PRESETS: OrganismPreset[] = [
 
 export default function App() {
   // Core states
-  const [activeTab, setActiveTab] = useState<'hub' | 'moltbook' | 'cerebro' | 'wormhole' | 'blackhole' | 'onco_research' | 'diagnostic' | 'eradication' | 'research_dashboard'>('hub');
+  const [activeTab, setActiveTab] = useState<'hub' | 'moltbook' | 'cerebro' | 'wormhole' | 'blackhole' | 'onco_research' | 'diagnostic' | 'eradication' | 'research_dashboard' | 'analytics' | 'board'>('hub');
   const [sequence, setSequence] = useState<string>(PRESETS[0].sequence);
   const [selectedPresetId, setSelectedPresetId] = useState<string>(PRESETS[0].id);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
@@ -796,6 +799,8 @@ export default function App() {
               { id: 'diagnostic', label: 'Diagnóstico', icon: Activity, color: 'text-cyan-400' },
               { id: 'eradication', label: 'Erradicação', icon: Zap, color: 'text-yellow-400' },
               { id: 'research_dashboard', label: 'Dashboard', icon: TrendingUp, color: 'text-green-400' },
+              { id: 'analytics', label: 'Analytics', icon: TrendingUp, color: 'text-purple-400' },
+              { id: 'board', label: 'Junta Médica', icon: Users, color: 'text-amber-400' },
               { id: 'wormhole', label: 'Wormhole', icon: Compass, color: 'text-blue-400' },
               { id: 'blackhole', label: 'Blackhole', icon: Flame, color: 'text-rose-500' }
             ].map(tab => {
@@ -1219,6 +1224,14 @@ export default function App() {
 
           {activeTab === 'research_dashboard' && (
             <ResearchDashboard />
+          )}
+
+          {activeTab === 'analytics' && (
+            <AnalyticsDashboard />
+          )}
+
+          {activeTab === 'board' && (
+            <MedicalBoardPanel />
           )}
 
         </section>

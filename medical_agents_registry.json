@@ -1,0 +1,278 @@
+{
+  "medical_agents": [
+    {
+      "id": "agent_001",
+      "name": "Dr. Oncologia Molecular",
+      "specialty": "Oncologia Molecular",
+      "expertise_areas": [
+        "Biologia do câncer",
+        "Mutações genéticas",
+        "Vias de sinalização tumoral",
+        "Farmacogenômica"
+      ],
+      "credentials": "PhD em Biologia Molecular, Pós-doc em Oncologia",
+      "research_focus": "Mecanismos moleculares de resistência a drogas",
+      "publications_count": 127,
+      "h_index": 28,
+      "active": true
+    },
+    {
+      "id": "agent_002",
+      "name": "Dr. Imunooncologia",
+      "specialty": "Imunooncologia",
+      "expertise_areas": [
+        "Terapia CAR-T",
+        "Checkpoint inhibidores",
+        "Microambiente tumoral",
+        "Engenharia de células T"
+      ],
+      "credentials": "PhD em Imunologia, Pós-doc em Imunooncologia",
+      "research_focus": "Otimização de terapias baseadas em células T",
+      "publications_count": 156,
+      "h_index": 32,
+      "active": true
+    },
+    {
+      "id": "agent_003",
+      "name": "Dr. Nanotecnologia Médica",
+      "specialty": "Nanotecnologia em Oncologia",
+      "expertise_areas": [
+        "Nanopartículas",
+        "Entrega de fármacos",
+        "Hipertermia plasmônica",
+        "Teranóstica"
+      ],
+      "credentials": "PhD em Engenharia Biomédica, Pós-doc em Nanomedicina",
+      "research_focus": "Sistemas de entrega inteligentes para quimioterapia",
+      "publications_count": 98,
+      "h_index": 24,
+      "active": true
+    },
+    {
+      "id": "agent_004",
+      "name": "Dr. Oncologia Clínica",
+      "specialty": "Oncologia Clínica",
+      "expertise_areas": [
+        "Protocolos de tratamento",
+        "Ensaios clínicos",
+        "Manejo de efeitos colaterais",
+        "Prognóstico"
+      ],
+      "credentials": "MD, PhD em Oncologia, Certificação em Oncologia Clínica",
+      "research_focus": "Otimização de sequências terapêuticas",
+      "publications_count": 189,
+      "h_index": 38,
+      "active": true
+    },
+    {
+      "id": "agent_005",
+      "name": "Dr. Patologia Oncológica",
+      "specialty": "Patologia Oncológica",
+      "expertise_areas": [
+        "Histopatologia",
+        "Diagnóstico molecular",
+        "Classificação de tumores",
+        "Marcadores prognósticos"
+      ],
+      "credentials": "MD, PhD em Patologia, Certificação em Patologia Oncológica",
+      "research_focus": "Novos marcadores prognósticos em câncer",
+      "publications_count": 134,
+      "h_index": 29,
+      "active": true
+    },
+    {
+      "id": "agent_006",
+      "name": "Dr. Radiologia Oncológica",
+      "specialty": "Radiologia Oncológica",
+      "expertise_areas": [
+        "Diagnóstico por imagem",
+        "Radioterapia",
+        "Radiomics",
+        "IA em radiologia"
+      ],
+      "credentials": "MD, PhD em Radiologia, Certificação em Radiologia Oncológica",
+      "research_focus": "Radiomics e predição de resposta terapêutica",
+      "publications_count": 112,
+      "h_index": 26,
+      "active": true
+    },
+    {
+      "id": "agent_007",
+      "name": "Dr. Bioinformática Oncológica",
+      "specialty": "Bioinformática",
+      "expertise_areas": [
+        "Análise de sequenciamento",
+        "Machine learning em oncologia",
+        "Análise de big data",
+        "Biologia computacional"
+      ],
+      "credentials": "PhD em Bioinformática, Pós-doc em Oncologia Computacional",
+      "research_focus": "Algoritmos de predição de resposta a drogas",
+      "publications_count": 87,
+      "h_index": 22,
+      "active": true
+    },
+    {
+      "id": "agent_008",
+      "name": "Dr. Oncologia Pediátrica",
+      "specialty": "Oncologia Pediátrica",
+      "expertise_areas": [
+        "Câncer infantil",
+        "Toxicidade em crianças",
+        "Qualidade de vida pediátrica",
+        "Sobreviventes de câncer"
+      ],
+      "credentials": "MD, PhD em Oncologia Pediátrica, Certificação em Pediatria",
+      "research_focus": "Minimização de sequelas em sobreviventes",
+      "publications_count": 94,
+      "h_index": 21,
+      "active": true
+    },
+    {
+      "id": "agent_009",
+      "name": "Dr. Medicina Integrativa Oncológica",
+      "specialty": "Medicina Integrativa",
+      "expertise_areas": [
+        "Fitofármacos",
+        "Compostos naturais",
+        "Qualidade de vida",
+        "Suporte nutricional"
+      ],
+      "credentials": "MD, PhD em Farmacologia Natural, Certificação em Medicina Integrativa",
+      "research_focus": "Sinergia entre terapias convencionais e complementares",
+      "publications_count": 76,
+      "h_index": 18,
+      "active": true
+    },
+    {
+      "id": "agent_010",
+      "name": "Dr. Genômica Oncológica",
+      "specialty": "Genômica",
+      "expertise_areas": [
+        "Sequenciamento de próxima geração",
+        "Análise de mutações",
+        "Assinatura molecular",
+        "Medicina de precisão"
+      ],
+      "credentials": "PhD em Genômica, Pós-doc em Oncologia Molecular",
+      "research_focus": "Assinaturas genômicas para predição de prognóstico",
+      "publications_count": 103,
+      "h_index": 25,
+      "active": true
+    },
+    {
+      "id": "agent_011",
+      "name": "Dr. Epidemiologia Oncológica",
+      "specialty": "Epidemiologia",
+      "expertise_areas": [
+        "Fatores de risco",
+        "Prevenção",
+        "Estudos populacionais",
+        "Saúde pública"
+      ],
+      "credentials": "PhD em Epidemiologia, Pós-doc em Epidemiologia do Câncer",
+      "research_focus": "Fatores de risco modificáveis em oncologia",
+      "publications_count": 118,
+      "h_index": 27,
+      "active": true
+    },
+    {
+      "id": "agent_012",
+      "name": "Dr. Cirurgia Oncológica",
+      "specialty": "Cirurgia Oncológica",
+      "expertise_areas": [
+        "Técnicas cirúrgicas",
+        "Ressecção tumoral",
+        "Reconstrução",
+        "Cirurgia minimamente invasiva"
+      ],
+      "credentials": "MD, PhD em Cirurgia Oncológica, Certificação em Cirurgia",
+      "research_focus": "Otimização de técnicas cirúrgicas para melhor prognóstico",
+      "publications_count": 142,
+      "h_index": 31,
+      "active": true
+    },
+    {
+      "id": "agent_013",
+      "name": "Dr. Psico-Oncologia",
+      "specialty": "Psico-Oncologia",
+      "expertise_areas": [
+        "Saúde mental em câncer",
+        "Qualidade de vida",
+        "Suporte psicológico",
+        "Reabilitação"
+      ],
+      "credentials": "PhD em Psicologia, Certificação em Psico-Oncologia",
+      "research_focus": "Intervenções psicológicas para melhora de outcomes",
+      "publications_count": 67,
+      "h_index": 16,
+      "active": true
+    },
+    {
+      "id": "agent_014",
+      "name": "Dr. Farmacocinética Oncológica",
+      "specialty": "Farmacocinética",
+      "expertise_areas": [
+        "Farmacocinética de drogas",
+        "Interações medicamentosas",
+        "Dosimetria",
+        "Farmacodinámica"
+      ],
+      "credentials": "PhD em Farmacologia, Pós-doc em Farmacocinética Clínica",
+      "research_focus": "Otimização de dosagem baseada em genética",
+      "publications_count": 89,
+      "h_index": 20,
+      "active": true
+    },
+    {
+      "id": "agent_015",
+      "name": "Dr. Oncologia Translacional",
+      "specialty": "Oncologia Translacional",
+      "expertise_areas": [
+        "Bench to bedside",
+        "Modelos pré-clínicos",
+        "Validação clínica",
+        "Desenvolvimento de drogas"
+      ],
+      "credentials": "PhD em Biologia Molecular, Pós-doc em Oncologia Translacional",
+      "research_focus": "Aceleração da translação de descobertas para clínica",
+      "publications_count": 121,
+      "h_index": 28,
+      "active": true
+    }
+  ],
+  "specialties": [
+    "Oncologia Molecular",
+    "Imunooncologia",
+    "Nanotecnologia em Oncologia",
+    "Oncologia Clínica",
+    "Patologia Oncológica",
+    "Radiologia Oncológica",
+    "Bioinformática",
+    "Oncologia Pediátrica",
+    "Medicina Integrativa",
+    "Genômica",
+    "Epidemiologia",
+    "Cirurgia Oncológica",
+    "Psico-Oncologia",
+    "Farmacocinética",
+    "Oncologia Translacional"
+  ],
+  "research_areas": [
+    "Resistência a drogas",
+    "Imunoterapia",
+    "Entrega de fármacos",
+    "Sequências terapêuticas",
+    "Marcadores prognósticos",
+    "Radiomics",
+    "Machine learning",
+    "Câncer infantil",
+    "Fitofármacos",
+    "Medicina de precisão",
+    "Prevenção",
+    "Cirurgia",
+    "Saúde mental",
+    "Dosimetria",
+    "Translação clínica"
+  ]
+}
