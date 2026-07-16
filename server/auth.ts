@@ -33,8 +33,14 @@ export interface JWTPayload {
 
 /**
  * Configurações de autenticação
+ * JWT_SECRET: In production, MUST be set via environment variable.
+ * In development, generates a deterministic dev secret (never use in prod).
  */
-const JWT_SECRET = process.env.JWT_SECRET || 'ai-doctor-dev-secret-key-2024';
+const isProduction = process.env.NODE_ENV === 'production';
+const JWT_SECRET = process.env.JWT_SECRET || (isProduction
+  ? (() => { throw new Error('JWT_SECRET environment variable is required in production. Set a strong secret (32+ chars).'); })()
+  : 'ai-doctor-dev-secret-key-2024'
+);
 const JWT_EXPIRATION = '24h';
 const SALT_ROUNDS = 10;
 

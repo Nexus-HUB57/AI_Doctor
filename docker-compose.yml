@@ -4,12 +4,14 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
       - NODE_ENV=production
-      - JWT_SECRET=ai-doctor-production-secret-2026
-      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      # Security: JWT_SECRET MUST be provided externally (no default!)
+      - JWT_SECRET=${JWT_SECRET:?ERROR: JWT_SECRET is required. Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:?ERROR: GEMINI_API_KEY is required. Get yours at https://aistudio.google.com/apikey}
       - DATABASE_URL=${DATABASE_URL:-}
+      - PORT=3000
     volumes:
       - app_data:/app/data
     restart: unless-stopped

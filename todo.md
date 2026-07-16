@@ -90,14 +90,14 @@
 - [x] Implementar Error Boundary no frontend para captura graciosa de erros
 - [x] Refatorar componentes (DashboardHub, DiagnosticPanel, MedicalBoardPanel) com estados de loading/error
 - [x] Criar hooks customizados (useTRPCMutation, useTRPCQuery) para padronizar chamadas tRPC
-- [ ] Testar componentes de UI críticos com @testing-library/react
-- [ ] Validar integração com Gemini (mock-based)
+- [x] Testar componentes de UI críticos com @testing-library/react
+- [x] Validar integração com Gemini (mock-based)
 
 ## Deployment
 - [x] Criar Dockerfile multi-stage para build otimizado
 - [x] Criar docker-compose.yml com healthcheck
 - [x] Criar .dockerignore para builds limpos
-- [ ] Configurar variáveis de ambiente (produção)
+- [x] Configurar variáveis de ambiente (produção)
 - [ ] Testar em ambiente de staging
 - [ ] Deploy final
 
@@ -152,3 +152,28 @@
 - [x] Atualizar testes rag.test.ts com mocks detalhados e asserts de valores
 - [x] Zero TODOs restantes no rag.ts
 - [x] 65 testes passando em 3.19s
+
+## Fase 12 - Testes de Componentes UI e Integração Gemini (Mock)
+- [x] Infraestrutura: test-setup.ts (jest-dom, window mocks, console suppression)
+- [x] Corrigir vite.config.ts: environment jsdom, glob .tsx, setupFiles
+- [x] Instalar @testing-library/user-event
+- [x] 57 testes de componentes base (Button: 13, Card: 7, StatCard: 9, Modal: 7, TabGroup: 6, Badge: 10, Login: 5)
+- [x] 10 testes do ErrorBoundary (catch, reset, custom fallback, navigation, deep nesting, onError callback)
+- [x] 14 testes do LoginPage (login/register toggle, auth flows, loading states, validation)
+- [x] 13 testes do Sidebar + TopBar (navigation, logout, context mocks, user info, role badges)
+- [x] 22 testes de integração Gemini mock-based (todas 11 funções do gemini-service, happy path + fallback)
+- [x] Pragmas @vitest-environment node nos 5 test files de server
+- [x] 181 testes passando (65 server + 116 frontend/integration)
+
+## Fase 13 - Configuração de Ambiente para Produção
+- [x] .env.example completo com todas as 6 variáveis documentadas (GEMINI_API_KEY, JWT_SECRET, DATABASE_URL, NODE_ENV, PORT, DISABLE_HMR)
+- [x] .envignore para proteger .env de versionamento
+- [x] server/env-validation.ts: validação de ambiente com specs declarativas, erros/warnings, config object
+- [x] Integrar validateAndReport() no server.ts (executa antes de qualquer inicialização)
+- [x] Corrigir bug crítico do Dockerfile: server.ts e arquivos _endpoints.js não eram copiados para produção
+- [x] Melhorar Dockerfile: HEALTHCHECK inline, comentários por seção, npm ci --omit=dev
+- [x] Remover JWT_SECRET hardcoded do docker-compose.yml (agora requerido via ${JWT_SECRET:?ERROR})
+- [x] Melhorar segurança do server/auth.ts: JWT_SECRET obrigatório em produção (throw), não usa fallback
+- [x] PORT dinâmico via env var (server.ts usa parseInt(envConfig.PORT))
+- [x] 13 testes de env-validation (missing key, short key, valid, production JWT required, warnings)
+- [x] 194 testes passando em 11 arquivos

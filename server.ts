@@ -9,14 +9,18 @@ import { setupTelemedicineEndpoints } from './server_telemedicine_endpoints.js';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './server/index.js';
 import { createContext } from './server/trpc.js';
+import { validateAndReport } from './server/env-validation.js';
 
 dotenv.config();
+
+// Validate environment before starting
+const envConfig = validateAndReport();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const isProd = process.env.NODE_ENV === 'production';
-const port = 3000;
+const isProd = envConfig.NODE_ENV === 'production';
+const port = parseInt(envConfig.PORT || '3000', 10);
 
 async function startServer() {
   const app = express();
