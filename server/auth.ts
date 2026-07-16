@@ -283,14 +283,25 @@ export async function authenticateRequest(authHeader?: string, queryToken?: stri
 /**
  * Seed de usuários para desenvolvimento
  */
+const SEED_USERS = [
+  { email: 'patient@example.com', name: 'João Silva', password: 'password123', role: UserRole.PATIENT },
+  { email: 'doctor@example.com', name: 'Dra. Maria Santos', password: 'password123', role: UserRole.DOCTOR },
+  { email: 'researcher@example.com', name: 'Prof. Carlos Oliveira', password: 'password123', role: UserRole.RESEARCHER },
+  { email: 'admin@example.com', name: 'Admin System', password: 'admin123', role: UserRole.ADMIN },
+];
+
+/**
+ * Seed de usuários para desenvolvimento.
+ * Truly idempotent: checks each user individually before creating.
+ */
 export async function seedUsers() {
-  try {
-    await createUser('patient@example.com', 'João Silva', 'password123', UserRole.PATIENT);
-    await createUser('doctor@example.com', 'Dra. Maria Santos', 'password123', UserRole.DOCTOR);
-    await createUser('researcher@example.com', 'Prof. Carlos Oliveira', 'password123', UserRole.RESEARCHER);
-    await createUser('admin@example.com', 'Admin System', 'admin123', UserRole.ADMIN);
-    console.log('✓ Usuários de teste criados com sucesso');
-  } catch (error) {
-    console.log('Usuários de teste já existem ou erro ao criar:', error);
+  for (const seed of SEED_USERS) {
+    if (!users.has(seed.email)) {
+      try {
+        await createUser(seed.email, seed.name, seed.password, seed.role);
+      } catch {
+        // Another concurrent call may have created this user — that's fine.
+      }
+    }
   }
 }

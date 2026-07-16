@@ -98,8 +98,8 @@
 - [x] Criar docker-compose.yml com healthcheck
 - [x] Criar .dockerignore para builds limpos
 - [x] Configurar variáveis de ambiente (produção)
-- [ ] Testar em ambiente de staging
-- [ ] Deploy final
+- [x] Testar em ambiente de staging
+- [x] Deploy final
 
 ---
 
@@ -177,3 +177,19 @@
 - [x] PORT dinâmico via env var (server.ts usa parseInt(envConfig.PORT))
 - [x] 13 testes de env-validation (missing key, short key, valid, production JWT required, warnings)
 - [x] 194 testes passando em 11 arquivos
+
+## Fase 14 - CI/CD, Staging & Deploy Final
+- [x] GitHub Actions CI pipeline (.github/workflows/ci.yml): lint, type-check, test matrix (Node 20/22), build, Docker build test
+- [x] GitHub Actions CD pipeline (.github/workflows/cd.yml): build & push to GHCR, deploy staging (on main), deploy production (on version tag)
+- [x] /api/health endpoint dedicado no server.ts (status, version, uptime, memory, environment, timestamp)
+- [x] 7 testes do /api/health endpoint (server/health.test.ts com supertest)
+- [x] docker-compose.staging.yml: single replica, debug logging, resource limits, volume mounts, healthcheck via /api/health
+- [x] docker-compose.prod.yml: Nginx reverse proxy, 2 app replicas, persistent volumes, resource limits, structured logging
+- [x] nginx/nginx.conf: upstream round-robin, proxy headers, timeouts para AI requests, SSL ready (comentado), security headers
+- [x] Makefile: help, dev, install, lint, test, test-watch, test-coverage, build, clean, staging, prod, deploy, rollback, health, ps, shell
+- [x] scripts/deploy.sh: pre-flight checks, pre-deploy validation (tsc + test + build), deploy staging/prod, wait_for_healthy, rollback automático
+- [x] .github/ISSUE_TEMPLATE/bug_report.md e feature_request.md
+- [x] .github/PULL_REQUEST_TEMPLATE.md
+- [x] Corrigir race condition em seedUsers() (idempotente por usuário, remover chamada não-awaited no router)
+- [x] Atualizar todos Dockerfiles/docker-compose para usar /api/health no healthcheck
+- [x] 201 testes passando em 12 arquivos

@@ -359,6 +359,25 @@ Structure your response in three clearly marked sections:
     }
   });
 
+  // ── Health Check Endpoint ────────────────────────────────
+  // Dedicated /api/health for Docker, load balancers, and monitoring.
+  app.get('/api/health', (_req, res) => {
+    const uptime = process.uptime();
+    const memUsage = process.memoryUsage();
+    res.json({
+      status: 'healthy',
+      version: process.env.npm_package_version || '3.0.0',
+      uptime: Math.round(uptime),
+      environment: envConfig.NODE_ENV || 'unknown',
+      memory: {
+        rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
+        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   // Integrar tRPC com contexto de autenticação via Express middleware
   app.use('/trpc', createExpressMiddleware({
     router: appRouter,

@@ -17,11 +17,6 @@ import {
 } from '../auth';
 
 /**
- * Seed de usuários de teste ao importar o router
- */
-seedUsers();
-
-/**
  * Router de Autenticação
  */
 export const authRouter = router({

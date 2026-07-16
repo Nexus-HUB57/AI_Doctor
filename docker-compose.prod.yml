@@ -1,0 +1,91 @@
+# AI_Doctor — Production Environment
+# Usage: docker compose -f docker-compose.prod.yml up -d
+#
+# Production includes:
+#   - Nginx reverse proxy with SSL termination
+#   - Multiple app replicas behind the proxy
+#   - Persistent volumes
+#   - Resource limits
+#   - Structured logging
+#   - Automatic restarts
+
+version: '3.8'
+
+services:
+  # ── Nginx Reverse Proxy ───────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: ai-doctor-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  # ── AI_Doctor Application ─────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-doctor-app
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY:?ERROR: GEMINI_API_KEY is required}
+      - JWT_SECRET=${JWT_SECRET:?ERROR: JWT_SECRET is required. Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"}
+      - DATABASE_URL=${DATABASE_URL:-}
+      - PORT=3000
+      - DISABLE_HMR=true
+    volumes:
+      - app_prod_data:/app/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 8s
+      retries: 3
+      start_period: 20s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.5'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "10"
+
+volumes:
+  app_prod_data:
+  nginx_logs:
+
+networks:
+  default:
+    name: ai-doctor-prod
