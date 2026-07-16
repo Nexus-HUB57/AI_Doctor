@@ -91,4 +91,17 @@
 ---
 
 ## Completed Items
-(Nenhum item completado ainda)
+- [x] Estrutura de Navegação Principal (NavigationContext)
+- [x] Componentes de Layout (Sidebar, TopBar, MainLayout)
+- [x] Componentes Base Reutilizáveis (Card, Button, Badge, StatCard, Modal, TabGroup)
+- [x] Sistema de Temas e Estilos (themes.ts, index.css, useTheme hook)
+- [x] Configurações e Constantes (constants.ts)
+
+## Fase 4 - Integração de Dados
+- [ ] Instalar e configurar dependências do tRPC e React Query.
+- [ ] Implementar routers tRPC para persistência de dados.
+- [ ] Implementar routers tRPC para integração de literatura.
+- [ ] Implementar routers tRPC para serviços RAG.
+- [ ] Implementar routers tRPC para orquestração de junta médica.
+- [ ] Conectar componentes de UI com as APIs tRPC.
+- [ ] Configurar React Query para gerenciamento de estado e cache de dados.

@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
 import { setupTelemedicineEndpoints } from './server_telemedicine_endpoints.js';
+import { createHTTPServer } from '@trpc/server/adapters/standalone';
+import { appRouter } from './server/index.js';
+import { createContext } from './server/trpc.js';
 
 dotenv.config();
 
@@ -352,6 +355,16 @@ Structure your response in three clearly marked sections:
     }
   });
 
+  // Integrar tRPC
+  const trpcServer = createHTTPServer({
+    router: appRouter,
+    createContext,
+  });
+
+  app.use('/trpc', (req, res) => {
+    trpcServer.handler(req, res);
+  });
+
   if (!isProd) {
     console.log('Integrating Vite dev server middleware...');
     const vite = await createViteServer({
@@ -371,6 +384,7 @@ Structure your response in three clearly marked sections:
 
   app.listen(port, '0.0.0.0', () => {
     console.log(`LiveBook rRNA full-stack server running on http://0.0.0.0:${port}`);
+    console.log(`tRPC server available at http://0.0.0.0:${port}/trpc`);
   });
 }
 
