@@ -1,1 +1,335 @@
 @import "tailwindcss";
+
+/* ============================================
+   ESTILOS GLOBAIS - AI_Doctor v3.0
+   ============================================ */
+
+/* Scrollbar Customizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.8);
+}
+
+/* Seleção de Texto */
+::selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: inherit;
+}
+
+/* Inputs e Textareas */
+input,
+textarea,
+select {
+  @apply bg-slate-800/50 border border-slate-700/50 rounded-lg px-4 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Animações Customizadas */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Classes Utilitárias */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.slide-in-down {
+  animation: slideInDown 0.3s ease-out;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Gradientes Customizados */
+.gradient-primary {
+  @apply bg-gradient-to-r from-cyan-600 to-blue-600;
+}
+
+.gradient-primary-hover {
+  @apply hover:from-cyan-700 hover:to-blue-700;
+}
+
+.gradient-dashboard {
+  @apply bg-gradient-to-br from-blue-500 to-cyan-500;
+}
+
+.gradient-diagnostic {
+  @apply bg-gradient-to-br from-blue-500 to-cyan-500;
+}
+
+.gradient-board {
+  @apply bg-gradient-to-br from-amber-500 to-rose-500;
+}
+
+.gradient-analytics {
+  @apply bg-gradient-to-br from-green-500 to-emerald-500;
+}
+
+.gradient-livebook {
+  @apply bg-gradient-to-br from-cyan-500 to-blue-500;
+}
+
+.gradient-telemedicine {
+  @apply bg-gradient-to-br from-rose-500 to-pink-500;
+}
+
+.gradient-research {
+  @apply bg-gradient-to-br from-purple-500 to-pink-500;
+}
+
+.gradient-advanced {
+  @apply bg-gradient-to-br from-purple-600 to-pink-600;
+}
+
+/* Backgrounds */
+.bg-dark-gradient {
+  @apply bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950;
+}
+
+.bg-card-gradient {
+  @apply bg-gradient-to-br from-slate-800/50 to-slate-900/50;
+}
+
+/* Sombras */
+.shadow-cyan {
+  @apply shadow-lg shadow-cyan-600/50;
+}
+
+.shadow-blue {
+  @apply shadow-lg shadow-blue-600/50;
+}
+
+.shadow-purple {
+  @apply shadow-lg shadow-purple-600/50;
+}
+
+.shadow-rose {
+  @apply shadow-lg shadow-rose-600/50;
+}
+
+/* Borders */
+.border-gradient {
+  position: relative;
+  background: linear-gradient(to right, rgba(6, 182, 212, 0.1), transparent);
+  border-top: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20;
+}
+
+.glass-dark {
+  @apply bg-slate-900/50 backdrop-blur-md border border-slate-700/50;
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+}
+
+.hover-glow {
+  @apply transition-all duration-200 hover:shadow-lg hover:shadow-cyan-500/50;
+}
+
+/* Focus States */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-2 focus:ring-offset-slate-900;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Code Blocks */
+code {
+  @apply bg-slate-800/50 px-2 py-1 rounded text-sm font-mono text-cyan-300;
+}
+
+pre {
+  @apply bg-slate-800/50 p-4 rounded-lg overflow-x-auto;
+}
+
+pre code {
+  @apply bg-transparent px-0 py-0;
+}
+
+/* Tables */
+table {
+  @apply w-full border-collapse;
+}
+
+th {
+  @apply bg-slate-800/50 px-4 py-2 text-left font-semibold text-slate-100 border-b border-slate-700;
+}
+
+td {
+  @apply px-4 py-2 border-b border-slate-700/50;
+}
+
+tr:hover {
+  @apply bg-slate-800/30;
+}
+
+/* Links */
+a {
+  @apply text-cyan-400 hover:text-cyan-300 transition-colors;
+}
+
+a:hover {
+  @apply underline;
+}
+
+/* Loading Spinner */
+.spinner {
+  @apply w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin;
+}
+
+/* Badge Animations */
+.badge-pulse {
+  @apply animate-pulse;
+}
+
+/* Responsive Grid */
+.grid-auto {
+  @apply grid auto-cols-fr gap-4;
+}
+
+@media (max-width: 768px) {
+  .grid-auto {
+    @apply grid-cols-1;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    @apply hidden;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+}
