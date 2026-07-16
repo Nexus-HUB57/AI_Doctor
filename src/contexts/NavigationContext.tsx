@@ -14,7 +14,8 @@ export type TabType =
   | 'wormhole' 
   | 'blackhole' 
   | 'onco_research' 
-  | 'eradication';
+  | 'eradication'
+  | 'files';
 
 interface NavigationContextType {
   activeTab: TabType;

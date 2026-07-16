@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
 import { setupTelemedicineEndpoints } from './server_telemedicine_endpoints.js';
-import { createHTTPServer } from '@trpc/server/adapters/standalone';
+import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './server/index.js';
 import { createContext } from './server/trpc.js';
 
@@ -355,15 +355,11 @@ Structure your response in three clearly marked sections:
     }
   });
 
-  // Integrar tRPC
-  const trpcServer = createHTTPServer({
+  // Integrar tRPC com contexto de autenticação via Express middleware
+  app.use('/trpc', createExpressMiddleware({
     router: appRouter,
-    createContext,
-  });
-
-  app.use('/trpc', (req, res) => {
-    trpcServer.handler(req, res);
-  });
+    createContext: (opts) => createContext({ req: opts.req }),
+  }));
 
   if (!isProd) {
     console.log('Integrating Vite dev server middleware...');

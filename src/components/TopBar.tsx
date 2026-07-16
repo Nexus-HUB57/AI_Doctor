@@ -12,8 +12,11 @@ import {
   BrainCircuit,
   Bell,
   Search,
+  HardDrive,
+  Shield,
 } from 'lucide-react';
 import { useNavigation, type TabType } from '../contexts/NavigationContext';
+import { useAuth, roleLabels } from '../contexts/AuthContext';
 
 interface ModuleInfo {
   id: TabType;
@@ -73,6 +76,13 @@ const moduleInfo: Record<TabType, ModuleInfo> = {
     description: 'Protocolo DIMHEX e estudos clínicos',
     color: 'from-purple-500 to-pink-500',
   },
+  files: {
+    id: 'files',
+    label: 'Gerenciador de Arquivos',
+    icon: HardDrive,
+    description: 'Upload e download seguro com criptografia AES-256',
+    color: 'from-teal-500 to-cyan-500',
+  },
   advanced: {
     id: 'advanced',
     label: 'Painéis Avançados',
@@ -124,8 +134,16 @@ const moduleInfo: Record<TabType, ModuleInfo> = {
   },
 };
 
+const roleBadgeColors: Record<string, string> = {
+  patient: 'bg-green-500/20 text-green-400 border border-green-500/30',
+  doctor: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+  researcher: 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+  admin: 'bg-red-500/20 text-red-400 border border-red-500/30',
+};
+
 export default function TopBar() {
   const { activeTab } = useNavigation();
+  const { user } = useAuth();
   const module = moduleInfo[activeTab];
   const Icon = module.icon;
 
@@ -160,8 +178,23 @@ export default function TopBar() {
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
         </button>
 
-        {/* User Status */}
-        <div className="flex items-center gap-3 pl-4 border-l border-slate-700/50">
+        {/* User Info */}
+        {user && (
+          <div className="flex items-center gap-3 pl-4 border-l border-slate-700/50">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="text-right hidden lg:block">
+              <p className="text-sm font-semibold text-white truncate max-w-[150px]">{user.name}</p>
+              <span className={`inline-block text-xs px-1.5 py-0.5 rounded ${roleBadgeColors[user.role] || 'text-slate-400'}`}>
+                {roleLabels[user.role] || user.role}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* System Status */}
+        <div className="flex items-center gap-3 pl-4 border-l border-slate-700/50 hidden sm:flex">
           <div className="text-right">
             <p className="text-xs text-slate-400">Status</p>
             <p className="text-sm font-semibold text-emerald-400 flex items-center gap-1">

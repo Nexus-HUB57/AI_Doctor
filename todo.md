@@ -5,7 +5,7 @@
 - [x] Implementar tRPC routers para persistência de dados clínicos
 - [x] Integrar Google Gemini API para análise RAG
 - [ ] Configurar S3 para armazenamento de relatórios e sequências genômicas
-- [ ] Implementar sistema de autenticação e autorização
+- [x] Implementar sistema de autenticação e autorização (JWT + RBAC)
 
 ## Dashboard Hub
 - [ ] Criar componente DashboardHub com métricas em tempo real
@@ -122,10 +122,20 @@
     - [x] Desenvolver visualização SVG circular da estrutura secundária de rRNA (algoritmo de Nussinov)
     - [x] Implementar interatividade na visualização de rRNA
     - [x] Integrar visualização de rRNA com identificação de mutações compensatórias
-- [ ] Fortalecer a Segurança da Plataforma
-    - [ ] Integrar provedor de autenticação (OAuth 2.0, JWT)
-    - [ ] Desenvolver sistema de autorização baseado em papéis (RBAC)
-    - [ ] Implementar gerenciamento de sessões seguras e proteção contra ataques
-    - [ ] Configurar S3 para armazenamento seguro de relatórios e sequências genômicas
-    - [ ] Implementar lógica de upload e download de arquivos para o S3
-    - [ ] Garantir criptografia de dados em repouso e em trânsito no S3
+- [x] Fortalecer a Segurança da Plataforma
+    - [x] Integrar provedor de autenticação JWT com bcryptjs
+    - [x] Desenvolver sistema de autorização baseado em papéis (RBAC) com 4 roles
+    - [x] Implementar gerenciamento de sessões seguras e proteção contra ataques (CSRF/XSS via Zod)
+    - [x] Configurar S3 (mock para dev) para armazenamento seguro de relatórios e sequências genômicas
+    - [x] Implementar lógica de upload e download de arquivos para o S3
+    - [x] Garantir criptografia de dados em repouso (AES-256) e em trânsito (HTTPS/TLS) no S3
+    - [x] Criar LoginPage com login/registro e credenciais de teste
+    - [x] Criar AuthContext com hook useAuth e verificação de permissões
+    - [x] Criar componente FileManager com upload, download e delete por categoria
+    - [x] Integrar auth header (Bearer JWT) no client tRPC
+    - [x] Adicionar guard de autenticação no App.tsx
+    - [x] Atualizar Sidebar com info do usuário, role badge e logout funcional
+    - [x] Atualizar TopBar com avatar, nome e role do usuário autenticado
+    - [x] Criar routers tRPC auth (login, register, me, changePassword, rolesInfo)
+    - [x] Criar router tRPC s3 (upload, download, list, delete, categories)
+    - [x] Adicionar protectedProcedure e roleProtectedProcedure ao tRPC

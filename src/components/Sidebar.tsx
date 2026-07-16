@@ -13,10 +13,11 @@ import {
   LayoutGrid,
   BrainCircuit,
   LogOut,
-  User,
-  Settings,
+  HardDrive,
+  Shield,
 } from 'lucide-react';
 import { useNavigation, type TabType } from '../contexts/NavigationContext';
+import { useAuth, roleLabels } from '../contexts/AuthContext';
 
 interface Module {
   id: TabType;
@@ -77,22 +78,86 @@ const modules: Module[] = [
     category: 'main',
   },
   {
-    id: 'advanced',
-    label: 'Painéis Avançados',
+    id: 'files',
+    label: 'Arquivos S3',
+    icon: HardDrive,
+    description: 'Upload & Download',
+    category: 'main',
+  },
+  {
+    id: 'moltbook',
+    label: 'MoltBook Feed',
+    icon: Zap,
+    description: 'Feed social',
+    category: 'advanced',
+  },
+  {
+    id: 'cerebro',
+    label: 'CerebroPanel',
     icon: BrainCircuit,
-    description: 'Cérebro, Wormhole, etc',
+    description: 'Análise cerebral',
+    category: 'advanced',
+  },
+  {
+    id: 'wormhole',
+    label: 'WormholePanel',
+    icon: Zap,
+    description: 'Análise dimensional',
+    category: 'advanced',
+  },
+  {
+    id: 'blackhole',
+    label: 'BlackholePanel',
+    icon: Zap,
+    description: 'Análise extrema',
+    category: 'advanced',
+  },
+  {
+    id: 'onco_research',
+    label: 'OncoResearch',
+    icon: Microscope,
+    description: 'Pesquisa oncológica',
+    category: 'advanced',
+  },
+  {
+    id: 'eradication',
+    label: 'EradicationPanel',
+    icon: Zap,
+    description: 'Erradicação tumoral',
     category: 'advanced',
   },
 ];
 
+const roleBadgeColors: Record<string, string> = {
+  patient: 'bg-green-500/20 text-green-400 border-green-500/30',
+  doctor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  researcher: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+  admin: 'bg-red-500/20 text-red-400 border-red-500/30',
+};
+
 export default function Sidebar() {
   const { activeTab, setActiveTab, sidebarOpen, setSidebarOpen } = useNavigation();
+  const { user, logout, hasPermission } = useAuth();
 
   const mainModules = modules.filter((m) => m.category === 'main');
   const advancedModules = modules.filter((m) => m.category === 'advanced');
 
+  // Filtrar módulos baseados em permissões
+  const filteredMainModules = mainModules.filter((m) => {
+    if (m.id === 'files') {
+      return hasPermission('read:files') || hasPermission('admin:all');
+    }
+    return true;
+  });
+
   const handleNavigation = (tab: TabType) => {
     setActiveTab(tab);
+  };
+
+  const handleLogout = () => {
+    if (confirm('Deseja realmente sair?')) {
+      logout();
+    }
   };
 
   return (
@@ -126,7 +191,7 @@ export default function Sidebar() {
         )}
 
         <div className="space-y-1">
-          {mainModules.map((module) => {
+          {filteredMainModules.map((module) => {
             const Icon = module.icon;
             const isActive = activeTab === module.id;
             return (
@@ -195,29 +260,31 @@ export default function Sidebar() {
 
       {/* User Profile & Actions */}
       <div className="border-t border-slate-800 p-4 space-y-2 flex-shrink-0">
-        {sidebarOpen && (
+        {sidebarOpen && user && (
           <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-            <div className="flex items-center gap-2 mb-2">
-              <User className="w-4 h-4 text-cyan-400" />
-              <p className="text-xs font-semibold text-white truncate">Usuário Autenticado</p>
+            <div className="flex items-center gap-2 mb-1.5">
+              <Shield className="w-4 h-4 text-cyan-400" />
+              <p className="text-xs font-semibold text-white truncate">{user.name}</p>
             </div>
-            <p className="text-xs text-slate-400 truncate">doctor@ai-doctor.app</p>
+            <p className="text-xs text-slate-400 truncate mb-1.5">{user.email}</p>
+            <span className={`inline-block text-xs px-2 py-0.5 rounded-full border ${roleBadgeColors[user.role] || 'bg-slate-700 text-slate-300'}`}>
+              {roleLabels[user.role] || user.role}
+            </span>
           </div>
         )}
 
-        <div className="flex gap-2">
-          <button
-            className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800/50 hover:text-slate-100 transition-all"
-            title={sidebarOpen ? '' : 'Configurações'}
-          >
-            <Settings className="w-5 h-5 flex-shrink-0" />
-            {sidebarOpen && <span className="text-sm font-semibold">Configurações</span>}
-          </button>
-        </div>
+        {!sidebarOpen && user && (
+          <div className="flex justify-center py-2" title={`${user.name} (${roleLabels[user.role]})`}>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+          </div>
+        )}
 
         <button
+          onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-red-900/30 hover:text-red-400 transition-all"
-          title={sidebarOpen ? '' : 'Logout'}
+          title={sidebarOpen ? 'Sair da conta' : 'Logout'}
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
           {sidebarOpen && <span className="text-sm font-semibold">Sair</span>}

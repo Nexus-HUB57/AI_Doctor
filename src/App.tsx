@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext';
+import { AuthProvider, useAuth, roleLabels } from './contexts/AuthContext';
 import MainLayout from './components/MainLayout';
+import LoginPage from './components/LoginPage';
 import DashboardHub from './components/DashboardHub';
 import DiagnosticPanel from './components/DiagnosticPanel';
 import MedicalBoardPanel from './components/MedicalBoardPanel';
@@ -14,6 +16,7 @@ import WormholePanel from './components/WormholePanel';
 import BlackholePanel from './components/BlackholePanel';
 import OncoResearchPanel from './components/OncoResearchPanel';
 import EradicationPanel from './components/EradicationPanel';
+import FileManager from './components/FileManager';
 
 // Componente para renderizar a aba ativa
 const ActiveTabContent = () => {
@@ -46,6 +49,8 @@ const ActiveTabContent = () => {
       return <EradicationPanel />;
     case 'livebook':
       return <LiveBookPanel />;
+    case 'files':
+      return <FileManager />;
     case 'advanced':
     default:
       return (
@@ -57,12 +62,38 @@ const ActiveTabContent = () => {
   }
 };
 
+// Guard de autenticação
+const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-400">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+
+  return <>{children}</>;
+};
+
 export default function App() {
   return (
-    <NavigationProvider>
-      <MainLayout>
-        <ActiveTabContent />
-      </MainLayout>
-    </NavigationProvider>
+    <AuthProvider>
+      <NavigationProvider>
+        <AuthGuard>
+          <MainLayout>
+            <ActiveTabContent />
+          </MainLayout>
+        </AuthGuard>
+      </NavigationProvider>
+    </AuthProvider>
   );
 }
