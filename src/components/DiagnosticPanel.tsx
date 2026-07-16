@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  Stethoscope, 
-  User, 
-  Calendar, 
-  Activity, 
+import {
+  Stethoscope,
+  User,
+  Calendar,
+  Activity,
   Send,
   AlertCircle,
   CheckCircle,
   Clock,
   Zap,
-  Shield
+  Shield,
+  XCircle
 } from 'lucide-react';
 import { trpc } from '../trpc/client';
 
@@ -26,17 +27,37 @@ export default function DiagnosticPanel() {
   const [patientAge, setPatientAge] = useState('');
   const [diagnosis, setDiagnosis] = useState('melanoma');
   const [stage, setStage] = useState('IV');
+  const [mutations, setMutations] = useState('');
+  const [biomarkers, setBiomarkers] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [diagnosticResult, setDiagnosticResult] = useState<DiagnosticResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleClear = () => {
+    setPatientName('');
+    setPatientAge('');
+    setDiagnosis('melanoma');
+    setStage('IV');
+    setMutations('');
+    setBiomarkers('');
+    setDiagnosticResult(null);
+    setError(null);
+    setIsAnalyzing(false);
+  };
 
   const handleDiagnose = async () => {
     if (!patientName.trim() || !patientAge.trim()) {
-      alert('Por favor, preencha nome e idade do paciente');
+      setError('Por favor, preencha nome e idade do paciente.');
       return;
     }
 
     setIsAnalyzing(true);
+    setError(null);
+
     try {
+      const mutationList = mutations.split(',').map(m => m.trim()).filter(Boolean);
+      const biomarkerList = biomarkers.split(',').map(b => b.trim()).filter(Boolean);
+
       // 1. Obter recomendação via RAG
       const ragResult = await trpc.rag.recommendTreatment.mutate({
         patientId: 'temp_patient',
@@ -46,13 +67,24 @@ export default function DiagnosticPanel() {
         performanceStatus: 'ECOG 0-1'
       });
 
-      // 2. Persistir o diagnóstico no banco de dados
+      // 2. Persistir o paciente no banco de dados
+      try {
+        await trpc.persistence.patients.create.mutate({
+          name: patientName,
+          age: parseInt(patientAge),
+          email: `${patientName.replace(/\s/g, '.').toLowerCase()}@temp.ai-doctor.local`,
+        });
+      } catch (patientErr) {
+        console.warn('[DiagnosticPanel] Could not persist patient, continuing:', patientErr);
+      }
+
+      // 3. Persistir o diagnóstico no banco de dados
       const patient = await trpc.persistence.diagnoses.create.mutate({
         patientName,
         age: parseInt(patientAge),
         diagnosis,
         stage,
-        notes: `Análise gerada via RAG em ${new Date().toLocaleDateString()}`
+        notes: `Análise gerada via RAG em ${new Date().toLocaleDateString()}${mutationList.length > 0 ? ` | Mutações: ${mutationList.join(', ')}` : ''}${biomarkerList.length > 0 ? ` | Biomarcadores: ${biomarkerList.join(', ')}` : ''}`
       });
 
       const result: DiagnosticResult = {
@@ -64,28 +96,23 @@ export default function DiagnosticPanel() {
           'Monitoramento de Biomarcadores'
         ],
         prognosis: ragResult.recommendation,
-        notes: `Paciente ${patientName}, ${patientAge} anos. ID: ${patient.id}. Análise RAG integrada com base de conhecimento de oncologia avançada.`
+        notes: `Paciente ${patientName}, ${patientAge} anos. ID: ${patient.id}. Análise RAG integrada com base de conhecimento de oncologia avançada.${mutationList.length > 0 ? ` Mutações: ${mutationList.join(', ')}.` : ''}${biomarkerList.length > 0 ? ` Biomarcadores: ${biomarkerList.join(', ')}.` : ''}`
       };
 
-      // 3. Salvar a recomendação
+      // 4. Salvar a recomendação
       await trpc.persistence.recommendations.create.mutate({
         diagnosisId: patient.id,
         recommendation: result.prognosis,
         confidenceScore: result.confidenceScore,
         interventions: result.recommendedInterventions
       });
-      
+
       setDiagnosticResult(result);
-    } catch (error) {
-      console.error('Erro ao processar diagnóstico:', error);
-      // Fallback para demonstração
-      setDiagnosticResult({
-        riskScore: 75,
-        confidenceScore: 0.82,
-        recommendedInterventions: ['Protocolo de Emergência', 'Avaliação de Segunda Opinião'],
-        prognosis: 'Erro na conexão com o servidor RAG. Utilizando protocolos base.',
-        notes: 'Verifique a conexão com a base de dados RAG.'
-      });
+    } catch (err: any) {
+      const message = err?.message || 'Erro ao processar diagnóstico. Verifique a conexão com o servidor.';
+      console.error('Erro ao processar diagnóstico:', err);
+      setError(message);
+      setDiagnosticResult(null);
     } finally {
       setIsAnalyzing(false);
     }
@@ -106,6 +133,23 @@ export default function DiagnosticPanel() {
         </p>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-950/30 border border-red-900/30 rounded-lg p-3 flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+          <div className="flex-1">
+            <p className="text-xs font-bold text-red-400">Erro no Diagnóstico</p>
+            <p className="text-xs text-red-300/70 mt-1">{error}</p>
+          </div>
+          <button
+            onClick={() => setError(null)}
+            className="text-red-400 hover:text-red-300 transition-colors cursor-pointer shrink-0"
+          >
+            <XCircle className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Formulário de Entrada */}
         <div className="space-y-4">
@@ -113,7 +157,7 @@ export default function DiagnosticPanel() {
             <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
               Nome do Paciente
             </label>
-            <input 
+            <input
               type="text"
               value={patientName}
               onChange={(e) => setPatientName(e.target.value)}
@@ -127,7 +171,7 @@ export default function DiagnosticPanel() {
               <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
                 Idade
               </label>
-              <input 
+              <input
                 type="number"
                 value={patientAge}
                 onChange={(e) => setPatientAge(e.target.value)}
@@ -150,7 +194,7 @@ export default function DiagnosticPanel() {
             <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
               Diagnóstico Oncológico
             </label>
-            <select 
+            <select
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
               className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 font-mono"
@@ -166,7 +210,7 @@ export default function DiagnosticPanel() {
             <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
               Estágio TNM
             </label>
-            <select 
+            <select
               value={stage}
               onChange={(e) => setStage(e.target.value)}
               className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 font-mono"
@@ -178,26 +222,70 @@ export default function DiagnosticPanel() {
             </select>
           </div>
 
-          <button
-            onClick={handleDiagnose}
-            disabled={isAnalyzing}
-            className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-zinc-800 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-900/20"
-          >
-            {isAnalyzing ? (
-              <Activity className="w-4 h-4 animate-spin" />
-            ) : (
-              <Zap className="w-4 h-4" />
-            )}
-            Analisar Perfil
-          </button>
+          <div>
+            <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
+              Mutações <span className="text-zinc-600 normal-case font-normal">(opcional)</span>
+            </label>
+            <input
+              type="text"
+              value={mutations}
+              onChange={(e) => setMutations(e.target.value)}
+              placeholder="Ex: BRAF V600E, TP53, KRAS G12C"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 font-mono placeholder:text-zinc-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] uppercase text-zinc-500 font-bold mb-2 tracking-wider">
+              Biomarcadores <span className="text-zinc-600 normal-case font-normal">(opcional)</span>
+            </label>
+            <input
+              type="text"
+              value={biomarkers}
+              onChange={(e) => setBiomarkers(e.target.value)}
+              placeholder="Ex: PD-L1 Alto, HER2+, EGFR mutado"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 font-mono placeholder:text-zinc-600"
+            />
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={handleDiagnose}
+              disabled={isAnalyzing}
+              className="flex-1 bg-cyan-600 hover:bg-cyan-500 disabled:bg-zinc-800 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-900/20"
+            >
+              {isAnalyzing ? (
+                <Activity className="w-4 h-4 animate-spin" />
+              ) : (
+                <Zap className="w-4 h-4" />
+              )}
+              Analisar Perfil
+            </button>
+            <button
+              onClick={handleClear}
+              disabled={isAnalyzing}
+              className="bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-900 text-zinc-400 hover:text-white font-bold py-3 px-4 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer border border-zinc-700"
+            >
+              <XCircle className="w-4 h-4" />
+              Limpar
+            </button>
+          </div>
         </div>
 
         {/* Resultado do Diagnóstico */}
         <div className="bg-[#050505] border border-zinc-800 rounded-xl p-5 min-h-[300px] flex flex-col justify-center">
-          {!diagnosticResult && !isAnalyzing && (
+          {!diagnosticResult && !isAnalyzing && !error && (
             <div className="text-center space-y-3 opacity-40">
               <User className="w-12 h-12 mx-auto text-zinc-600" />
               <p className="text-[10px] font-mono uppercase tracking-widest">Aguardando Dados do Paciente...</p>
+            </div>
+          )}
+
+          {!diagnosticResult && !isAnalyzing && error && (
+            <div className="text-center space-y-3 opacity-40">
+              <AlertCircle className="w-12 h-12 mx-auto text-red-600" />
+              <p className="text-[10px] font-mono uppercase tracking-widest text-red-500">Falha na Análise</p>
+              <p className="text-[10px] text-zinc-500">Tente novamente ou verifique a conexão.</p>
             </div>
           )}
 
@@ -205,6 +293,7 @@ export default function DiagnosticPanel() {
             <div className="text-center space-y-3">
               <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin mx-auto"></div>
               <p className="text-[10px] font-mono uppercase tracking-widest text-cyan-500">Processando Análise Clínica...</p>
+              <p className="text-[9px] text-zinc-500 font-mono">Consultando base RAG e persistindo dados...</p>
             </div>
           )}
 
@@ -216,10 +305,16 @@ export default function DiagnosticPanel() {
                     {patientName}
                   </h4>
                   <p className="text-[10px] text-zinc-500 font-mono mt-1">{diagnosis.toUpperCase()} - Estágio {stage}</p>
+                  {mutations && (
+                    <p className="text-[9px] text-amber-400/70 font-mono mt-0.5">Mutações: {mutations}</p>
+                  )}
+                  {biomarkers && (
+                    <p className="text-[9px] text-emerald-400/70 font-mono mt-0.5">Biomarcadores: {biomarkers}</p>
+                  )}
                 </div>
                 <div className="text-right">
                   <div className={`text-3xl font-black font-mono ${
-                    diagnosticResult.riskScore >= 80 ? 'text-red-400' : 
+                    diagnosticResult.riskScore >= 80 ? 'text-red-400' :
                     diagnosticResult.riskScore >= 60 ? 'text-amber-400' : 'text-emerald-400'
                   }`}>
                     {diagnosticResult.riskScore}

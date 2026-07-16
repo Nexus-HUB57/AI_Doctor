@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Users,
   MessageSquare,
@@ -8,7 +8,9 @@ import {
   TrendingUp,
   Award,
   BookOpen,
-  FileText
+  FileText,
+  RotateCcw,
+  XCircle
 } from 'lucide-react';
 import { trpc } from '../trpc/client';
 
@@ -49,28 +51,35 @@ export default function MedicalBoardPanel() {
   const [boardMembers, setBoardMembers] = useState<BoardMember[]>([]);
   const [consensus, setConsensus] = useState<BoardConsensus | null>(null);
   const [loading, setLoading] = useState(false);
+  const [membersLoading, setMembersLoading] = useState(true);
+  const [membersError, setMembersError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'members' | 'discussion' | 'consensus'>('members');
   const [tumorType, setTumorType] = useState('melanoma');
   const [stage, setStage] = useState(4);
   const [mutations, setMutations] = useState('BRAF V600E, PD-L1 Alto');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchBoardMembers();
-  }, []);
-
-  const fetchBoardMembers = async () => {
+  const fetchBoardMembers = useCallback(async () => {
+    setMembersLoading(true);
+    setMembersError(null);
     try {
       const members = await trpc.board.members.list.query();
       setBoardMembers(members.length > 0 ? members : generateFallbackMembers());
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching board members:', err);
+      setMembersError('Não foi possível carregar os especialistas. Usando dados locais.');
       setBoardMembers(generateFallbackMembers());
+    } finally {
+      setMembersLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchBoardMembers();
+  }, [fetchBoardMembers]);
 
   const generateFallbackMembers = (): BoardMember[] => [
-    { id: 'agent_001', name: 'Dr. Imunooncologia', specialty: 'Imunooncologia', expertise: ['CAR-T', 'Checkpoint Inhibidores', 'Microambiente Tumoral'], credentials: 'PhD em Imunologia, Pós-doc em Imunooncologia', hIndex: 32, publications: 156 },
+    { id: 'agent_001', name: 'Dr. Imunooncologia', specialty: 'Imunooncologia', expertise: ['CAR-T', 'Checkpoint Inibidores', 'Microambiente Tumoral'], credentials: 'PhD em Imunologia, Pós-doc em Imunooncologia', hIndex: 32, publications: 156 },
     { id: 'agent_002', name: 'Dr. Oncologia Molecular', specialty: 'Oncologia Molecular', expertise: ['Mutações', 'Vias de Sinalização', 'Farmacogenômica'], credentials: 'PhD em Biologia Molecular, Pós-doc em Oncologia', hIndex: 28, publications: 127 },
     { id: 'agent_003', name: 'Dr. Cirurgia Oncológica', specialty: 'Cirurgia Oncológica', expertise: ['Ressecção Tumoral', 'Cirurgia Minimamente Invasiva'], credentials: 'MD, PhD em Cirurgia Oncológica', hIndex: 31, publications: 142 },
     { id: 'agent_004', name: 'Dr. Nanotecnologia', specialty: 'Nanotecnologia em Oncologia', expertise: ['Nanopartículas', 'Entrega de Fármacos', 'Teranóstica'], credentials: 'PhD em Engenharia Biomédica', hIndex: 24, publications: 98 },
@@ -80,9 +89,16 @@ export default function MedicalBoardPanel() {
 
   const stageMap: Record<number, string> = { 1: 'I', 2: 'II', 3: 'III', 4: 'IV' };
 
+  const isFormValid = tumorType.trim().length > 0 && stage >= 1 && stage <= 4;
+
   const initiateBoardMeeting = async () => {
+    if (!isFormValid) {
+      setError('Por favor, selecione o tipo de tumor e o estágio antes de iniciar.');
+      return;
+    }
+
     setLoading(true);
-    setError('');
+    setError(null);
 
     try {
       const mutationList = mutations.split(',').map(m => m.trim()).filter(Boolean);
@@ -147,8 +163,6 @@ export default function MedicalBoardPanel() {
     } catch (err: any) {
       console.error('Error initiating board meeting:', err);
       setError(err?.message || 'Erro ao iniciar reunião da junta médica');
-      setConsensus(generateFallbackConsensus());
-      setActiveTab('discussion');
     } finally {
       setLoading(false);
     }
@@ -200,14 +214,47 @@ export default function MedicalBoardPanel() {
         </p>
       </div>
 
+      {/* Members Load Error Banner */}
+      {membersError && !membersLoading && (
+        <div className="bg-amber-950/30 border border-amber-900/30 rounded-lg p-3 flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+          <div className="flex-1">
+            <p className="text-xs font-bold text-amber-400">Aviso</p>
+            <p className="text-xs text-amber-300/70 mt-1">{membersError}</p>
+          </div>
+          <button
+            onClick={fetchBoardMembers}
+            className="flex items-center gap-1.5 bg-amber-900/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 hover:text-amber-200 px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase transition-all cursor-pointer shrink-0"
+          >
+            <RotateCcw className="w-3 h-3" />
+            Tentar
+          </button>
+        </div>
+      )}
+
       {/* Error Banner */}
       {error && (
         <div className="bg-red-950/30 border border-red-900/30 rounded-lg p-3 flex items-start gap-2">
           <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
-          <div>
+          <div className="flex-1">
             <p className="text-xs font-bold text-red-400">Erro na Junta Médica</p>
             <p className="text-xs text-red-300/70 mt-1">{error}</p>
           </div>
+          <button
+            onClick={() => setError(null)}
+            className="text-red-400 hover:text-red-300 transition-colors cursor-pointer shrink-0"
+          >
+            <XCircle className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Loading Overlay for Board Assembly */}
+      {loading && (
+        <div className="bg-zinc-950/80 border border-cyan-900/30 rounded-lg p-8 flex flex-col items-center justify-center gap-4">
+          <div className="w-16 h-16 border-4 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
+          <p className="text-sm font-mono text-cyan-400 uppercase tracking-widest">Consultando Especialistas via Gemini...</p>
+          <p className="text-[10px] text-zinc-500 font-mono">Montando junta, analisando caso e gerando consenso</p>
         </div>
       )}
 
@@ -231,7 +278,7 @@ export default function MedicalBoardPanel() {
       </div>
 
       {/* Members Tab */}
-      {activeTab === 'members' && (
+      {activeTab === 'members' && !loading && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -275,43 +322,71 @@ export default function MedicalBoardPanel() {
             />
           </div>
 
-          <div className="space-y-3">
-            <h4 className="text-sm font-bold text-cyan-400">
-              Especialistas Disponíveis ({boardMembers.length})
-            </h4>
-            <p className="text-[10px] text-zinc-500">
-              A junta será montada automaticamente com os 6 especialistas mais relevantes para o caso.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
-              {boardMembers.map((member) => (
-                <div key={member.id} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="font-bold text-white text-sm">{member.name}</p>
-                      <p className="text-xs text-cyan-400 font-mono">{member.specialty}</p>
+          {/* Members Loading Skeleton */}
+          {membersLoading ? (
+            <div className="space-y-3">
+              <h4 className="text-sm font-bold text-cyan-400">
+                Carregando Especialistas...
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {Array.from({ length: 4 }).map((_, idx) => (
+                  <div key={idx} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 animate-pulse">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <div className="h-4 w-32 bg-zinc-800 rounded mb-1"></div>
+                        <div className="h-3 w-24 bg-zinc-800 rounded"></div>
+                      </div>
+                      <div className="h-5 w-12 bg-zinc-800 rounded"></div>
                     </div>
-                    <div className="flex items-center gap-1 bg-amber-950/30 px-2 py-1 rounded">
-                      <Award className="w-3 h-3 text-amber-400" />
-                      <span className="text-xs font-bold text-amber-400">h{member.hIndex}</span>
+                    <div className="h-3 w-48 bg-zinc-800 rounded mb-2"></div>
+                    <div className="flex gap-1">
+                      <div className="h-4 w-16 bg-zinc-800 rounded"></div>
+                      <div className="h-4 w-20 bg-zinc-800 rounded"></div>
+                      <div className="h-4 w-14 bg-zinc-800 rounded"></div>
                     </div>
                   </div>
-                  <p className="text-[10px] text-zinc-500 mb-2">{member.credentials}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {(member.expertise || []).slice(0, 3).map((area, idx) => (
-                      <span key={idx} className="text-[9px] bg-cyan-950/30 text-cyan-300 px-2 py-0.5 rounded">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-3">
+              <h4 className="text-sm font-bold text-cyan-400">
+                Especialistas Disponíveis ({boardMembers.length})
+              </h4>
+              <p className="text-[10px] text-zinc-500">
+                A junta será montada automaticamente com os 6 especialistas mais relevantes para o caso.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+                {boardMembers.map((member) => (
+                  <div key={member.id} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="font-bold text-white text-sm">{member.name}</p>
+                        <p className="text-xs text-cyan-400 font-mono">{member.specialty}</p>
+                      </div>
+                      <div className="flex items-center gap-1 bg-amber-950/30 px-2 py-1 rounded">
+                        <Award className="w-3 h-3 text-amber-400" />
+                        <span className="text-xs font-bold text-amber-400">h{member.hIndex}</span>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-zinc-500 mb-2">{member.credentials}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {(member.expertise || []).slice(0, 3).map((area, idx) => (
+                        <span key={idx} className="text-[9px] bg-cyan-950/30 text-cyan-300 px-2 py-0.5 rounded">
+                          {area}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <button
             onClick={initiateBoardMeeting}
-            disabled={loading}
-            className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-zinc-800 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-900/20"
+            disabled={loading || !isFormValid}
+            className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-zinc-800 disabled:text-zinc-500 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-900/20"
           >
             {loading ? (
               <>
@@ -325,11 +400,18 @@ export default function MedicalBoardPanel() {
               </>
             )}
           </button>
+
+          {!isFormValid && !loading && (
+            <p className="text-[10px] text-amber-400/70 text-center font-mono">
+              <AlertCircle className="w-3 h-3 inline mr-1" />
+              Selecione o tipo de tumor e o estágio para habilitar a reunião.
+            </p>
+          )}
         </div>
       )}
 
       {/* Discussion Tab */}
-      {activeTab === 'discussion' && consensus && (
+      {activeTab === 'discussion' && consensus && !loading && (
         <div className="space-y-4">
           <div className="bg-cyan-950/20 border border-cyan-900/30 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
@@ -340,6 +422,13 @@ export default function MedicalBoardPanel() {
               {consensus.discussions.length} especialistas contribuíram com suas perspectivas
             </p>
           </div>
+
+          {consensus.discussions.length === 0 && (
+            <div className="text-center py-8 space-y-3 opacity-50">
+              <AlertCircle className="w-12 h-12 mx-auto text-zinc-600" />
+              <p className="text-xs font-mono text-zinc-500">Nenhuma discussão disponível. A reunião pode não ter sido concluída.</p>
+            </div>
+          )}
 
           {consensus.discussions.map((discussion, idx) => (
             <div key={idx} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
@@ -394,7 +483,7 @@ export default function MedicalBoardPanel() {
       )}
 
       {/* Consensus Tab */}
-      {activeTab === 'consensus' && consensus && consensusInfo && (
+      {activeTab === 'consensus' && consensus && consensusInfo && !loading && (
         <div className="space-y-4">
           <div className={`border rounded-lg p-4 bg-${consensusInfo.color}-950/20 border-${consensusInfo.color}-900/30`}>
             <div className="flex items-center gap-2 mb-2">
@@ -447,13 +536,24 @@ export default function MedicalBoardPanel() {
             </div>
           )}
 
-          <button
-            onClick={() => setActiveTab('members')}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/20"
-          >
-            <CheckCircle className="w-4 h-4" />
-            Nova Reunião
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setActiveTab('members')}
+              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/20"
+            >
+              <CheckCircle className="w-4 h-4" />
+              Nova Reunião
+            </button>
+            {error && (
+              <button
+                onClick={initiateBoardMeeting}
+                className="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white font-bold py-3 px-4 rounded-lg text-xs font-mono uppercase transition-all flex items-center justify-center gap-2 cursor-pointer border border-zinc-700"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Tentar Novamente
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

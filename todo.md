@@ -86,14 +86,18 @@
 - [x] Resumo de artigos via Gemini
 
 ## Testes e Qualidade
-- [ ] Escrever testes vitest para tRPC routers
-- [ ] Testar componentes de UI críticos
-- [ ] Validar integração com Gemini
-- [ ] Testar persistência de dados
+- [x] Escrever testes vitest para tRPC routers (65 testes em 5 arquivos: persistence, rag, board, literature, auth)
+- [x] Implementar Error Boundary no frontend para captura graciosa de erros
+- [x] Refatorar componentes (DashboardHub, DiagnosticPanel, MedicalBoardPanel) com estados de loading/error
+- [x] Criar hooks customizados (useTRPCMutation, useTRPCQuery) para padronizar chamadas tRPC
+- [ ] Testar componentes de UI críticos com @testing-library/react
+- [ ] Validar integração com Gemini (mock-based)
 
 ## Deployment
+- [x] Criar Dockerfile multi-stage para build otimizado
+- [x] Criar docker-compose.yml com healthcheck
+- [x] Criar .dockerignore para builds limpos
 - [ ] Configurar variáveis de ambiente (produção)
-- [ ] Preparar build para produção
 - [ ] Testar em ambiente de staging
 - [ ] Deploy final
 
@@ -132,3 +136,11 @@
 - [x] Wire persistence router: conectar ao db.ts com fallback in-memory
 - [x] Atualizar MedicalBoardPanel para usar novos schemas
 - [x] Remover código morto (serviços REST não utilizados)
+
+## Fase 10 - Testes Abrangentes, Error Boundaries e Deployment
+- [x] 65 testes Vitest em 5 arquivos (persistence: 27, rag: 10, auth: 15, board: 6, literature: 7)
+- [x] ErrorBoundary component integrado em todas as abas do App.tsx
+- [x] Refatoração de DashboardHub, DiagnosticPanel, MedicalBoardPanel com loading/error states
+- [x] Hooks customizados useTRPCMutation e useTRPCQuery
+- [x] Dockerfile multi-stage + docker-compose.yml + .dockerignore
+- [x] Documentação FASE_10_TESTES_DEPLOYMENT.md

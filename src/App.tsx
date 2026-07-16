@@ -17,6 +17,7 @@ import BlackholePanel from './components/BlackholePanel';
 import OncoResearchPanel from './components/OncoResearchPanel';
 import EradicationPanel from './components/EradicationPanel';
 import FileManager from './components/FileManager';
+import ErrorBoundary from './components/ErrorBoundary';
 import type { Agent, LogMessage } from './types';
 
 // Estado compartilhado para componentes que dependem de props
@@ -79,40 +80,98 @@ const ActiveTabContent = () => {
 
   switch (activeTab) {
     case 'dashboard':
-      return <DashboardHub onNavigate={setActiveTab} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <DashboardHub onNavigate={setActiveTab} />
+        </ErrorBoundary>
+      );
     case 'diagnostic':
-      return <DiagnosticPanel />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <DiagnosticPanel />
+        </ErrorBoundary>
+      );
     case 'board':
-      return <MedicalBoardPanel />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <MedicalBoardPanel />
+        </ErrorBoundary>
+      );
     case 'analytics':
-      return <AnalyticsDashboard />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <AnalyticsDashboard />
+        </ErrorBoundary>
+      );
     case 'research':
-      return <ResearchDashboard />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <ResearchDashboard />
+        </ErrorBoundary>
+      );
     case 'telemedicine':
-      return <TelemedicineChatbot />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <TelemedicineChatbot />
+        </ErrorBoundary>
+      );
     case 'moltbook':
-      return <MoltbookFeed agents={agents} addLog={addLog} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <MoltbookFeed agents={agents} addLog={addLog} />
+        </ErrorBoundary>
+      );
     case 'cerebro':
-      return <CerebroPanel sequence={sequence} agents={agents} addLog={addLog} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <CerebroPanel sequence={sequence} agents={agents} addLog={addLog} />
+        </ErrorBoundary>
+      );
     case 'wormhole':
-      return <WormholePanel sequence={sequence} setSequence={setSequence} addLog={addLog} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <WormholePanel sequence={sequence} setSequence={setSequence} addLog={addLog} />
+        </ErrorBoundary>
+      );
     case 'blackhole':
-      return <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={clearLogs} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={clearLogs} />
+        </ErrorBoundary>
+      );
     case 'onco_research':
-      return <OncoResearchPanel sequence={sequence} agents={agents} addLog={addLog} />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <OncoResearchPanel sequence={sequence} agents={agents} addLog={addLog} />
+        </ErrorBoundary>
+      );
     case 'eradication':
-      return <EradicationPanel />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <EradicationPanel />
+        </ErrorBoundary>
+      );
     case 'livebook':
-      return <LiveBookPanel />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <LiveBookPanel />
+        </ErrorBoundary>
+      );
     case 'files':
-      return <FileManager />;
+      return (
+        <ErrorBoundary key={activeTab}>
+          <FileManager />
+        </ErrorBoundary>
+      );
     case 'advanced':
     default:
       return (
-        <div className="flex flex-col items-center justify-center h-[60vh] text-slate-400">
-          <h3 className="text-2xl font-bold mb-2">Módulo em Desenvolvimento</h3>
-          <p>O módulo "{activeTab}" está sendo preparado pela nossa junta médica.</p>
-        </div>
+        <ErrorBoundary key={activeTab}>
+          <div className="flex flex-col items-center justify-center h-[60vh] text-slate-400">
+            <h3 className="text-2xl font-bold mb-2">Módulo em Desenvolvimento</h3>
+            <p>O módulo "{activeTab}" está sendo preparado pela nossa junta médica.</p>
+          </div>
+        </ErrorBoundary>
       );
   }
 };

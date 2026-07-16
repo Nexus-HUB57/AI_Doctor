@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Heart,
   Zap,
@@ -20,8 +20,10 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-  Flame
+  Flame,
+  RotateCcw
 } from 'lucide-react';
+import { trpc } from '../trpc/client';
 
 interface DashboardHubProps {
   onNavigate?: (tab: string) => void;
@@ -41,6 +43,8 @@ export default function DashboardHub({ onNavigate }: DashboardHubProps) {
   const [systemStats, setSystemStats] = useState<SystemStats | null>(null);
   const [boardStats, setBoardStats] = useState<any>(null);
   const [agents, setAgents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -53,23 +57,28 @@ export default function DashboardHub({ onNavigate }: DashboardHubProps) {
     fetchDashboardData();
   }, []);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
+    setIsLoading(true);
+    setFetchError(null);
     try {
       // Fetch board members (specialists)
-      const members = await (await import('../trpc/client')).trpc.board.members.list.query();
+      const members = await trpc.board.members.list.query();
       setAgents(members);
 
       // Fetch board statistics
-      const stats = await (await import('../trpc/client')).trpc.board.statistics.query();
+      const stats = await trpc.board.statistics.query();
       setBoardStats(stats);
 
       // Fetch system stats
-      const sysStats = await (await import('../trpc/client')).trpc.persistence.analytics.getSystemStats.query();
+      const sysStats = await trpc.persistence.analytics.getSystemStats.query();
       setSystemStats(sysStats as any);
     } catch (err) {
-      console.warn('[DashboardHub] Could not fetch real data, using defaults:', err);
+      console.warn('[DashboardHub] Could not fetch real data:', err);
+      setFetchError('Não foi possível carregar dados do servidor. Verifique a conexão.');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   const modules = [
     {
@@ -144,7 +153,40 @@ export default function DashboardHub({ onNavigate }: DashboardHubProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
-      
+
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 border-4 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin mx-auto"></div>
+            <p className="text-sm font-mono text-cyan-400 uppercase tracking-widest">Carregando Dados do Sistema...</p>
+            <p className="text-xs text-zinc-500 font-mono">Conectando ao servidor tRPC</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error Banner */}
+      {fetchError && !isLoading && (
+        <div className="bg-red-950/40 border-b border-red-900/30 px-4 py-3">
+          <div className="container max-w-6xl mx-auto flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+              <div>
+                <p className="text-sm font-bold text-red-400">Erro ao Carregar Dados</p>
+                <p className="text-xs text-red-300/70">{fetchError}</p>
+              </div>
+            </div>
+            <button
+              onClick={fetchDashboardData}
+              className="flex items-center gap-2 bg-red-900/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 hover:text-red-200 px-4 py-2 rounded-lg text-xs font-bold font-mono uppercase transition-all cursor-pointer shrink-0"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative pt-12 pb-16 px-4 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
