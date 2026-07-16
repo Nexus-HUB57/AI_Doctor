@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
+import { setupTelemedicineEndpoints } from './server_telemedicine_endpoints.js';
 
 dotenv.config();
 
@@ -358,6 +359,8 @@ Structure your response in three clearly marked sections:
       appType: 'spa',
     });
     app.use(vite.middlewares);
+    // Setup Telemedicine Endpoints
+    setupTelemedicineEndpoints(app, getGemini);
   } else {
     console.log('Serving production static assets...');
     app.use(express.static(path.resolve(__dirname, 'dist')));
