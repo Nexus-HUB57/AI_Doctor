@@ -4,6 +4,13 @@ import {
   generateTreatmentRecommendation,
   queryOncology,
   analyzeMutations,
+  analyzeBiomarkers,
+  analyzeDIMHEX,
+  predictTreatmentResponse,
+  predictToxicity,
+  recommendImmunotherapy,
+  recommendNanotherapy,
+  recommendComplementaryMedicine,
   type TreatmentRecommendationInput,
 } from '../../src/services/gemini-service';
 
@@ -85,16 +92,13 @@ export const ragRouter = router({
       tumorType: z.string(),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar análise de mutações
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Analyzing mutations:', input);
-      
+      const result = await analyzeMutations(input.mutations, input.tumorType);
       return {
-        analysis: '',
-        implications: [],
-        treatmentOptions: [],
-        confidenceScore: 0,
+        analysis: result.analysis,
+        implications: result.therapeuticImplications,
+        treatmentOptions: result.therapeuticImplications,
+        confidenceScore: result.predictiveValue,
       };
     }),
 
@@ -112,18 +116,9 @@ export const ragRouter = router({
       tumorType: z.string(),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar análise de biomarcadores
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Analyzing biomarkers:', input);
-      
-      return {
-        analysis: '',
-        implications: [],
-        prognosticScore: 0,
-        treatmentRelevance: [],
-        confidenceScore: 0,
-      };
+      const result = await analyzeBiomarkers(input.biomarkers, input.tumorType);
+      return result;
     }),
 
   /**
@@ -139,19 +134,9 @@ export const ragRouter = router({
       }),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar análise DIMHEX
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Analyzing DIMHEX protocol:', input);
-      
-      return {
-        suitability: 0,
-        protocol: '',
-        expectedOutcome: '',
-        risks: [],
-        monitoringPlan: [],
-        confidenceScore: 0,
-      };
+      const result = await analyzeDIMHEX(input.patientProfile);
+      return result;
     }),
 
   /**
@@ -171,19 +156,9 @@ export const ragRouter = router({
       }),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar predição de resposta
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API com algoritmos de predição
       console.log('Predicting treatment response:', input);
-      
-      return {
-        responseScore: 0,
-        survivalProbability: 0,
-        toxicityRisk: 0,
-        progressionRisk: 0,
-        confidenceScore: 0,
-        explanation: '',
-      };
+      const result = await predictTreatmentResponse(input);
+      return result;
     }),
 
   /**
@@ -204,18 +179,9 @@ export const ragRouter = router({
       }),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar predição de toxicidade
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Predicting toxicity:', input);
-      
-      return {
-        toxicityScore: 0,
-        severeEventRisk: 0,
-        managementStrategies: [],
-        monitoringProtocol: [],
-        confidenceScore: 0,
-      };
+      const result = await predictToxicity(input);
+      return result;
     }),
 
   /**
@@ -230,18 +196,9 @@ export const ragRouter = router({
       previousTreatments: z.array(z.string()).optional(),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar recomendação de imunoterapia
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Recommending immunotherapy:', input);
-      
-      return {
-        recommendations: [],
-        rationale: '',
-        expectedOutcome: '',
-        monitoringParameters: [],
-        confidenceScore: 0,
-      };
+      const result = await recommendImmunotherapy(input);
+      return result;
     }),
 
   /**
@@ -255,18 +212,9 @@ export const ragRouter = router({
       targetMolecules: z.array(z.string()).optional(),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar recomendação de nanoterapia
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Recommending nanotherapy:', input);
-      
-      return {
-        recommendations: [],
-        mechanism: '',
-        expectedOutcome: '',
-        deliveryMethod: '',
-        confidenceScore: 0,
-      };
+      const result = await recommendNanotherapy(input);
+      return result;
     }),
 
   /**
@@ -280,17 +228,8 @@ export const ragRouter = router({
       patientPreferences: z.array(z.string()).optional(),
     }))
     .mutation(async ({ input }) => {
-      // TODO: Implementar recomendação de medicina complementar
-      // TODO: Buscar na base de conhecimento
-      // TODO: Chamar Gemini API
       console.log('Recommending complementary medicine:', input);
-      
-      return {
-        recommendations: [],
-        evidence: [],
-        expectedBenefits: [],
-        contraindications: [],
-        confidenceScore: 0,
-      };
+      const result = await recommendComplementaryMedicine(input);
+      return result;
     }),
 });

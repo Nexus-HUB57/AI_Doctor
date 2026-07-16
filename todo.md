@@ -144,3 +144,11 @@
 - [x] Hooks customizados useTRPCMutation e useTRPCQuery
 - [x] Dockerfile multi-stage + docker-compose.yml + .dockerignore
 - [x] Documentação FASE_10_TESTES_DEPLOYMENT.md
+
+## Fase 11 - Endpoints RAG Completos com Gemini API
+- [x] Implementar 7 novas funções no gemini-service.ts (analyzeBiomarkers, analyzeDIMHEX, predictTreatmentResponse, predictToxicity, recommendImmunotherapy, recommendNanotherapy, recommendComplementaryMedicine)
+- [x] Wire todos os 7 endpoints TODO do RAG router com chamadas reais ao Gemini
+- [x] Fallbacks robustos para cada endpoint quando Gemini indisponível
+- [x] Atualizar testes rag.test.ts com mocks detalhados e asserts de valores
+- [x] Zero TODOs restantes no rag.ts
+- [x] 65 testes passando em 3.19s

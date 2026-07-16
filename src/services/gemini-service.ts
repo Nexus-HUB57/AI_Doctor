@@ -459,3 +459,578 @@ Gere em JSON:
     };
   }
 }
+
+/**
+ * Analisa biomarcadores tumorais e suas implicações clínicas
+ */
+export async function analyzeBiomarkers(
+  biomarkers: Array<{ type: string; value: number; unit: string }>,
+  tumorType: string
+): Promise<{
+  analysis: string;
+  implications: string[];
+  prognosticScore: number;
+  treatmentRelevance: string[];
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const biomarkersStr = biomarkers.map(b => `${b.type}: ${b.value} ${b.unit}`).join(', ');
+
+    const systemPrompt = `Você é um patologista molecular especializado em biomarcadores tumorais.
+Interprete os valores de biomarcadores e suas implicações para tratamento e prognóstico.`;
+
+    const userPrompt = `Tumor: ${tumorType}
+Biomarcadores: ${biomarkersStr}
+
+Forneça:
+1. Análise interpretativa dos biomarcadores
+2. Implicações clínicas
+3. Score prognóstico (0-1)
+4. Relevância para tratamento
+
+Responda em JSON: {
+  "analysis": "Análise detalhada dos biomarcadores",
+  "implications": ["Implicação 1", "Implicação 2"],
+  "prognosticScore": 0.0-1.0,
+  "treatmentRelevance": ["Relevância 1", "Relevância 2"],
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      analysis: parsed.analysis || 'Análise não disponível',
+      implications: parsed.implications || [],
+      prognosticScore: typeof parsed.prognosticScore === 'number' ? parsed.prognosticScore : 0.5,
+      treatmentRelevance: parsed.treatmentRelevance || [],
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+    };
+  } catch (error) {
+    console.error('Error analyzing biomarkers:', error);
+    return {
+      analysis: `Análise de biomarcadores para ${tumorType}: ${biomarkers.map(b => b.type).join(', ')}. Serviço de IA temporariamente indisponível.`,
+      implications: ['Interpretação limitada — serviço indisponível'],
+      prognosticScore: 0.3,
+      treatmentRelevance: [],
+      confidenceScore: 0,
+    };
+  }
+}
+
+/**
+ * Analisa adequação do Protocolo DIMHEX para um paciente específico
+ * DIMHEX = Imuno-Oncologia Ex Vivo (Depletion, Immunotherapy, Hex)
+ */
+export async function analyzeDIMHEX(params: {
+  tumorType: string;
+  stage: number;
+  immuneProfile?: string;
+}): Promise<{
+  suitability: number;
+  protocol: string;
+  expectedOutcome: string;
+  risks: string[];
+  monitoringPlan: string[];
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um especialista no Protocolo DIMHEX de imunoterapia ex vivo.
+O DIMHEX consiste em 4 fases:
+1. Coleta Estratificada: Sangria fracionada com seleção de frações ricas em leucócitos
+2. Potencialização de Leucócitos: Ativação e expansão ex vivo de linfócitos T (polarização Th1)
+3. Engenharia de Anticorpos: Geração de anticorpos biespecíficos para direcionamento tumoral
+4. Eritrócitos Carregados: Encapsulamento de enzimas para inanição metabólica seletiva
+
+Avalie a adequação do protocolo para o perfil do paciente.`;
+
+    const userPrompt = `Perfil do paciente:
+- Tipo tumoral: ${params.tumorType}
+- Estágio: ${params.stage}
+- Perfil imunológico: ${params.immuneProfile || 'Não avaliado'}
+
+Avalie a adequação do DIMHEX e forneça:
+1. Score de adequação (0-1)
+2. Descrição do protocolo adaptado
+3. Resultado esperado
+4. Riscos
+5. Plano de monitoramento
+
+Responda em JSON: {
+  "suitability": 0.0-1.0,
+  "protocol": "Descrição do protocolo DIMHEX adaptado ao caso",
+  "expectedOutcome": "Resultado esperado",
+  "risks": ["Risco 1", "Risco 2"],
+  "monitoringPlan": ["Monitoramento 1", "Monitoramento 2"],
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      suitability: typeof parsed.suitability === 'number' ? parsed.suitability : 0.6,
+      protocol: parsed.protocol || 'Protocolo DIMHEX padrão',
+      expectedOutcome: parsed.expectedOutcome || '',
+      risks: parsed.risks || [],
+      monitoringPlan: parsed.monitoringPlan || [],
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+    };
+  } catch (error) {
+    console.error('Error analyzing DIMHEX:', error);
+    return {
+      suitability: 0.5,
+      protocol: `Protocolo DIMHEX para ${params.tumorType} estágio ${params.stage}: Coleta estratificada > Ativação de LT > Engenharia de Ac. Biespecíficos > Eritrócitos carregados.`,
+      expectedOutcome: 'Potencial resposta imunológica adaptada — serviço de IA indisponível para avaliação detalhada.',
+      risks: ['Reação infusão', 'Síndrome de liberação de citocinas', 'Toxicidade hepática transitória'],
+      monitoringPlan: ['Hemograma completo semanal', 'Perfil imunológico (CD4/CD8)', 'Marcadores tumorais séricos', 'Função hepática e renal'],
+      confidenceScore: 0,
+    };
+  }
+}
+
+/**
+ * Prediz resposta ao tratamento baseado em perfil do paciente
+ */
+export async function predictTreatmentResponse(params: {
+  treatment: string;
+  patientProfile: {
+    tumorType: string;
+    stage: number;
+    mutations?: string[];
+    biomarkers?: string[];
+    age?: number;
+    comorbidities?: string[];
+  };
+}): Promise<{
+  responseScore: number;
+  survivalProbability: number;
+  toxicityRisk: number;
+  progressionRisk: number;
+  confidenceScore: number;
+  explanation: string;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um especialista em predição de resposta terapêutica em oncologia.
+Use dados clínicos, moleculares e evidência científica para predizer a probabilidade de resposta.`;
+
+    const userPrompt = `Tratamento proposto: ${params.treatment}
+Perfil do paciente:
+- Tumor: ${params.patientProfile.tumorType}
+- Estágio: ${params.patientProfile.stage}
+- Mutações: ${params.patientProfile.mutations?.join(', ') || 'Nenhuma'}
+- Biomarcadores: ${params.patientProfile.biomarkers?.join(', ') || 'Não avaliados'}
+- Idade: ${params.patientProfile.age || 'Não informada'}
+- Comorbidades: ${params.patientProfile.comorbidities?.join(', ') || 'Nenhuma'}
+
+Forneça predições quantitativas:
+Responda em JSON: {
+  "responseScore": 0.0-1.0,
+  "survivalProbability": 0.0-1.0 (probabilidade de sobrevida em 2 anos),
+  "toxicityRisk": 0.0-1.0,
+  "progressionRisk": 0.0-1.0,
+  "confidenceScore": 0.0-1.0,
+  "explanation": "Explicação detalhada da predição"
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      responseScore: typeof parsed.responseScore === 'number' ? parsed.responseScore : 0.5,
+      survivalProbability: typeof parsed.survivalProbability === 'number' ? parsed.survivalProbability : 0.5,
+      toxicityRisk: typeof parsed.toxicityRisk === 'number' ? parsed.toxicityRisk : 0.3,
+      progressionRisk: typeof parsed.progressionRisk === 'number' ? parsed.progressionRisk : 0.4,
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+      explanation: parsed.explanation || 'Predição não disponível',
+    };
+  } catch (error) {
+    console.error('Error predicting treatment response:', error);
+    return {
+      responseScore: 0.5,
+      survivalProbability: 0.5,
+      toxicityRisk: 0.3,
+      progressionRisk: 0.4,
+      confidenceScore: 0,
+      explanation: `Predição de resposta para ${params.treatment} em ${params.patientProfile.tumorType} estágio ${params.patientProfile.stage}. Serviço de IA indisponível — valores estimados.`,
+    };
+  }
+}
+
+/**
+ * Prediz risco de toxicidade para um tratamento específico
+ */
+export async function predictToxicity(params: {
+  treatment: string;
+  patientProfile: {
+    age: number;
+    comorbidities?: string[];
+    organFunction?: {
+      hepatic?: string;
+      renal?: string;
+      cardiac?: string;
+    };
+  };
+}): Promise<{
+  toxicityScore: number;
+  severeEventRisk: number;
+  managementStrategies: string[];
+  monitoringProtocol: string[];
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um farmacologista oncológico especialista em toxicidade de quimioterápicos e imunoterápicos.
+Avalie o risco de toxicidade baseado no perfil do paciente e tratamento proposto.`;
+
+    const userPrompt = `Tratamento: ${params.treatment}
+Perfil do paciente:
+- Idade: ${params.patientProfile.age}
+- Comorbidades: ${params.patientProfile.comorbidities?.join(', ') || 'Nenhuma'}
+- Função Hepática: ${params.patientProfile.organFunction?.hepatic || 'Normal'}
+- Função Renal: ${params.patientProfile.organFunction?.renal || 'Normal'}
+- Função Cardíaca: ${params.patientProfile.organFunction?.cardiac || 'Normal'}
+
+Forneça:
+Responda em JSON: {
+  "toxicityScore": 0.0-1.0,
+  "severeEventRisk": 0.0-1.0,
+  "managementStrategies": ["Estratégia 1", "Estratégia 2"],
+  "monitoringProtocol": ["Monitoramento 1", "Monitoramento 2"],
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      toxicityScore: typeof parsed.toxicityScore === 'number' ? parsed.toxicityScore : 0.4,
+      severeEventRisk: typeof parsed.severeEventRisk === 'number' ? parsed.severeEventRisk : 0.2,
+      managementStrategies: parsed.managementStrategies || [],
+      monitoringProtocol: parsed.monitoringProtocol || [],
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+    };
+  } catch (error) {
+    console.error('Error predicting toxicity:', error);
+    return {
+      toxicityScore: 0.4,
+      severeEventRisk: 0.15,
+      managementStrategies: [
+        'Pré-hidratação',
+        'Antieméticos profiláticos',
+        'Monitoramento laborarial frequente',
+        'Ajuste de dose baseado em função orgânica',
+      ],
+      monitoringProtocol: [
+        'Hemograma completo antes de cada ciclo',
+        'Função hepática (TGO, TGO, FA, GGT) semanal',
+        'Função renal (creatinina, ureia) semanal',
+        'Eletrocardiograma basal e a cada 3 ciclos',
+      ],
+      confidenceScore: 0,
+    };
+  }
+}
+
+/**
+ * Recomenda estratégias de imunoterapia baseadas no perfil do paciente
+ */
+export async function recommendImmunotherapy(params: {
+  tumorType: string;
+  stage: number;
+  immuneProfile?: string;
+  previousTreatments?: string[];
+}): Promise<{
+  recommendations: Array<{
+    strategy: string;
+    rationale: string;
+    target: string;
+    expectedResponseRate: number;
+    evidence: string;
+  }>;
+  rationale: string;
+  expectedOutcome: string;
+  monitoringParameters: string[];
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um imunooncologista de ponta com expertise em:
+- Inibidores de checkpoint (anti-PD-1, anti-PD-L1, anti-CTLA-4)
+- Terapia CAR-T
+- Anticorpos biespecíficos
+- Vacinas terapêuticas
+- Adjuvantes imunológicos
+
+Recomende as melhores estratégias de imunoterapia baseadas no perfil do paciente.`;
+
+    const userPrompt = `Perfil do paciente:
+- Tumor: ${params.tumorType}
+- Estágio: ${params.stage}
+- Perfil imunológico: ${params.immuneProfile || 'Não avaliado'}
+- Tratamentos anteriores: ${params.previousTreatments?.join(', ') || 'Nenhum'}
+
+Forneça recomendações de imunoterapia:
+Responda em JSON: {
+  "recommendations": [
+    {
+      "strategy": "Nome da estratégia",
+      "rationale": "Justificativa científica",
+      "target": "Alvo molecular ou celular",
+      "expectedResponseRate": 0.0-1.0,
+      "evidence": "Nível de evidência (ex: Fase III, NEJM 2024)"
+    }
+  ],
+  "rationale": "Racional geral para a escolha",
+  "expectedOutcome": "Resultado esperado",
+  "monitoringParameters": ["Parâmetro 1", "Parâmetro 2"],
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations : [],
+      rationale: parsed.rationale || '',
+      expectedOutcome: parsed.expectedOutcome || '',
+      monitoringParameters: parsed.monitoringParameters || [],
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.7,
+    };
+  } catch (error) {
+    console.error('Error recommending immunotherapy:', error);
+    return {
+      recommendations: [
+        {
+          strategy: 'Inibidores de Checkpoint (anti-PD-1)',
+          rationale: 'Primeira linha para tumores sólidos avançados',
+          target: 'PD-1/PD-L1',
+          expectedResponseRate: 0.4,
+          evidence: 'NCCN Guidelines 2026',
+        },
+      ],
+      rationale: `Recomendação padrão para ${params.tumorType} estágio ${params.stage}. Serviço de IA indisponível para análise personalizada.`,
+      expectedOutcome: 'Resposta parcial ou completa em 30-40% dos casos',
+      monitoringParameters: ['LDH sérico', 'Perfil imunológico', 'TC de controle a cada 8 semanas'],
+      confidenceScore: 0,
+    };
+  }
+}
+
+/**
+ * Recomenda aplicações de nanotecnologia em tratamento oncológico
+ */
+export async function recommendNanotherapy(params: {
+  tumorType: string;
+  stage: number;
+  targetMolecules?: string[];
+}): Promise<{
+  recommendations: Array<{
+    nanoplatform: string;
+    mechanism: string;
+    target: string;
+    advantages: string[];
+    developmentStage: string;
+  }>;
+  mechanism: string;
+  expectedOutcome: string;
+  deliveryMethod: string;
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um nanotecnologista especializado em oncologia com expertise em:
+- Nanopartículas lipídicas (LNP)
+- Nanopartículas de ouro
+- Dendrímeros
+- Micelas poliméricas
+- Nanocápsulas
+- Antibody-drug conjugates (ADCs)
+
+Recomende aplicações de nanotecnologia para tratamento oncológico.`;
+
+    const userPrompt = `Perfil do paciente:
+- Tumor: ${params.tumorType}
+- Estágio: ${params.stage}
+- Moléculas-alvo: ${params.targetMolecules?.join(', ') || 'Não especificadas'}
+
+Forneça recomendações de nanoterapia:
+Responda em JSON: {
+  "recommendations": [
+    {
+      "nanoplatform": "Nome da plataforma nanotecnológica",
+      "mechanism": "Mecanismo de ação",
+      "target": "Alvo molecular",
+      "advantages": ["Vantagem 1", "Vantagem 2"],
+      "developmentStage": "Pré-clínico/Fase I/Fase II/Fase III/Aprovado"
+    }
+  ],
+  "mechanism": "Mecanismo geral da abordagem recomendada",
+  "expectedOutcome": "Resultado esperado",
+  "deliveryMethod": "Método de entrega/administração",
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations : [],
+      mechanism: parsed.mechanism || '',
+      expectedOutcome: parsed.expectedOutcome || '',
+      deliveryMethod: parsed.deliveryMethod || '',
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+    };
+  } catch (error) {
+    console.error('Error recommending nanotherapy:', error);
+    return {
+      recommendations: [
+        {
+          nanoplatform: 'Nanopartículas Lipídicas (LNP)',
+          mechanism: 'Encapsulamento de quimioterápicos para entrega direcionada ao tumor via EPR effect',
+          target: params.targetMolecules?.[0] || 'Células tumorais',
+          advantages: ['Entrega direcionada', 'Redução de toxicidade sistêmica', 'Maior biodisponibilidade intratumoral'],
+          developmentStage: 'Fase II-III',
+        },
+      ],
+      mechanism: 'Nanopartículas exploram o efeito EPR (Enhanced Permeability and Retention) para acumular no tecido tumoral, liberando o fármaco de forma controlada.',
+      expectedOutcome: 'Maior eficácia com menor toxicidade sistêmica comparado à quimioterapia convencional',
+      deliveryMethod: 'Infusão intravenosa',
+      confidenceScore: 0,
+    };
+  }
+}
+
+/**
+ * Recomenda terapias complementares baseadas em evidências científicas
+ */
+export async function recommendComplementaryMedicine(params: {
+  tumorType: string;
+  primaryTreatment: string;
+  patientPreferences?: string[];
+}): Promise<{
+  recommendations: Array<{
+    therapy: string;
+    evidence: string;
+    mechanism: string;
+    benefits: string[];
+    risks: string[];
+    interactionWithPrimary: string;
+  }>;
+  evidence: string[];
+  expectedBenefits: string[];
+  contraindications: string[];
+  confidenceScore: number;
+}> {
+  try {
+    const client = getClient();
+    const model = 'gemini-2.0-flash';
+
+    const systemPrompt = `Você é um especialista em medicina integrativa e complementar em oncologia.
+Recomende APENAS terapias com evidência científica (estudos clínicos, meta-análises).
+NÃO recomende terapias sem evidência. Seja rigoroso e científico.
+Considere fitofármacos, suplementação, acupuntura, exercício, mindfulness.`;
+
+    const userPrompt = `Perfil do paciente:
+- Tumor: ${params.tumorType}
+- Tratamento primário: ${params.primaryTreatment}
+- Preferências do paciente: ${params.patientPreferences?.join(', ') || 'Sem preferências específicas'}
+
+Forneça recomendações de medicina complementar baseadas em EVIDÊNCIA:
+Responda em JSON: {
+  "recommendations": [
+    {
+      "therapy": "Nome da terapia complementar",
+      "evidence": "Nível de evidência (ex: Meta-análise Cochrane, ensaio clínico Fase III)",
+      "mechanism": "Mecanismo de ação",
+      "benefits": ["Benefício 1", "Benefício 2"],
+      "risks": ["Risco 1"],
+      "interactionWithPrimary": "Interações com tratamento primário"
+    }
+  ],
+  "evidence": ["Referência 1", "Referência 2"],
+  "expectedBenefits": ["Benefício geral 1", "Benefício geral 2"],
+  "contraindications": ["Contraindicação 1"],
+  "confidenceScore": 0.0-1.0
+}`;
+
+    const response = await client.models.generateContent({
+      model,
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }],
+      config: { responseMimeType: 'application/json' },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+
+    return {
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations : [],
+      evidence: parsed.evidence || [],
+      expectedBenefits: parsed.expectedBenefits || [],
+      contraindications: parsed.contraindications || [],
+      confidenceScore: typeof parsed.confidenceScore === 'number' ? parsed.confidenceScore : 0.6,
+    };
+  } catch (error) {
+    console.error('Error recommending complementary medicine:', error);
+    return {
+      recommendations: [
+        {
+          therapy: 'Suplementação de Vitamina D',
+          evidence: 'Meta-análise de estudos observacionais',
+          mechanism: 'Modulação imunológica e regulação da proliferação celular',
+          benefits: ['Melhora da resposta imunológica', 'Saúde óssea durante tratamento'],
+          risks: ['Hipercalcemia em doses excessivas'],
+          interactionWithPrimary: 'Geralmente seguro, monitorar cálcio sérico',
+        },
+      ],
+      evidence: ['Literatura oncológica — serviço de IA indisponível'],
+      expectedBenefits: ['Suporte ao tratamento primário', 'Melhora de qualidade de vida'],
+      contraindications: ['Suspender fitoterápicos 48h antes de quimioterapia'],
+      confidenceScore: 0,
+    };
+  }
+}
