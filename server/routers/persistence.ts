@@ -1,5 +1,6 @@
 import { router, publicProcedure } from '../trpc';
 import { z } from 'zod';
+import * as db from '../../src/services/db';
 
 /**
  * Schemas de validação para persistência de dados
@@ -91,16 +92,13 @@ export const persistenceRouter = router({
 
     list: publicProcedure
       .query(async () => {
-        // TODO: Implementar lógica de listagem de pacientes
-        return [];
+        return await db.getAllPatients();
       }),
 
     getById: publicProcedure
       .input(z.object({ patientId: z.string() }))
       .query(async ({ input }) => {
-        // TODO: Implementar lógica de busca de paciente por ID
-        console.log('Getting patient:', input.patientId);
-        return null;
+        return await db.getPatientById(parseInt(input.patientId));
       }),
 
     update: publicProcedure

@@ -1,5 +1,11 @@
 import { router, publicProcedure } from '../trpc';
 import { z } from 'zod';
+import {
+  generateTreatmentRecommendation,
+  queryOncology,
+  analyzeMutations,
+  type TreatmentRecommendationInput,
+} from '../../src/services/gemini-service';
 
 /**
  * Schemas de validação para RAG
@@ -22,6 +28,8 @@ const TreatmentRecommendationSchema = z.object({
   biomarkers: z.array(z.string()).optional(),
   previousTreatments: z.array(z.string()).optional(),
   comorbidities: z.array(z.string()).optional(),
+  patientAge: z.number().optional(),
+  performanceStatus: z.string().optional(),
 });
 
 /**
@@ -36,18 +44,8 @@ export const ragRouter = router({
   oncologyQuery: publicProcedure
     .input(OncologyQuerySchema)
     .mutation(async ({ input }) => {
-      // TODO: Implementar busca na base de conhecimento
-      // TODO: Aumentar com contexto do paciente
-      // TODO: Chamar Gemini API com system prompt
-      // TODO: Retornar resposta com score de confiança
       console.log('Processing oncology query:', input);
-      
-      return {
-        response: '',
-        confidenceScore: 0,
-        sources: [],
-        citations: [],
-      };
+      return await queryOncology(input.query, input.context);
     }),
 
   /**
@@ -57,31 +55,24 @@ export const ragRouter = router({
   recommendTreatment: publicProcedure
     .input(TreatmentRecommendationSchema)
     .mutation(async ({ input }) => {
-      // TODO: Implementar busca na base de conhecimento
-      // TODO: Consultar literatura científica
-      // TODO: Chamar Gemini API com contexto completo
-      // TODO: Gerar recomendações priorizadas
       console.log('Generating treatment recommendation:', input);
       
-      return {
-        recommendation: 'Recomendação baseada em RAG para ' + input.tumorType,
-        confidenceScore: 0.85,
-        interventions: [
-          'Imunoterapia Personalizada',
-          'Protocolo DIMHEX',
-          'Monitoramento de Biomarcadores'
-        ],
-        primaryRecommendation: {
-          treatment: 'Imunoterapia combinada',
-          rationale: 'Baseado no estágio e tipo de tumor',
-          confidenceScore: 0.85,
-          expectedOutcome: 'Redução da carga tumoral',
-        },
-        alternativeRecommendations: [],
-        contraindications: [],
-        monitoringParameters: [],
-        sources: [],
-      };
+      try {
+        const recommendation = await generateTreatmentRecommendation({
+          tumorType: input.tumorType,
+          stage: input.stage,
+          mutations: input.mutations,
+          biomarkers: input.biomarkers,
+          previousTreatments: input.previousTreatments,
+          patientAge: input.patientAge,
+          performanceStatus: input.performanceStatus,
+        });
+        
+        return recommendation;
+      } catch (error) {
+        console.error('Error in recommendTreatment:', error);
+        throw new Error('Falha ao gerar recomendação de tratamento');
+      }
     }),
 
   /**

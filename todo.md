@@ -1,9 +1,9 @@
 # AI Doctor v2.0 - Project TODO
 
 ## Core Infrastructure
-- [ ] Configurar schema de banco de dados (pacientes, diagnósticos, tratamentos, etc)
-- [ ] Implementar tRPC routers para persistência de dados clínicos
-- [ ] Integrar Google Gemini API para análise RAG
+- [x] Configurar schema de banco de dados (pacientes, diagnósticos, tratamentos, etc)
+- [x] Implementar tRPC routers para persistência de dados clínicos
+- [x] Integrar Google Gemini API para análise RAG
 - [ ] Configurar S3 para armazenamento de relatórios e sequências genômicas
 - [ ] Implementar sistema de autenticação e autorização
 
@@ -69,12 +69,12 @@
 - [ ] Implementar pipeline de orquestração bidirecional
 
 ## Integração com Dados
-- [ ] Persistência de dados de pacientes
-- [ ] Armazenamento de diagnósticos
-- [ ] Registro de mutações genéticas
-- [ ] Armazenamento de biomarcadores
-- [ ] Histórico de tratamentos
-- [ ] Recomendações clínicas
+- [x] Persistência de dados de pacientes
+- [x] Armazenamento de diagnósticos
+- [x] Registro de mutações genéticas
+- [x] Armazenamento de biomarcadores
+- [x] Histórico de tratamentos
+- [x] Recomendações clínicas
 
 ## Testes e Qualidade
 - [ ] Escrever testes vitest para tRPC routers
