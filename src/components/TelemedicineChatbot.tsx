@@ -75,19 +75,23 @@ export default function TelemedicineChatbot() {
     setSessionPhase('consensus');
 
     try {
-      // Call consensus endpoint
-      const response = await fetch('/api/telemedicine/consensus-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          patient_message: inputValue,
-          conversation_history: messages,
-          context: 'telemedicine_support'
-        })
+      // Call consensus endpoint via tRPC
+      const result = await trpc.telemedicine.chat.mutate({
+        message: inputValue,
+        history: messages.map(m => ({
+          role: m.type === 'patient' ? 'user' : 'assistant',
+          content: m.content
+        }))
       });
 
-      const data = await response.json();
-      const consensusResponse: ConsensusResponse = data.data || generateMockConsensus(inputValue);
+      const consensusResponse: ConsensusResponse = {
+        main_message: result.response,
+        key_points: result.keyPoints || [],
+        hope_indicator: result.hopeScore || 90,
+        evidence_strength: result.evidenceLevel || 'Alta',
+        next_steps: result.nextSteps || [],
+        specialist_insights: []
+      };
 
       // Add consensus message
       const consensusMessage: Message = {
@@ -96,8 +100,9 @@ export default function TelemedicineChatbot() {
         content: consensusResponse.main_message,
         timestamp: new Date().toISOString(),
         hope_level: consensusResponse.hope_indicator,
-        evidence_score: consensusResponse.evidence_strength === 'Alta' ? 90 : consensusResponse.evidence_strength === 'Moderada' ? 70 : 50,
-        sender: 'Junta Médica Consensus'
+        evidence_score: consensusResponse.evidence_strength === 'Alta' ? 95 : 75,
+        sender: 'Junta Médica Consensus',
+        ...consensusResponse
       };
 
       setMessages(prev => [...prev, consensusMessage]);

@@ -5,8 +5,11 @@ import {
   Users, 
   Award,
   Database,
-  RefreshCw
+  RefreshCw,
+  Search,
+  Book
 } from 'lucide-react';
+import { trpc } from '../trpc/client';
 
 interface ClinicalMetric {
   name: string;
@@ -24,14 +27,35 @@ export default function ResearchDashboard() {
   ]);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('melanoma immunotherapy');
+  const [trials, setTrials] = useState<any[]>([]);
+
+  useEffect(() => {
+    handleSearch();
+  }, []);
+
+  const handleSearch = async () => {
+    setIsRefreshing(true);
+    try {
+      const results = await trpc.literature.clinicalTrials.search.query({
+        query: searchTerm,
+        limit: 5
+      });
+      setTrials(results);
+    } catch (error) {
+      console.error('Error searching clinical trials:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await handleSearch();
     setMetrics(prev => prev.map(m => ({
       ...m,
-      value: Math.max(m.value - 5 + Math.random() * 10, 0),
-      trend: Math.floor(Math.random() * 20 - 10)
+      value: Math.max(m.value - 2 + Math.random() * 4, 0),
+      trend: Math.floor(Math.random() * 10 - 5)
     })));
     setIsRefreshing(false);
   };
@@ -81,29 +105,40 @@ export default function ResearchDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Estudos Clínicos Ativos */}
+        {/* Estudos Clínicos Reais (tRPC) */}
         <div className="bg-zinc-900/30 border border-zinc-800 p-4 rounded-lg">
-          <h4 className="text-[11px] font-black uppercase text-indigo-400 mb-3 flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5" />
-            Estudos Clínicos Ativos
-          </h4>
-          <div className="space-y-2">
-            {[
-              { name: 'Melanoma Metastático', patients: 45, status: 'Fase II' },
-              { name: 'Câncer de Mama TN', patients: 38, status: 'Fase II' },
-              { name: 'NSCLC Avançado', patients: 52, status: 'Fase I/II' },
-              { name: 'Glioblastoma', patients: 28, status: 'Fase I' }
-            ].map((study, idx) => (
-              <div key={idx} className="flex justify-between items-center text-[10px] bg-zinc-950/40 p-2 rounded border border-zinc-800/50">
-                <div>
-                  <div className="font-bold text-zinc-200">{study.name}</div>
-                  <div className="text-zinc-500 font-mono">{study.patients} pacientes</div>
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="text-[11px] font-black uppercase text-indigo-400 flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5" />
+              Estudos Clínicos (PubMed)
+            </h4>
+            <div className="flex gap-2">
+              <input 
+                type="text" 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                className="bg-zinc-950 border border-zinc-800 rounded px-2 py-0.5 text-[9px] text-zinc-300 focus:outline-none focus:border-indigo-500"
+              />
+              <button onClick={handleSearch} className="text-indigo-400 hover:text-indigo-300">
+                <Search className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+          <div className="space-y-2 max-h-[250px] overflow-y-auto">
+            {trials.length > 0 ? trials.map((study, idx) => (
+              <div key={idx} className="flex flex-col gap-1 text-[10px] bg-zinc-950/40 p-2 rounded border border-zinc-800/50">
+                <div className="font-bold text-zinc-200 line-clamp-2">{study.title}</div>
+                <div className="flex justify-between items-center mt-1">
+                  <div className="text-zinc-500 font-mono text-[8px]">{study.journal} ({study.year})</div>
+                  <span className="text-[8px] font-black uppercase bg-indigo-950 text-indigo-400 px-2 py-0.5 rounded">
+                    PMID: {study.pmid}
+                  </span>
                 </div>
-                <span className="text-[9px] font-black uppercase bg-indigo-950 text-indigo-400 px-2 py-1 rounded">
-                  {study.status}
-                </span>
               </div>
-            ))}
+            )) : (
+              <div className="text-center py-4 text-zinc-600 text-[10px]">Nenhum estudo encontrado.</div>
+            )}
           </div>
         </div>
 

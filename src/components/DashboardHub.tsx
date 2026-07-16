@@ -98,10 +98,10 @@ export default function DashboardHub({ onNavigate, agents = [], tps = 442, laten
   ];
 
   const systemMetrics = [
+    { label: 'Protocolo TSRA', value: 'ATIVO', icon: Shield, color: 'text-amber-400' },
     { label: 'Agentes Ativos', value: agents.length.toString().padStart(2, '0'), icon: Cpu, color: 'text-emerald-400' },
     { label: 'TPS/Stream', value: tps.toString(), icon: Zap, color: 'text-blue-400' },
-    { label: 'Latência', value: `${latency}ms`, icon: Clock, color: 'text-purple-400' },
-    { label: 'Uptime', value: '99.8%', icon: Shield, color: 'text-green-400' }
+    { label: 'Latência', value: `${latency}ms`, icon: Clock, color: 'text-purple-400' }
   ];
 
   const quickStats = [

@@ -8,7 +8,7 @@ O **AI_Doctor** é uma plataforma full-stack inovadora que transcende a pesquisa
 
 ---
 
-## Funcionalidades Principais (v2.1)
+## Funcionalidades Principais (v3.0)
 
 A plataforma é estruturada em diversos painéis interativos, cada um com um propósito específico, agora expandidos para oferecer uma experiência completa:
 
@@ -177,6 +177,6 @@ Este projeto está licenciado sob a [Licença MIT](LICENSE).
 
 ---
 
-**Versão:** 2.1.0  
+**Versão:** 3.0.0  
 **Data:** 15 de Julho de 2026  
 **Desenvolvido por:** Manus AI

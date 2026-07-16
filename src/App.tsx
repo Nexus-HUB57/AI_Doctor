@@ -9,6 +9,7 @@ import ResearchDashboard from './components/ResearchDashboard';
 import TelemedicineChatbot from './components/TelemedicineChatbot';
 import MoltbookFeed from './components/MoltbookFeed';
 import CerebroPanel from './components/CerebroPanel';
+import LiveBookPanel from './components/LiveBookPanel';
 import WormholePanel from './components/WormholePanel';
 import BlackholePanel from './components/BlackholePanel';
 import OncoResearchPanel from './components/OncoResearchPanel';
@@ -44,6 +45,7 @@ const ActiveTabContent = () => {
     case 'eradication':
       return <EradicationPanel />;
     case 'livebook':
+      return <LiveBookPanel />;
     case 'advanced':
     default:
       return (

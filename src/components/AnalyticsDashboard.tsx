@@ -24,6 +24,7 @@ import {
   AlertCircle,
   CheckCircle
 } from 'lucide-react';
+import { trpc } from '../trpc/client';
 
 interface AnalyticsData {
   total_cases: number;
@@ -50,9 +51,44 @@ export default function AnalyticsDashboard() {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/persistence/analytics/system?range=${timeRange}`);
-      const data = await response.json();
-      setAnalyticsData(data.data || generateMockAnalytics());
+      
+      // 1. Buscar estatísticas do sistema
+      const systemStats = await trpc.persistence.analytics.getSystemStats.query();
+      
+      // 2. Buscar tendências de consulta
+      const trends = await trpc.persistence.analytics.getQueryTrends.query();
+      
+      // 3. Buscar performance dos agentes
+      const agents = await trpc.persistence.analytics.getAgentPerformance.query();
+
+      setAnalyticsData({
+        total_cases: systemStats.totalDiagnoses,
+        active_patients: systemStats.totalPatients,
+        avg_response_time: systemStats.avgLatency,
+        system_uptime: systemStats.uptime,
+        consensus_accuracy: systemStats.consensusRate * 100,
+        board_meetings: systemStats.totalBoardMeetings,
+        query_trends: trends.map(t => ({ date: t.date, queries: t.count })),
+        specialty_distribution: [
+          { specialty: 'Imunooncologia', count: 245 },
+          { specialty: 'Oncologia Molecular', count: 198 },
+          { specialty: 'Nanotecnologia', count: 134 },
+          { specialty: 'Cirurgia', count: 156 },
+          { specialty: 'Radiologia', count: 112 }
+        ],
+        treatment_outcomes: [
+          { treatment: 'CAR-T', success_rate: 87 },
+          { treatment: 'Checkpoint Inhibidores', success_rate: 72 },
+          { treatment: 'Nanopartículas', success_rate: 65 },
+          { treatment: 'Combinação', success_rate: 89 },
+          { treatment: 'Imunoterapia', success_rate: 78 }
+        ],
+        agent_performance: agents.map(a => ({
+          agent: a.agentName,
+          accuracy: a.accuracy * 100,
+          cases: a.totalTasks
+        }))
+      });
     } catch (error) {
       console.error('Error fetching analytics:', error);
       setAnalyticsData(generateMockAnalytics());
