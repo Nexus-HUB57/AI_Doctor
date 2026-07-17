@@ -382,6 +382,108 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
 
 ---
+1. DockerfileEste arquivo consolida o ambiente Python, instala as dependências nativas para compilar o psycopg2 e o transformers (PyTorch) de forma otimizada e expõe o painel do Streamlit.DockerfileFROM python:3.10-slim
+
+# Evita que o Python escreva arquivos .pyc e bufere o stdout/stderr
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Instala dependências de sistema essenciais para compilação de pacotes C/C++
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    gcc \
+    curl \
+    && rm -rf /lib/apt/lists/*
+
+# Copia apenas o arquivo de requerimentos primeiro para cachear a camada do Docker
+COPY requirements.txt .
+
+# Instala as dependências travando versões de produção estáveis
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copia o restante do código-fonte do motor e modelos pré-treinados
+COPY . .
+
+# Cria os diretórios necessários para armazenamento local de auditoria e RAG
+RUN mkdir -p chroma_db models
+
+# Expõe a porta nativa de comunicação do painel Streamlit
+EXPOSE 8501
+
+# Comando padrão para subir o painel de oncologia de precisão
+CMD ["streamlit", "run", "main.py", "--", "--dashboard"]
+2. docker-compose.ymlAqui orquestramos a sua aplicação web junto ao cluster PostgreSQL, aplicando as diretivas de pooling e persistência em volumes físicos na máquina hospedeira.YAMLversion: '3.8'
+
+services:
+  ai_doctor_db:
+    image: postgres:15-alpine
+    container_name: ai_doctor_postgres_cluster
+    restart: always
+    environment:
+      POSTGRES_USER: medical_admin
+      POSTGRES_PASSWORD: hospital_secure_password_2026
+      POSTGRES_DB: ai_doctor_audit_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_clinical_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medical_admin -d ai_doctor_audit_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ai_doctor_app:
+    build: .
+    container_name: ai_doctor_engine_instance
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://medical_admin:hospital_secure_password_2026@ai_doctor_db:5432/ai_doctor_audit_db
+      - CHROMA_DB_PATH=/app/chroma_db
+    volumes:
+      - chroma_vector_data:/app/chroma_db
+      - serialized_models:/app/models
+    depends_on:
+      ai_doctor_db:
+        condition: service_healthy
+
+volumes:
+  postgres_clinical_data:
+    driver: local
+  chroma_vector_data:
+    driver: local
+  serialized_models:
+    driver: local
+
+3. requirements.txtCertifique-se de que o seu arquivo de dependências possui as bibliotecas abaixo listadas de forma explícita:Plaintextnumpy>=1.22.0
+pandas>=1.4.0
+chromadb>=0.4.0
+transformers>=4.20.0
+torch>=1.12.0 --extra-index-url https://download.pytorch.org/whl/cpu
+shap>=0.41.0
+scikit-learn>=1.0.0
+psycopg2-binary>=2.9.0
+sqlalchemy>=1.4.0
+streamlit>=1.12.0
+apscheduler>=3.9.0
+requests>=2.28.0
+
+🛠️ Procedimento de Orquestração do Ambiente1.Consolidação de Arquivos:
+Fase 1.Garanta que o Dockerfile, o docker-compose.yml, o requirements.txt e o arquivo principal da sua aplicação (main.py) estejam alocados no mesmo diretório raiz do projeto.
+
+2.Compilação e Inicialização do Cluster:Fase 2.Execute o comando de build para compilar as imagens e inicializar os containers em modo isolado (background):Bashdocker-compose up -d --build
+
+3.Validação de Integridade Orgânica:Fase 3.Monitore a inicialização dos serviços para assegurar que a conferência de saúde (healthcheck) do Postgres liberou a inicialização da aplicação:Bashdocker-compose logs -f ai_doctor_app
+
+4.Acesso ao Painel:Fase 4.Abra o seu navegador e acesse o endereço http://localhost:8501 para interagir com o painel de monitoramento clonal e as explicações SHAP reais.🔒 Nota de Produção: O mapeamento de volumes configurado no Compose garante que, mesmo se você destruir os containers (docker-compose down), todo o histórico de auditoria do PostgreSQL, as árvores do explicador SHAP serializadas em .pkl e a indexação de biópsias líquidas do ChromaDB continuarão salvos e intactos na sua máquina para o próximo ciclo de execução.
+
+---
 
 ## Visão Humanizada
 
