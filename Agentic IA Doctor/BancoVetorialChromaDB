@@ -1,0 +1,2 @@
+from embedding_model import VetorStoreRAG
+vetor_store = VetorStoreRAG()
