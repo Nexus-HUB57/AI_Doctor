@@ -1,9 +1,11 @@
 import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext';
-import { AuthProvider, useAuth, roleLabels } from './contexts/AuthContext';
+import { AuthProvider, useAuth, roleLabels, UserRole } from './contexts/AuthContext';
 import MainLayout from './components/MainLayout';
-import LoginPage from './components/LoginPage';
 import ErrorBoundary from './components/ErrorBoundary';
+import WelcomeExperience from './components/WelcomeExperience';
+import GoLiveLoginPage from './components/GoLiveLoginPage';
+import PatientOnboarding from './components/PatientOnboarding';
 import type { Agent, LogMessage } from './types';
 
 // ── Lazy-loaded panels (code splitting) ─────────────────
@@ -142,25 +144,48 @@ const ActiveTabContent = () => {
   }
 };
 
-// Guard de autenticação
-const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// ── Go Live Experience Gate ──────────────────────────────
+// Controls the flow: Welcome → Login → Onboarding (patients) → App
+const GoLiveExperience: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
+  const [showWelcome, setShowWelcome] = useState(() => {
+    return !sessionStorage.getItem('ai_doctor_welcomed');
+  });
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
+  // Phase 1: Cinematic Welcome (once per session)
+  if (showWelcome) {
+    return <WelcomeExperience onComplete={() => setShowWelcome(false)} />;
+  }
+
+  // Phase 2: Auth loading
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400">Carregando...</p>
+          <p className="text-slate-400 text-sm font-mono">Conectando...</p>
         </div>
       </div>
     );
   }
 
+  // Phase 3: Login (Go Live premium page)
   if (!isAuthenticated) {
-    return <LoginPage />;
+    return <GoLiveLoginPage />;
   }
 
+  // Phase 4: Patient Onboarding (first time per session, patients only)
+  if (showOnboarding && user?.role === UserRole.PATIENT) {
+    return (
+      <PatientOnboarding
+        userName={user.name}
+        onComplete={() => setShowOnboarding(false)}
+      />
+    );
+  }
+
+  // Phase 5: Main Application
   return <>{children}</>;
 };
 
@@ -169,11 +194,11 @@ export default function App() {
     <AuthProvider>
       <NavigationProvider>
         <SharedStateProvider>
-          <AuthGuard>
+          <GoLiveExperience>
             <MainLayout>
               <ActiveTabContent />
             </MainLayout>
-          </AuthGuard>
+          </GoLiveExperience>
         </SharedStateProvider>
       </NavigationProvider>
     </AuthProvider>

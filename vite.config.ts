@@ -44,5 +44,7 @@ export default defineConfig(() => {
       include: ['server/**/*.test.ts', 'src/**/*.test.{ts,tsx}'],
       setupFiles: ['./src/test-setup.ts'],
     },
+    // Stress tests run separately with node environment (no jsdom needed)
+    // Usage: npx vitest run --config vite.stress.config.ts stress-tests/stress-01.mjs
   };
 });
