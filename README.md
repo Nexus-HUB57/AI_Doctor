@@ -383,7 +383,20 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 
 ---
 
- Resumo Executivo: AI Doctor EngineVisão Geral do SistemaO AI Doctor Engine é uma plataforma de suporte à decisão clínica voltada para a oncologia de precisão. Diferente dos protocolos médicos tradicionais — que tratam o câncer como uma patologia estática —, o sistema aborda o tumor como um ecossistema complexo em evolução darwiniana.O motor correlaciona assinaturas genômicas dinâmicas obtidas via biópsia líquida para prever falências terapêuticas por resistência clonal antes que as lesões se manifestem macroscopicamente em exames de imagem convencionais.O Problema Clínico AtualA oncologia tradicional frequentemente falha pelo princípio da Dose Máxima Tolerada (MTD). Ao tentar erradicar 100% das células tumorais de forma agressiva, os protocolos convencionais destroem os clones sensíveis e abrem espaço ecológico para a proliferação descontrolada de superclones resistentes, acelerando a progressão da doença e exaurindo a capacidade funcional do paciente.A Solução AI DoctorO sistema implementa o paradigma da Terapia Adaptativa. Ele modula constantemente entre estratégias de Erradicação e Contenção. O objetivo deixa de ser a eliminação cega da carga tumoral a qualquer custo orgânico e passa a ser a estabilização do ecossistema tumoral, prolongando a Sobrevida Livre de Progressão (PFS) e a Sobrevida Global (OS) com toxicidade minimizada.💻 Análise Técnica ProfundaA arquitetura do sistema é dividida em quatro pilares integrados de forma assíncrona, operando em um espaço de características de alta dimensão ($R^7$). ┌────────────────────────────────────────────────────────┐
+ Resumo Executivo
+AI Doctor EngineVisão Geral do SistemaO AI Doctor Engine é uma plataforma de suporte à decisão clínica voltada para a oncologia de precisão. Diferente dos protocolos médicos tradicionais — que tratam o câncer como uma patologia estática —, o sistema aborda o tumor como um ecossistema complexo em evolução darwiniana.
+
+O motor correlaciona assinaturas genômicas dinâmicas obtidas via biópsia líquida para prever falências terapêuticas por resistência clonal antes que as lesões se manifestem macroscopicamente em exames de imagem convencionais.
+
+O Problema Clínico Atual
+A oncologia tradicional frequentemente falha pelo princípio da Dose Máxima Tolerada (MTD). Ao tentar erradicar 100% das células tumorais de forma agressiva, os protocolos convencionais destroem os clones sensíveis e abrem espaço ecológico para a proliferação descontrolada de superclones resistentes, acelerando a progressão da doença e exaurindo a capacidade funcional do paciente.
+
+A Solução AI Doctor
+O sistema implementa o paradigma da Terapia Adaptativa. Ele modula constantemente entre estratégias de Erradicação e Contenção. O objetivo deixa de ser a eliminação cega da carga tumoral a qualquer custo orgânico e passa a ser a estabilização do ecossistema tumoral, prolongando a Sobrevida Livre de Progressão (PFS) e a Sobrevida Global (OS) com toxicidade minimizada.
+
+💻 Análise Técnica ProfundaA arquitetura do sistema é dividida em quatro pilares integrados de forma assíncrona, operando em um espaço de características de alta dimensão ($R^7$).
+
+┌────────────────────────────────────────────────────────┐
  │   Ingestão ND: ctDNA, CTC, TMB, PD-L1, TILs, ECOG      │
  └──────────────────────────┬─────────────────────────────┘
                             │
@@ -401,6 +414,7 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
  ┌────────────────────────────────────────────────────────┐
  │  Camada de Produção: PostgreSQL Pool + SHAP Explainer  │
  └────────────────────────────────────────────────────────┘
+
 1. Ingestão e Vetorização Semântica (RAG)
 O sistema realiza a ingestão de dados estruturados (coortes TCGA/GDC via REST API e PEU MIMIC-III via PostgreSQL).
 
@@ -532,6 +546,24 @@ Fase 1.Garanta que o Dockerfile, o docker-compose.yml, o requirements.txt e o ar
 4.Acesso ao Painel:Fase 4.Abra o seu navegador e acesse o endereço http://localhost:8501 para interagir com o painel de monitoramento clonal e as explicações SHAP reais.🔒 Nota de Produção: O mapeamento de volumes configurado no Compose garante que, mesmo se você destruir os containers (docker-compose down), todo o histórico de auditoria do PostgreSQL, as árvores do explicador SHAP serializadas em .pkl e a indexação de biópsias líquidas do ChromaDB continuarão salvos e intactos na sua máquina para o próximo ciclo de execução.
 
 ---
+
+Instalação
+bash
+pip install numpy pandas chromadb transformers torch shap scikit-learn psycopg2-binary sqlalchemy streamlit apscheduler requests
+Configuração do PostgreSQL
+
+Crie um banco de dados e ajuste a URL em CONFIG["DB_URL"]. Por exemplo:
+
+python
+CONFIG["DB_URL"] = "postgresql://postgres:senha@localhost:5432/audit_db"
+
+Rodar o Sistema
+bash
+python main.py
+
+Para abrir o dashboard, em outro terminal:
+bash
+streamlit run main.py -- --dashboard
 
 ## Visão Humanizada
 
