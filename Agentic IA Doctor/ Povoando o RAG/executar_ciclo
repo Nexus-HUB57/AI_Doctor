@@ -1,0 +1,4 @@
+# Dentro de AgenteOncologicoPrecisao.executar_ciclo, após a decisão:
+auditor = Auditor()
+relatorio = self.explicador.gerar_relatorio(...)
+auditor.registrar_decisao(self, acao, confianca, relatorio)
