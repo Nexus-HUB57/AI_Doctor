@@ -383,6 +383,22 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 
 ---
 
+Procedimento de Orquestração do Ambiente1.
+
+Consolidação de Arquivos:
+
+Fase 1.Garanta que o Dockerfile, o docker-compose.yml, o requirements.txt e o arquivo principal da sua aplicação (main.py) estejam alocados no mesmo diretório raiz do projeto.
+
+2.Compilação e Inicialização do Cluster:
+Fase 2.Execute o comando de build para compilar as imagens e inicializar os containers em modo isolado (background):Bashdocker-compose up -d --build
+
+3.Validação de Integridade Orgânica:Fase 3.Monitore a inicialização dos serviços para assegurar que a conferência de saúde (healthcheck) do Postgres liberou a inicialização da aplicação:Bashdocker-compose logs -f ai_doctor_app
+
+4.Acesso ao Painel:
+Fase 4.Abra o seu navegador e acesse o endereço http://localhost:8501 para interagir com o painel de monitoramento clonal e as explicações SHAP reais.
+
+---
+
  Resumo Executivo
 AI Doctor EngineVisão Geral do SistemaO AI Doctor Engine é uma plataforma de suporte à decisão clínica voltada para a oncologia de precisão. Diferente dos protocolos médicos tradicionais — que tratam o câncer como uma patologia estática —, o sistema aborda o tumor como um ecossistema complexo em evolução darwiniana.
 
