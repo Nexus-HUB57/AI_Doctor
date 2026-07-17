@@ -42,18 +42,19 @@ export default function Button({
     <button
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${disabledStyles} ${className}`}
       disabled={disabled || isLoading}
+      aria-busy={isLoading}
       {...props}
     >
       {isLoading ? (
         <>
-          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          Carregando...
+          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+          <span aria-live="polite">Carregando...</span>
         </>
       ) : (
         <>
-          {Icon && iconPosition === 'left' && <Icon className="w-4 h-4" />}
+          {Icon && iconPosition === 'left' && <Icon className="w-4 h-4" aria-hidden="true" />}
           {children}
-          {Icon && iconPosition === 'right' && <Icon className="w-4 h-4" />}
+          {Icon && iconPosition === 'right' && <Icon className="w-4 h-4" aria-hidden="true" />}
         </>
       )}
     </button>

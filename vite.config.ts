@@ -13,10 +13,30 @@ export default defineConfig(() => {
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+    },
+    build: {
+      target: 'es2022',
+      // Manual chunks: split heavy vendor libraries for better caching
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Chart library (~200KB) — loads only when Analytics/Research panels are visited
+            'vendor-recharts': ['recharts'],
+            // AWS SDK (~400KB) — loads only when file management is used
+            'vendor-aws': ['@aws-sdk/client-s3'],
+            // Google Gemini AI SDK — loads with any AI-powered panel
+            'vendor-genai': ['@google/genai'],
+            // React ecosystem core
+            'vendor-react': ['react', 'react-dom'],
+            // Animation library
+            'vendor-motion': ['motion'],
+          },
+        },
+      },
     },
     test: {
       environment: 'jsdom',

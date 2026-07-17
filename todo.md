@@ -193,3 +193,22 @@
 - [x] Corrigir race condition em seedUsers() (idempotente por usuário, remover chamada não-awaited no router)
 - [x] Atualizar todos Dockerfiles/docker-compose para usar /api/health no healthcheck
 - [x] 201 testes passando em 12 arquivos
+
+## Fase 15 - Production Hardening (Segurança, Performance, Acessibilidade)
+- [x] Security middleware: helmet (15+ headers), CORS configurável, rate-limiting (100/15min geral, 20/min AI endpoints)
+- [x] Body size limit (1MB) para proteção contra payloads excessivos
+- [x] Structured request logging (JSON com correlationId, method, path, status, duration)
+- [x] Trust proxy habilitado em produção (para Nginx)
+- [x] Code splitting: 14 painéis com React.lazy() + Suspense (reduz initial bundle significativamente)
+- [x] Bundle optimization: manual chunks (vendor-recharts 420KB, vendor-aws, vendor-genai, vendor-react, vendor-motion)
+- [x] tRPC error interceptor: auto-logout em UNAUTHORIZED, retry com backoff exponencial (2x) em 5xx
+- [x] Acessibilidade Modal: role="dialog", aria-modal, aria-labelledby, focus trap, Escape key, focus restore
+- [x] Acessibilidade Button: aria-busy no loading, aria-hidden em ícones decorativos, aria-live no texto
+- [x] Acessibilidade Sidebar: aria-label na nav, aria-current="page" nos itens ativos
+- [x] Acessibilidade LoginPage: role="alert" + aria-live="assertive" nos erros, aria-pressed nos botões de role, aria-busy no submit
+- [x] CSS: prefers-reduced-motion (desabilita animações para usuários com sensibilidade), focus-visible (ring apenas por teclado)
+- [x] CSS: utilitário .sr-only para screen readers
+- [x] Hooks robustos: useTRPCQuery com AbortController, enabled flag, tipagem genérica (sem any)
+- [x] Hooks robustos: useTRPCMutation com AbortController, tipagem genérica (sem any)
+- [x] CORS_ORIGINS documentado no .env.example
+- [x] 201 testes passando em 12 arquivos, build OK com code splitting

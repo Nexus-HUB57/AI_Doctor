@@ -162,6 +162,7 @@ export default function Sidebar() {
 
   return (
     <aside
+      aria-label="Navegação principal"
       className={`${
         sidebarOpen ? 'w-64' : 'w-20'
       } bg-gradient-to-b from-slate-900 to-slate-950 border-r border-slate-800 transition-all duration-300 flex flex-col overflow-hidden shadow-2xl`}
@@ -198,6 +199,7 @@ export default function Sidebar() {
               <button
                 key={module.id}
                 onClick={() => handleNavigation(module.id)}
+                aria-current={isActive ? 'page' : undefined}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                   isActive
                     ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/50'
@@ -236,6 +238,7 @@ export default function Sidebar() {
               <button
                 key={module.id}
                 onClick={() => handleNavigation(module.id)}
+                aria-current={isActive ? 'page' : undefined}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                   isActive
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/50'

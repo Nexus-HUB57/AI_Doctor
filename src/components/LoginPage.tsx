@@ -67,14 +67,14 @@ const LoginPage: React.FC = () => {
 
             {/* Error Message */}
             {error && (
-              <div className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div role="alert" aria-live="assertive" className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
                 <p className="text-red-300 text-sm">{error}</p>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={error ? 'login-error' : undefined} id="login-form">
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
@@ -129,6 +129,7 @@ const LoginPage: React.FC = () => {
                         key={opt.value}
                         type="button"
                         onClick={() => setRole(opt.value as UserRole)}
+                        aria-pressed={role === opt.value}
                         className={`p-3 rounded-lg border-2 transition-all text-center ${
                           role === opt.value
                             ? 'border-cyan-500 bg-cyan-500/10'
@@ -172,6 +173,7 @@ const LoginPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
+                aria-busy={isLoading}
                 className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-600 disabled:to-slate-600 text-white font-semibold py-2.5 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30"
               >
                 {isLoading && <Loader className="w-4 h-4 animate-spin" />}

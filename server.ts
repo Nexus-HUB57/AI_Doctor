@@ -5,6 +5,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
+import crypto from 'crypto';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { setupTelemedicineEndpoints } from './server_telemedicine_endpoints.js';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './server/index.js';
@@ -24,7 +28,80 @@ const port = parseInt(envConfig.PORT || '3000', 10);
 
 async function startServer() {
   const app = express();
-  app.use(express.json());
+
+  // ── Security Middleware ──────────────────────────────
+  // Helmet: 15+ security headers (X-Frame-Options, CSP, HSTS, etc.)
+  app.use(helmet({
+    contentSecurityPolicy: false, // CSP managed by nginx in production
+    crossOriginEmbedderPolicy: false,
+  }));
+
+  // CORS: restrict to allowed origins
+  const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000').split(',').map(s => s.trim());
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+  }));
+
+  // Rate limiting: general API
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: 'Muitas requisições. Tente novamente em 15 minutos.' },
+  });
+  app.use('/api/', apiLimiter);
+
+  // Stricter rate limit for AI endpoints (Gemini calls are expensive)
+  const aiLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: 'Limite de requisições AI atingido. Tente novamente em 1 minuto.' },
+  });
+  app.use('/api/orchestrate', aiLimiter);
+  app.use('/api/consensus', aiLimiter);
+  app.use('/api/moltbook-reply', aiLimiter);
+  app.use('/api/brain-analysis', aiLimiter);
+  app.use('/api/rag/', aiLimiter);
+  app.use('/api/v1/', aiLimiter);
+
+  // Body size limit
+  app.use(express.json({ limit: '1mb' }));
+
+  // ── Structured Request Logging ──────────────────────
+  app.use((req, res, next) => {
+    const reqId = (req.headers['x-request-id'] as string) || crypto.randomUUID();
+    req.headers['x-request-id'] = reqId;
+    res.setHeader('X-Request-ID', reqId);
+
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      const log = {
+        level: res.statusCode >= 500 ? 'error' : res.statusCode >= 400 ? 'warn' : 'info',
+        reqId,
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+        duration: `${duration}ms`,
+        timestamp: new Date().toISOString(),
+      };
+      console.log(JSON.stringify(log));
+    });
+    next();
+  });
 
   // Safe lazy-initialization for Gemini Client as per SDK Guidelines
   let ai: GoogleGenAI | null = null;
@@ -383,6 +460,11 @@ Structure your response in three clearly marked sections:
     router: appRouter,
     createContext: (opts) => createContext({ req: opts.req }),
   }));
+
+  // ── Trust Proxy (for Nginx reverse proxy) ─────────
+  if (isProd) {
+    app.set('trust proxy', 1);
+  }
 
   if (!isProd) {
     console.log('Integrating Vite dev server middleware...');

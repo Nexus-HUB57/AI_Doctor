@@ -1,31 +1,45 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext';
 import { AuthProvider, useAuth, roleLabels } from './contexts/AuthContext';
 import MainLayout from './components/MainLayout';
 import LoginPage from './components/LoginPage';
-import DashboardHub from './components/DashboardHub';
-import DiagnosticPanel from './components/DiagnosticPanel';
-import MedicalBoardPanel from './components/MedicalBoardPanel';
-import AnalyticsDashboard from './components/AnalyticsDashboard';
-import ResearchDashboard from './components/ResearchDashboard';
-import TelemedicineChatbot from './components/TelemedicineChatbot';
-import MoltbookFeed from './components/MoltbookFeed';
-import CerebroPanel from './components/CerebroPanel';
-import LiveBookPanel from './components/LiveBookPanel';
-import WormholePanel from './components/WormholePanel';
-import BlackholePanel from './components/BlackholePanel';
-import OncoResearchPanel from './components/OncoResearchPanel';
-import EradicationPanel from './components/EradicationPanel';
-import FileManager from './components/FileManager';
 import ErrorBoundary from './components/ErrorBoundary';
 import type { Agent, LogMessage } from './types';
+
+// ── Lazy-loaded panels (code splitting) ─────────────────
+const DashboardHub = lazy(() => import('./components/DashboardHub').then(m => ({ default: m.default })));
+const DiagnosticPanel = lazy(() => import('./components/DiagnosticPanel').then(m => ({ default: m.default })));
+const MedicalBoardPanel = lazy(() => import('./components/MedicalBoardPanel').then(m => ({ default: m.default })));
+const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard').then(m => ({ default: m.default })));
+const ResearchDashboard = lazy(() => import('./components/ResearchDashboard').then(m => ({ default: m.default })));
+const TelemedicineChatbot = lazy(() => import('./components/TelemedicineChatbot').then(m => ({ default: m.default })));
+const MoltbookFeed = lazy(() => import('./components/MoltbookFeed').then(m => ({ default: m.default })));
+const CerebroPanel = lazy(() => import('./components/CerebroPanel').then(m => ({ default: m.default })));
+const LiveBookPanel = lazy(() => import('./components/LiveBookPanel').then(m => ({ default: m.default })));
+const WormholePanel = lazy(() => import('./components/WormholePanel').then(m => ({ default: m.default })));
+const BlackholePanel = lazy(() => import('./components/BlackholePanel').then(m => ({ default: m.default })));
+const OncoResearchPanel = lazy(() => import('./components/OncoResearchPanel').then(m => ({ default: m.default })));
+const EradicationPanel = lazy(() => import('./components/EradicationPanel').then(m => ({ default: m.default })));
+const FileManager = lazy(() => import('./components/FileManager').then(m => ({ default: m.default })));
+
+// ── Suspense fallback for lazy panels ───────────────────
+function PanelLoader() {
+  return (
+    <div className="flex items-center justify-center h-[60vh]" role="status" aria-label="Carregando painel">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-slate-400">Carregando módulo...</p>
+      </div>
+    </div>
+  );
+}
 
 // Estado compartilhado para componentes que dependem de props
 const SharedStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sequence, setSequence] = useState('AUGCGAUUCGAUCCGAAUUCGGC');
   const [agents, setAgents] = useState<Agent[]>([
     { id: 'a1', name: 'Seq-Parser', role: 'Análise de Motifs', pid: 1001, status: 'ACTIVE', color: '#10b981', description: 'Parser de sequências biológicas', prompt: 'Analise a sequência fornecida' },
-    { id: 'a2', name: 'Fold-Engine', role: 'Predição Estrutural', pid: 1002, status: 'SYNCED', color: '#3b82f6', description: 'Predição de estrutura secundária de rRNA', prompt: 'Prediga a estrutura da sequência' },
+    { id: 'a2', name: 'Fold-Engine', role: 'Predição Estrutural', pid: 1002, status: 'SYNCED', color: '#3b82f6', description: 'Predição de estrutura secundária de rRNA', prompt: 'Prediza a estrutura da sequência' },
     { id: 'a3', name: 'Mut-Detector', role: 'Detecção de Mutações', pid: 1003, status: 'IDLE', color: '#f59e0b', description: 'Detecção de mutações compensatórias', prompt: 'Detecte mutações na sequência' },
   ]);
   const [logs, setLogs] = useState<LogMessage[]>([]);
@@ -73,96 +87,48 @@ export const SharedStateContext = React.createContext<SharedStateContextType>({
   logs: [],
 });
 
-// Componente para renderizar a aba ativa
+// Componente para renderizar a aba ativa com lazy loading + error boundary
 const ActiveTabContent = () => {
   const { activeTab, setActiveTab } = useNavigation();
   const { sequence, setSequence, agents, setAgents, addLog, clearLogs } = React.useContext(SharedStateContext);
 
+  const renderPanel = (key: string, element: React.ReactNode) => (
+    <ErrorBoundary key={key}>
+      <Suspense fallback={<PanelLoader />}>
+        {element}
+      </Suspense>
+    </ErrorBoundary>
+  );
+
   switch (activeTab) {
     case 'dashboard':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <DashboardHub onNavigate={setActiveTab} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <DashboardHub onNavigate={setActiveTab} />);
     case 'diagnostic':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <DiagnosticPanel />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <DiagnosticPanel />);
     case 'board':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <MedicalBoardPanel />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <MedicalBoardPanel />);
     case 'analytics':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <AnalyticsDashboard />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <AnalyticsDashboard />);
     case 'research':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <ResearchDashboard />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <ResearchDashboard />);
     case 'telemedicine':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <TelemedicineChatbot />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <TelemedicineChatbot />);
     case 'moltbook':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <MoltbookFeed agents={agents} addLog={addLog} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <MoltbookFeed agents={agents} addLog={addLog} />);
     case 'cerebro':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <CerebroPanel sequence={sequence} agents={agents} addLog={addLog} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <CerebroPanel sequence={sequence} agents={agents} addLog={addLog} />);
     case 'wormhole':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <WormholePanel sequence={sequence} setSequence={setSequence} addLog={addLog} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <WormholePanel sequence={sequence} setSequence={setSequence} addLog={addLog} />);
     case 'blackhole':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={clearLogs} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <BlackholePanel sequence={sequence} setSequence={setSequence} agents={agents} setAgents={setAgents} addLog={addLog} clearLogs={clearLogs} />);
     case 'onco_research':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <OncoResearchPanel sequence={sequence} agents={agents} addLog={addLog} />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <OncoResearchPanel sequence={sequence} agents={agents} addLog={addLog} />);
     case 'eradication':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <EradicationPanel />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <EradicationPanel />);
     case 'livebook':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <LiveBookPanel />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <LiveBookPanel />);
     case 'files':
-      return (
-        <ErrorBoundary key={activeTab}>
-          <FileManager />
-        </ErrorBoundary>
-      );
+      return renderPanel(activeTab, <FileManager />);
     case 'advanced':
     default:
       return (
