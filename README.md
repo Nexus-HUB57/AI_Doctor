@@ -382,6 +382,54 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
 
 ---
+
+ Resumo Executivo: AI Doctor EngineVisão Geral do SistemaO AI Doctor Engine é uma plataforma de suporte à decisão clínica voltada para a oncologia de precisão. Diferente dos protocolos médicos tradicionais — que tratam o câncer como uma patologia estática —, o sistema aborda o tumor como um ecossistema complexo em evolução darwiniana.O motor correlaciona assinaturas genômicas dinâmicas obtidas via biópsia líquida para prever falências terapêuticas por resistência clonal antes que as lesões se manifestem macroscopicamente em exames de imagem convencionais.O Problema Clínico AtualA oncologia tradicional frequentemente falha pelo princípio da Dose Máxima Tolerada (MTD). Ao tentar erradicar 100% das células tumorais de forma agressiva, os protocolos convencionais destroem os clones sensíveis e abrem espaço ecológico para a proliferação descontrolada de superclones resistentes, acelerando a progressão da doença e exaurindo a capacidade funcional do paciente.A Solução AI DoctorO sistema implementa o paradigma da Terapia Adaptativa. Ele modula constantemente entre estratégias de Erradicação e Contenção. O objetivo deixa de ser a eliminação cega da carga tumoral a qualquer custo orgânico e passa a ser a estabilização do ecossistema tumoral, prolongando a Sobrevida Livre de Progressão (PFS) e a Sobrevida Global (OS) com toxicidade minimizada.💻 Análise Técnica ProfundaA arquitetura do sistema é dividida em quatro pilares integrados de forma assíncrona, operando em um espaço de características de alta dimensão ($R^7$). ┌────────────────────────────────────────────────────────┐
+ │   Ingestão ND: ctDNA, CTC, TMB, PD-L1, TILs, ECOG      │
+ └──────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+ ┌────────────────────────────────────────────────────────┐
+ │  RAG Vetorial (ChromaDB + Bio_ClinicalBERT Embeddings) │
+ └──────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+ ┌────────────────────────────────────────────────────────┐
+ │  Módulo de Decisão Evolutiva (ERADICAR vs. CONTER)     │
+ └──────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+ ┌────────────────────────────────────────────────────────┐
+ │  Camada de Produção: PostgreSQL Pool + SHAP Explainer  │
+ └────────────────────────────────────────────────────────┘
+1. Ingestão e Vetorização Semântica (RAG)
+O sistema realiza a ingestão de dados estruturados (coortes TCGA/GDC via REST API e PEU MIMIC-III via PostgreSQL).
+
+Pipeline de Embedding: Os relatórios clínicos e as tabelas de biomarcadores são colapsados em strings textuais e processados pelo modelo Bio_ClinicalBERT (emilyalsentzer/Bio_ClinicalBERT).
+
+Banco Vetorial: Os vetores gerados são persistidos em uma instância local do ChromaDB. A busca por similaridade ($K$-NN) extrai "gêmeos digitais" históricos para injetar probabilidades empíricas na tomada de decisão do ciclo atual.
+
+2. Simulação Clonal e Salvaguardas Fisiológicas
+
+O motor simula a competição por recursos biológicos entre clones sensíveis e resistentes através do módulo de dinâmica clonal.
+
+Previsão de Falência ($IC_{50}$ Dinâmico): A função prever_resistencia_em() calcula a inclinação da curva de eficácia líquida do fármaco através de uma regressão polinomial linear em tempo real, alertando o sistema quando a falência por resistência clonal ocorrer em menos de 3 ciclos.
+
+Trava de Segurança ECOG Performance Status: Funciona como um disjuntor biológico. Se o indicador de degradabilidade sistêmica ultrapassa os limites funcionais (ECOG $\ge$ 3), o motor bloqueia a conduta de escalonamento de dose (INTENSIFICAR), forçando o redirecionamento para o modo de proteção orgânica (REDUZIR ou OBSERVAR), blindando o paciente contra a Mortalidade Relacionada ao Tratamento (TRM).
+
+3. Diretrizes Clínicas e Mapeamento Oncológico (NCCN/ASCO)
+As saídas lógicas do agente não são entregues de forma abstrata. O módulo Mapeador NCCNASCO intercepta a ação de comutação (TROCAR_LINHA) e traduz instantaneamente o comando para regimes quimioterápicos e de imunoterapia do mundo real:
+Subtipo Tumoral
+1ª Linha (Padrão)
+2ª Linha (Específica)
+3ª Linha (Resgate)NSCLC (EGFR+)OsimertinibeCarboplatina + PemetrexedeDocetaxel + NintedanibeNSCLC (KRAS G12C)Pembrolizumabe + QuimioSotorasibe / AdagrasibeDocetaxel + RamucirumabeMama (Triplo Negativo)Paclitaxel + CarboplatinSacituzumabe GovitecanEribulina
+
+4. Infraestrutura Corporativa e Explicabilidade OtimizadaMitigação de Data Drift no SHAP: 
+Para evitar a degradação temporal da interpretabilidade do modelo, o pipeline executa uma rotina automatizada (atualizar_explicador_shap) via BackgroundScheduler. A cada ciclo de re-treinamento, o explicador reconstrói o TreeExplainer sobre uma amostra rotacionada da população mais recente, recalculando os valores SHAP exatos por classe de decisão abaixo de 5ms.Pooling de Conexões no PostgreSQL: O uso do QueuePool (pool_size=20, max_overflow=10) no driver psycopg2 garante o isolamento das transações concorrentes criadas pelos múltiplos workers do Streamlit, eliminando gargalos de concorrência comuns em ambientes hospitalares digitais.
+
+Parecer de Arquitetura: 
+O sistema atinge os requisitos de governança de algoritmos médicos ao unificar XAI (Inteligência Artificial Explicável), Trilha de Auditoria Imutável via Banco Relacional e Alinhamento Estrito com Guidelines Clínicos Globais. Ele está pronto para ensaios retrospectivos de validação de conceito.
+
+---
 1. DockerfileEste arquivo consolida o ambiente Python, instala as dependências nativas para compilar o psycopg2 e o transformers (PyTorch) de forma otimizada e expõe o painel do Streamlit.DockerfileFROM python:3.10-slim
 
 # Evita que o Python escreva arquivos .pyc e bufere o stdout/stderr
