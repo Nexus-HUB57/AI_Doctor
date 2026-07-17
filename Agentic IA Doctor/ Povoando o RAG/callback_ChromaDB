@@ -1,0 +1,15 @@
+class AprendizadoContinuo:
+    def __init__(self, agente, vetor_store):
+        self.agente = agente
+        self.vetor_store = vetor_store
+
+    def atualizar_com_desfecho(self, paciente_id, desfecho):
+        """Após o desfecho ser conhecido, adiciona o caso ao banco vetorial."""
+        # Coleta os dados do paciente (último estado)
+        ultimo_estado = self.agente.df_historico.iloc[-1].to_dict()
+        ultimo_estado['patient_id'] = paciente_id
+        ultimo_estado['outcome'] = desfecho
+        # Cria um DataFrame de um único caso
+        df_novo = pd.DataFrame([ultimo_estado])
+        self.vetor_store.adicionar_casos(df_novo)
+        print(f"✅ Caso {paciente_id} adicionado ao RAG com desfecho {desfecho}.")
