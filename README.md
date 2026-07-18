@@ -383,6 +383,15 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 
 ---
 
+Executando a Plataforma
+Execute o build unificado através do ambiente dockerizado fornecido anteriormente:
+
+Bash
+docker-compose up -d --build
+Para simular e injetar novas biópsias líquidas pelo dashboard, utilize a estrutura de colunas exigida pelo motor: patient_id,ctDNA,CTC,TMB,PD_L1,TILs,ECOG.
+
+---
+
 Procedimento de Orquestração do Ambiente1.
 
 Consolidação de Arquivos:
