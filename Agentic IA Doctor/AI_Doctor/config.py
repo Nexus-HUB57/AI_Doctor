@@ -22,5 +22,23 @@ CONFIG = {
     "LIMIAR_CTDNA_BAIXO": 0.3,
     "FATOR_INTENSIFICAR": 0.15,
     "FATOR_REDUZIR": 0.10,
-    "FATOR_MODERADO": 0.05
+    "FATOR_MODERADO": 0.05,
+
+    # === DIMHEX — Digital Medical Health Explorer ===
+    # Intervalo do ciclo de pesquisa em minutos (padrao: 240 = 4 horas)
+    "DIMHEX_INTERVAL_MINUTES": int(os.getenv("DIMHEX_INTERVAL_MINUTES", "240")),
+    # Janela de lookback para buscas em dias
+    "DIMHEX_LOOKBACK_DAYS": int(os.getenv("DIMHEX_LOOKBACK_DAYS", "30")),
+    # Max resultados por fonte por ciclo
+    "DIMHEX_MAX_RESULTS_PER_SOURCE": int(os.getenv("DIMHEX_MAX_RESULTS_PER_SOURCE", "50")),
+    # Score minimo para indexacao na base de conhecimento
+    "DIMHEX_MIN_SCORE": float(os.getenv("DIMHEX_MIN_SCORE", "0.25")),
+    # Timeout de requisicoes HTTP em segundos
+    "DIMHEX_REQUEST_TIMEOUT": int(os.getenv("DIMHEX_REQUEST_TIMEOUT", "30")),
+    # Ativar/desativar pesquisa DIMHEX
+    "DIMHEX_PESQUISA_ATIVA": os.getenv("DIMHEX_PESQUISA_ATIVA", "true").lower() == "true",
+    # Fontes ativas (JSON array: pubmed, clinical_trials, who)
+    "DIMHEX_ACTIVE_SOURCES": os.getenv("DIMHEX_ACTIVE_SOURCES", '["pubmed", "clinical_trials"]'),
+    # Caminho para persistencia de estado do DIMHEX
+    "DIMHEX_STATE_PATH": os.getenv("DIMHEX_STATE_PATH", "./dimhex_estado.json"),
 }

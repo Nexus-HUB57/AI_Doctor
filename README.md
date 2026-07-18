@@ -394,14 +394,15 @@ Ingestao (ctDNA, CTC, TMB, PD-L1, TILs, ECOG)
        |
        v
 RAG Vetorial (ChromaDB) + Memoria de Casos Analogos
-       |
-       v
-Monte Carlo (150 simulacoes/ciclo) + Matriz Empirica
-       |
-       v
-Decisao Bayesiana modulada por Estado Emocional
-       |
-       v
+       |                              ^
+       v                              |  DIMHEX (a cada 240min)
+Monte Carlo (150 simulacoes/ciclo)   |  PubMed + ClinicalTrials + WHO
+       |                              |  -> Scoring Bayesiano 5D
+       v                              |  -> Indexacao ChromaDB
+Decisao Bayesiana modulada por       |  -> Insights acionaveis
+Estado Emocional + Evidencia DIMHEX  |
+       |                              |
+       v                              |
 Acao terapeutica -> Dinamica Clonal -> Fisiologia -> Reflexao
        |
        v
@@ -418,12 +419,16 @@ Auto-Cura Evolutiva (se erros >= 3 ou eficacia < 0.2)
 | `core/memoria.py` | RAG in-memory: recuperacao de casos analogos |
 | `core/explicador.py` | XAI: SHAP simulado + relatorio clinico |
 | `core/shap_xai.py` | XAI: SHAP real com RandomForest substituto |
-| `infrastructure/chroma_db.py` | ChromaDB persistente |
+| `core/dimhex.py` | DIMHEX: motor de inteligencia medica continua (240min) |
+| `core/relevance_scorer.py` | DIMHEX: scoring bayesiano 5D de relevancia clinica |
+| `infrastructure/chroma_db.py` | ChromaDB persistente (casos + conhecimento DIMHEX) |
 | `infrastructure/audit.py` | Auditoria PostgreSQL (SQLAlchemy 2.0) |
-| `infrastructure/scheduler.py` | Aprendizado continuo (APScheduler) |
+| `infrastructure/scheduler.py` | Aprendizado continuo + DIMHEX (APScheduler) |
+| `infrastructure/research_sources.py` | DIMHEX: PubMed, ClinicalTrials.gov, WHO |
+| `infrastructure/knowledge_updater.py` | DIMHEX: indexacao + geracao de insights |
 | `data_connectors.py` | TCGA GDC API + fallback sintetico |
 | `mapeadores.py` | Protocolos NCCN/ASCO (3 subtipos, 3 linhas) |
-| `dashboard/app.py` | Painel Streamlit + Plotly |
+| `dashboard/app.py` | Painel Streamlit (Tumor Board + DIMHEX) |
 
 ## Visão Humanizada
 

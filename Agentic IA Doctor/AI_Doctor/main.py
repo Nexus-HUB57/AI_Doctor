@@ -102,13 +102,28 @@ def main():
 
     print(validador.relatorio())
 
-    # 7. Scheduler
-    print("[4] Iniciando scheduler de aprendizado contínuo...")
+    # 7. DIMHEX — Primeiro ciclo de pesquisa medica
+    print("[4] Inicializando DIMHEX — Digital Medical Health Explorer...")
+    try:
+        from core.dimhex import DIMHEX
+        dimhex_engine = DIMHEX()
+        dimhex_status = dimhex_engine.obter_status()
+        print(f"   DIMHEX v{dimhex_status['versao']} | Ciclo: #{dimhex_status['ciclo_atual']}")
+        print(f"   Base de conhecimento: {dimhex_status['base_conhecimento']['total_indexados']} documentos")
+        print(f"   Pesquisa ativa: {dimhex_status['pesquisa_ativa']}")
+        print(f"   Fontes: {', '.join(dimhex_status['fontes_ativas'])}")
+    except Exception as e:
+        print(f"   Aviso: DIMHEX nao disponivel ({e})")
+        dimhex_engine = None
+
+    # 8. Scheduler (inclui DIMHEX a cada 240 min)
+    print("[5] Iniciando scheduler (Aprendizado + DIMHEX)...")
     scheduler = iniciar_scheduler()
-    print("   ✅ Scheduler ativo (intervalo: {}h)".format(CONFIG["SCHEDULE_INTERVAL_HOURS"]))
+    print(f"   Aprendizado continuo: {CONFIG['SCHEDULE_INTERVAL_HOURS']}h")
+    print(f"   DIMHEX pesquisa: {CONFIG['DIMHEX_INTERVAL_MINUTES']}min")
 
     print("=" * 80)
-    print("✅ AI Doctor em execução. Pressione Ctrl+C para encerrar.")
+    print("  AI Doctor + DIMHEX em execucao. Pressione Ctrl+C para encerrar.")
     print("=" * 80)
 
     # Mantém o script vivo

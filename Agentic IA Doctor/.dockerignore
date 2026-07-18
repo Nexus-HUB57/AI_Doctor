@@ -12,4 +12,4 @@ chroma_db/
 *.md
 docker-compose*.yml
 Dockerfile
-.dockerignore
+.dockerignorechroma_db/
