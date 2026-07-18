@@ -371,7 +371,7 @@ export const literatureRouter = router({
       
       try {
         const response = await ai.models.generateContent({
-          model: 'gemini-2.0-flash',
+          model: process.env.GEMINI_MODEL || 'gemini-flash-latest',
           contents: [{
             role: 'user',
             parts: [{ text: `Resuma o seguinte artigo científico em ${lengthMap[input.length]} em português:

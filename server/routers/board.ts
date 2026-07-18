@@ -689,7 +689,7 @@ export const boardRouter = router({
           const { GoogleGenAI } = await import('@google/genai');
           const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
           const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: process.env.GEMINI_MODEL || 'gemini-flash-latest',
             contents: [{
               role: 'user',
               parts: [{ text: `Você é ${agent.name} (${agent.specialty}).
