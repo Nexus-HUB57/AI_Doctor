@@ -32,6 +32,8 @@ class AgenteOncologicoPrecisao:
         self.erros_consecutivos = 0
         self.total_mutacoes = 0
         self.ultimo_ciclo_mutacao = -100
+        self.ultima_acao = None
+        self.ultima_confianca = 0.0
 
         self._construir_matriz_empirica()
 
@@ -277,6 +279,8 @@ class AgenteOncologicoPrecisao:
         cenarios = self._gerar_cenarios_prognosticos(ultima_linha)
         prob_emp = self.matriz_probabilidade.get(self.estado_atual, {})
         acao, confianca = self._reagir(prob_emp, cenarios)
+        self.ultima_acao = acao
+        self.ultima_confianca = confianca
 
         # Execução
         if acao == 'TROCAR_LINHA':
