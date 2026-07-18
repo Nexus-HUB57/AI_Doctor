@@ -1,49 +1,48 @@
-# dashboard.py
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-from agente import AgenteOncologicoPrecisao  # importe seu agente
+import numpy as np
+from model_engine import AgenteOncologicoPrecisao
+from data_connectors import TCGAConnectorReal
+from shap_xai import ExplicadorSHAPReal
+from audit import AuditorClinico
+from mapeadores import MapeadorNCCNASCO
 
-st.set_page_config(page_title="AI Doctor", layout="wide")
-st.title("🧬 AI Doctor – Oncology Precision Agent")
+st.set_page_config(layout="wide", page_title="AI Doctor Clinical Hub")
+st.title("🧬 AI Doctor - Tumor Board Dashboard")
 
-# Inicializar o agente (usar session_state para persistência)
 if 'agente' not in st.session_state:
-    # Carregar dados históricos e instanciar
-    df_hist = ClinicalDataLoader.carregar_dados('tcga', cancer_type='LUAD', limit=500)
-    st.session_state.agente = AgenteOncologicoPrecisao(df_hist, usar_chroma=True)
+    df_init = TCGAConnectorReal().baixar_dados_clinicos(limit=50)
+    st.session_state.agente = AgenteOncologicoPrecisao(df_init)
+    st.session_state.xai = ExplicadorSHAPReal()
+    st.session_state.xai.recalibrar_surrogate(df_init)
+    st.session_state.auditor = AuditorClinico()
+    st.session_state.historico_ctdna = [0.4, 0.45, 0.52]
 
-# Sidebar para parâmetros
-st.sidebar.header("Configurações")
-modo = st.sidebar.selectbox("Modo Terapêutico", ["ERADICAR", "CONTER"])
-st.session_state.agente.paradigma.modo_terapia = modo
-
-# Upload de novo exame
-uploaded_file = st.file_uploader("Carregar novo exame (CSV)", type="csv")
-if uploaded_file:
-    nova_medicao = pd.read_csv(uploaded_file).iloc[0].to_dict()
-    st.session_state.agente.executar_ciclo(nova_medicao, ciclo_id=len(st.session_state.agente.historico_reserva))
-
-    # Exibir evolução
-    df_evolucao = pd.DataFrame({
-        'Tempo': range(len(st.session_state.agente.historico_reserva)),
-        'ctDNA': st.session_state.agente.df_historico['ctDNA'].tail(len(st.session_state.agente.historico_reserva))
-    })
-    fig = px.line(df_evolucao, x='Tempo', y='ctDNA', title='Evolução do ctDNA')
-    st.plotly_chart(fig, use_container_width=True)
-
-# Exibir decisão atual
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Dose Atual", f"{st.session_state.agente.dose_atual:.2f}")
-with col2:
-    st.metric("ECOG", st.session_state.agente.fisiologia.ecog)
-with col3:
-    st.metric("Eficácia", f"{st.session_state.agente.clonal.eficacia_relativa():.2f}")
-
-# Explicação
-if st.button("Gerar Relatório XAI"):
-    relatorio = st.session_state.agente.explicador.gerar_relatorio(
-        {}, st.session_state.agente.estado_atual, 0.8, {}, {}
+uploaded = st.file_uploader("Upload de Nova Biópsia Líquida (CSV)", type="csv")
+if uploaded:
+    df_row = pd.read_csv(uploaded)
+    paciente = df_row.iloc[0].to_dict()
+    
+    conduta = st.session_state.agente.executar_ciclo(paciente)
+    st.session_state.historico_ctdna.append(paciente.get('ctDNA', 0.5))
+    
+    # Orquestração do Pipeline XAI Real
+    vetor_instancia = np.array([paciente['ctDNA'], paciente['CTC'], paciente['TMB'], paciente['PD_L1'], paciente['TILs'], paciente['ECOG']])
+    pesos_shap = st.session_state.xai.explicar_instancia(vetor_instancia)
+    esquema = MapeadorNCCNASCO.selecionar_esquema("NSCLC_KRAS_G12C", st.session_state.agente.linha_terapeutica)
+    
+    st.session_state.auditor.registrar_evento(
+        paciente.get('patient_id', 'EHR-UNK'), conduta, st.session_state.agente.dose_atual,
+        st.session_state.agente.fisiologia.ecog, st.session_state.agente.estado_atual, pesos_shap
     )
-    st.code(relatorio, language='text')
+    
+    col_g, col_m = st.columns([2, 1])
+    with col_g:
+        st.line_chart(st.session_state.historico_ctdna)
+    with col_m:
+        st.metric("Conduta Proposta", conduta)
+        st.metric("Dosagem Calculada", f"{st.session_state.agente.dose_atual:.2f} mg")
+        st.write(f"**Esquema NCCN:** {esquema['esquema']}")
+        
+    st.subheader("Atribuição de Causalidade (SHAP)")
+    st.write(pesos_shap)
