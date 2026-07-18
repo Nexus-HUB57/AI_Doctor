@@ -10,6 +10,7 @@ import type { Agent, LogMessage } from './types';
 
 // ── Lazy-loaded panels (code splitting) ─────────────────
 const DashboardHub = lazy(() => import('./components/DashboardHub').then(m => ({ default: m.default })));
+const PatientExperience = lazy(() => import('./components/PatientExperience').then(m => ({ default: m.default })));
 const DiagnosticPanel = lazy(() => import('./components/DiagnosticPanel').then(m => ({ default: m.default })));
 const MedicalBoardPanel = lazy(() => import('./components/MedicalBoardPanel').then(m => ({ default: m.default })));
 const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard').then(m => ({ default: m.default })));
@@ -89,10 +90,17 @@ export const SharedStateContext = React.createContext<SharedStateContextType>({
   logs: [],
 });
 
+// Hook para obter role do usuario logado
+function useUserRole() {
+  const { user } = useAuth();
+  return user?.role ?? null;
+}
+
 // Componente para renderizar a aba ativa com lazy loading + error boundary
 const ActiveTabContent = () => {
   const { activeTab, setActiveTab } = useNavigation();
   const { sequence, setSequence, agents, setAgents, addLog, clearLogs } = React.useContext(SharedStateContext);
+  const userRole = useUserRole();
 
   const renderPanel = (key: string, element: React.ReactNode) => (
     <ErrorBoundary key={key}>
@@ -101,6 +109,11 @@ const ActiveTabContent = () => {
       </Suspense>
     </ErrorBoundary>
   );
+
+  // Patient sees PatientExperience instead of technical DashboardHub
+  if (activeTab === 'dashboard' && userRole === UserRole.PATIENT) {
+    return renderPanel('patient-dashboard', <PatientExperience onNavigate={setActiveTab} />);
+  }
 
   switch (activeTab) {
     case 'dashboard':
