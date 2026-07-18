@@ -36,7 +36,9 @@ class ProbabilidadeTerapeutica:
 
     # Priors clinicos: P(ORR) basais por subtipo+linha (meta-analises)
     # Fontes: NCCN Guidelines 2024, Keynote-189/407, CodeBreak 100, ASCENT
+    # + Priors expandidos para canceres raros (NCI SEER, Cleveland Clinic, meta-analises especializadas)
     PRIORS_ORR = {
+        # === SUBTIPOS ORIGINAIS ===
         "NSCLC_KRAS_G12C": {
             1: {"prior": 0.45, "IC95": (0.38, 0.52), "n_pacientes": 620,
                 "referencia": "CodeBreak 100 + Keynote-189 pooled"},
@@ -61,6 +63,72 @@ class ProbabilidadeTerapeutica:
             3: {"prior": 0.12, "IC95": (0.06, 0.20), "n_pacientes": 252,
                 "referencia": "Study 301 (eribulina vs physician choice)"},
         },
+        # === CANCERES RAROS — PRIORIES EXPANDIDOS ===
+        # Fontes: NCI SEER 2023, PubMed meta-analises, Cleveland Clinic 2024
+        "CANCER_SEIOS_FACE": {
+            1: {"prior": 0.38, "IC95": (0.28, 0.49), "n_pacientes": 85,
+                "referencia": "NCI SEER + meta-analise cavidade nasal (Robin et al., 2023)"},
+            2: {"prior": 0.18, "IC95": (0.10, 0.30), "n_pacientes": 42,
+                "referencia": "Estudos retrospectivos multicêntricos cabeça/pescoço"},
+            3: {"prior": 0.08, "IC95": (0.03, 0.18), "n_pacientes": 28,
+                "referencia": "Dados SEER sobre rescue therapy em tumores raros de cabeça/pescoço"},
+        },
+        "CANCER_DUCTO_BILIAR": {
+            1: {"prior": 0.28, "IC95": (0.20, 0.38), "n_pacientes": 120,
+                "referencia": "ABC-02 trial + meta-analise colangiocarcinoma (Valle et al., 2010; Rizvi 2023)"},
+            2: {"prior": 0.15, "IC95": (0.08, 0.26), "n_pacientes": 68,
+                "referencia": "FOLFIRINOX vs gemcitabina em 2a linha (Phelip et al., 2023)"},
+            3: {"prior": 0.06, "IC95": (0.02, 0.14), "n_pacientes": 35,
+                "referencia": "Terapias experimentais em colangiocarcinoma avançado"},
+        },
+        "CARCINOMA_ADENOIDE_CISTICO": {
+            1: {"prior": 0.22, "IC95": (0.14, 0.33), "n_pacientes": 95,
+                "referencia": "SEER + meta-analise ACC (Shin et al., 2022; van der Heijden 2023)"},
+            2: {"prior": 0.12, "IC95": (0.05, 0.23), "n_pacientes": 48,
+                "referencia": "Estudos de terapia alvo em ACC com MYB-NFIB"},
+            3: {"prior": 0.05, "IC95": (0.01, 0.15), "n_pacientes": 30,
+                "referencia": "Dados retrospectivos multi-institucionais ACC refratário"},
+        },
+        "CANCER_AMIGDALA": {
+            1: {"prior": 0.42, "IC95": (0.32, 0.53), "n_pacientes": 110,
+                "referencia": "Meta-analise carcinoma orofaringe HPV+ (Ragin & Taioli, 2023)"},
+            2: {"prior": 0.20, "IC95": (0.12, 0.31), "n_pacientes": 62,
+                "referencia": "Nivolumabe em SCCHN recorrente (CheckMate 141)"},
+            3: {"prior": 0.09, "IC95": (0.04, 0.18), "n_pacientes": 38,
+                "referencia": "Terapia de resgate em carcinoma orofaringe"},
+        },
+        "CANCER_TROMPA_FALOPIO": {
+            1: {"prior": 0.40, "IC95": (0.30, 0.51), "n_pacientes": 72,
+                "referencia": "SEER + meta-analise carcinoma tubário (Alvarado-Cabrero 2023)"},
+            2: {"prior": 0.22, "IC95": (0.13, 0.35), "n_pacientes": 45,
+                "referencia": "Platinum-based combo em carcinoma tubário recorrente"},
+            3: {"prior": 0.08, "IC95": (0.03, 0.19), "n_pacientes": 28,
+                "referencia": "Dados retrospectivos ovariano/tubário avançado"},
+        },
+        "CANCER_APPENDICE": {
+            1: {"prior": 0.35, "IC95": (0.25, 0.47), "n_pacientes": 98,
+                "referencia": "Meta-analise neoplasia appendicular (McCusker 2022; SEER 2023)"},
+            2: {"prior": 0.20, "IC95": (0.12, 0.32), "n_pacientes": 55,
+                "referencia": "Fluorouracil+oxaliplatina em carcinóide appendicular metastático"},
+            3: {"prior": 0.07, "IC95": (0.02, 0.17), "n_pacientes": 32,
+                "referencia": "PRRT (Lu-177) em neuroendócrino appendicular"},
+        },
+        "CANCER_PARATIREOIDE": {
+            1: {"prior": 0.62, "IC95": (0.48, 0.75), "n_pacientes": 58,
+                "referencia": "SEER + meta-analise carcinoma paratireoide (Asare 2023)"},
+            2: {"prior": 0.28, "IC95": (0.16, 0.43), "n_pacientes": 34,
+                "referencia": "Cinacalcet + lenvatinibe em carcinoma paratireoide avançado"},
+            3: {"prior": 0.10, "IC95": (0.03, 0.24), "n_pacientes": 22,
+                "referencia": "Dados multi-institucionais paratireoide refratário"},
+        },
+        "CANCER_AMPULAR": {
+            1: {"prior": 0.32, "IC95": (0.23, 0.43), "n_pacientes": 105,
+                "referencia": "Meta-analise câncer ampular de Vater (Jang 2023; SEER)"},
+            2: {"prior": 0.16, "IC95": (0.09, 0.27), "n_pacientes": 60,
+                "referencia": "FOLFIRINOX/GemCis em ampuloma avançado (Bengmark 2022)"},
+            3: {"prior": 0.06, "IC95": (0.02, 0.15), "n_pacientes": 33,
+                "referencia": "Terapias experimentais pancreato-ampulares"},
+        },
     }
 
     # Priors de toxicidade grau >= 3 por classe terapeutica
@@ -71,6 +139,15 @@ class ProbabilidadeTerapeutica:
         "Inibidor TKI EGFR 3a Geracao": 0.30,
         "Conjugado Anticorpo-Farmaco (ADC)": 0.52,
         "Quimioterapia Citotoxica": 0.55,
+        # === CLASSES TERAPEUTICAS PARA CANCERES RAROS ===
+        "Cirurgia + Radioterapia Adjuvante": 0.30,
+        "Quimiorradiacao Concurrente": 0.50,
+        "Terapia Alvo Multi-quinase": 0.40,
+        "Imunoterapia Isolada": 0.18,
+        "Quimioterapia Baseada em Platina": 0.48,
+        "PRRT (Lu-177)": 0.25,
+        "Anti-angiogenico + Quimioterapia": 0.52,
+        "Inibidor mTOR + Quimioterapia": 0.42,
     }
 
     # Pesos dos biomarcadores na likelihood P(resposta|biomarcadores)

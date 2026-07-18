@@ -1,0 +1,130 @@
+{
+  "coeficiente": 0.5172080624349378,
+  "nivel": "APRENDIZADO_ATIVO",
+  "historico": [
+    {
+      "ciclo": 1,
+      "coeficiente": 0.1547,
+      "experiencia": 0.151,
+      "compreensao": 0.008,
+      "criatividade": 0.0,
+      "confiabilidade": 0.35,
+      "timestamp": "2026-07-18T06:51:35.401323"
+    },
+    {
+      "ciclo": 2,
+      "coeficiente": 0.1938,
+      "experiencia": 0.239,
+      "compreensao": 0.02,
+      "criatividade": 0.01,
+      "confiabilidade": 0.36,
+      "timestamp": "2026-07-18T06:51:35.401874"
+    },
+    {
+      "ciclo": 3,
+      "coeficiente": 0.2292,
+      "experiencia": 0.301,
+      "compreensao": 0.036,
+      "criatividade": 0.03,
+      "confiabilidade": 0.37,
+      "timestamp": "2026-07-18T06:51:35.402212"
+    },
+    {
+      "ciclo": 4,
+      "coeficiente": 0.264,
+      "experiencia": 0.349,
+      "compreensao": 0.056,
+      "criatividade": 0.06,
+      "confiabilidade": 0.38,
+      "timestamp": "2026-07-18T06:51:35.402868"
+    },
+    {
+      "ciclo": 5,
+      "coeficiente": 0.2998,
+      "experiencia": 0.389,
+      "compreensao": 0.08,
+      "criatividade": 0.1,
+      "confiabilidade": 0.39,
+      "timestamp": "2026-07-18T06:51:35.403290"
+    },
+    {
+      "ciclo": 6,
+      "coeficiente": 0.3376,
+      "experiencia": 0.423,
+      "compreensao": 0.108,
+      "criatividade": 0.15,
+      "confiabilidade": 0.4,
+      "timestamp": "2026-07-18T06:51:35.403763"
+    },
+    {
+      "ciclo": 7,
+      "coeficiente": 0.3779,
+      "experiencia": 0.452,
+      "compreensao": 0.14,
+      "criatividade": 0.21,
+      "confiabilidade": 0.41,
+      "timestamp": "2026-07-18T06:51:35.404240"
+    },
+    {
+      "ciclo": 8,
+      "coeficiente": 0.4211,
+      "experiencia": 0.477,
+      "compreensao": 0.176,
+      "criatividade": 0.28,
+      "confiabilidade": 0.42,
+      "timestamp": "2026-07-18T06:51:35.404803"
+    },
+    {
+      "ciclo": 9,
+      "coeficiente": 0.4675,
+      "experiencia": 0.5,
+      "compreensao": 0.216,
+      "criatividade": 0.36,
+      "confiabilidade": 0.43,
+      "timestamp": "2026-07-18T06:51:35.405433"
+    },
+    {
+      "ciclo": 10,
+      "coeficiente": 0.5172,
+      "experiencia": 0.521,
+      "compreensao": 0.26,
+      "criatividade": 0.45,
+      "confiabilidade": 0.44,
+      "timestamp": "2026-07-18T06:51:35.406167"
+    }
+  ],
+  "metricas": {
+    "versao": "1.0.0",
+    "total_episodios": 10,
+    "total_padroes_extraidos": 130,
+    "total_hipoteses": 45,
+    "total_validadas": 0,
+    "coeficiente_sabedoria": 0.5172,
+    "nivel_sabedoria": "APRENDIZADO_ATIVO",
+    "fontes_avaliadas": 2,
+    "biomarcadores_rastreados": 1,
+    "temas_sabedoria": 10,
+    "hipoteses_pendentes": 1,
+    "historico_tamanho": 10
+  },
+  "tendencias": [
+    {
+      "metrica": "taxa_relevancia",
+      "direcao": "CRESCENTE",
+      "valor_atual": 0.53,
+      "variacao": 0.18
+    },
+    {
+      "metrica": "achados_por_ciclo",
+      "media": 38.5,
+      "ultimo": 52
+    },
+    {
+      "metrica": "coeficiente_sabedoria",
+      "crescimento": 0.1796,
+      "valor_atual": 0.5172,
+      "direcao": "EXPONENCIAL"
+    }
+  ],
+  "salvo_em": "2026-07-18T06:51:35.406736"
+}

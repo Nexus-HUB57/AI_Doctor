@@ -31,6 +31,7 @@ class EvidenceDrivenTherapy:
     """
 
     # Mapeamento de termos nos achados para subtipos tumorais
+    # EXPANSAO v2.2: +8 canceres raros
     MAPEAMENTO_SUBTIPOS = {
         "NSCLC_KRAS_G12C": [
             "kras g12c", "sotorasib", "adagrasib", "codebreak", "kristal",
@@ -42,7 +43,51 @@ class EvidenceDrivenTherapy:
         ],
         "TRIPLO_NEGATIVO_MAMARIO": [
             "triplo negativo", "tnbc", "sacituzumabe", "eribulina",
-            " KEYNOTE-355", "ascend", "mamario", "mama", "breast"
+            "KEYNOTE-355", "ascend", "mamario", "mama", "breast"
+        ],
+        # === CANCERES RAROS ===
+        "CANCER_SEIOS_FACE": [
+            "sinonasal", "paranasal sinus", "nasal cavity", "sinonasal carcinoma",
+            "esthesioneuroblastoma", "head and neck cancer", "seios da face",
+            "cavidade nasal", "schneiderian", "intestinal-type adenocarcinoma",
+        ],
+        "CANCER_DUCTO_BILIAR": [
+            "cholangiocarcinoma", "bile duct cancer", "biliary tract",
+            "gallbladder cancer", "intrahepatic cholangiocarcinoma",
+            "extrahepatic cholangiocarcinoma", "klatskin", "hilar cholangio",
+            "fgfr2 fusion", "pemigatinib", "futibatinib", "idh1 inhibitor",
+        ],
+        "CARCINOMA_ADENOIDE_CISTICO": [
+            "adenoid cystic carcinoma", "acc salivary", "salivary gland cancer",
+            "myb-nfib", "mybl1 fusion", "perineural invasion salivary",
+            "cribriform adenocarcinoma", "salivary gland carcinoma",
+        ],
+        "CANCER_AMIGDALA": [
+            "tonsillar cancer", "oropharyngeal carcinoma", "tonsil",
+            "hpv positive oropharynx", "p16 oropharyngeal", "scchn",
+            "head and neck squamous", "oropharynx", "base of tongue",
+        ],
+        "CANCER_TROMPA_FALOPIO": [
+            "fallopian tube cancer", "tubal carcinoma", "serous tubal carcinoma",
+            "fallopian tube", "pax8 positive tubal", "wt1 positive",
+            "tubal intraepithelial carcinoma", "serous tubal intraepithelial",
+        ],
+        "CANCER_APPENDICE": [
+            "appendiceal cancer", "appendix cancer", "appendiceal neoplasm",
+            "carcinoid appendix", "neuroendocrine appendix", "pseudomyxoma",
+            "hipec appendiceal", "cytoreductive surgery appendix",
+            "mucinous appendiceal", "goblet cell carcinoid",
+        ],
+        "CANCER_PARATIREOIDE": [
+            "parathyroid carcinoma", "parathyroid cancer",
+            "malignant hyperparathyroidism", "cdc73 mutation",
+            "parathyroid hormone carcinoma", "hypercalcemia malignancy",
+            "parathyroidectomy cancer", "cinacalcet carcinoma",
+        ],
+        "CANCER_AMPULAR": [
+            "ampullary carcinoma", "ampulla of vater", "periampullary",
+            "duodenal papilla carcinoma", "ampullary adenocarcinoma",
+            "ampuloma", "ca 19-9 ampullary",
         ],
     }
 

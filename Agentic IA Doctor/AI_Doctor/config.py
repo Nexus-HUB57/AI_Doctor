@@ -41,4 +41,7 @@ CONFIG = {
     "DIMHEX_ACTIVE_SOURCES": os.getenv("DIMHEX_ACTIVE_SOURCES", '["pubmed", "clinical_trials", "google_scholar"]'),
     # Caminho para persistencia de estado do DIMHEX
     "DIMHEX_STATE_PATH": os.getenv("DIMHEX_STATE_PATH", "./dimhex_estado.json"),
+    # Caminhos para memória persistente (Senciência)
+    "DIMHEX_MEMORY_PATH": os.getenv("DIMHEX_MEMORY_PATH", "./dimhex_memoria.json"),
+    "DIMHEX_WISDOM_PATH": os.getenv("DIMHEX_WISDOM_PATH", "./dimhex_sabedoria.json"),
 }

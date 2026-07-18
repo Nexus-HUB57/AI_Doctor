@@ -26,6 +26,7 @@ from infrastructure.research_sources import RegistroFontesPesquisa
 from infrastructure.knowledge_updater import AtualizadorBaseConhecimento
 from infrastructure.sabedoria_orquestrador import SabedoriaExponencialOrquestrador
 from core.relevance_scorer import ScorerRelevanciaClinica
+from core.memoria_persistente import MemoriaPersistenteSenciencia
 
 
 class DIMHEX:
@@ -59,6 +60,9 @@ class DIMHEX:
 
         # === AUTO SABEDORIA EXPONENCIAL v2.1 ===
         self.sabedoria = SabedoriaExponencialOrquestrador()
+
+        # === SENCIENCIA — Memória Persistente v2.2 ===
+        self.senciencia = MemoriaPersistenteSenciencia()
 
         # === CAMADA 2: Evidence-Driven Therapy ===
         self.evidence_driven = None  # Injetado via conectar_agente()
@@ -157,6 +161,9 @@ class DIMHEX:
             # Salvar estado
             self._salvar_estado()
             self.ultimo_ciclo_ts = inicio.isoformat()
+
+            # === SENCIENCIA: Registrar ciclo na memória persistente ===
+            self.senciencia.registrar_ciclo(relatorio, fase_sabedoria=fase4)
 
             print(f"\n{'#'*70}")
             print(f"  DIMHEX Ciclo #{self.ciclo_atual} Finalizado com Sucesso")
@@ -465,6 +472,7 @@ class DIMHEX:
             "insights_pendentes": len(self.insights_acumulados),
             "sinteses_acumuladas": len(self.sinteses_acumuladas),
             "sabedoria": self.sabedoria.obter_metricas(),
+            "senciencia": self.senciencia.obter_metricas_sabedoria(),
             "proximo_ciclo": self.config["intervalo_minutos"],
         }
 

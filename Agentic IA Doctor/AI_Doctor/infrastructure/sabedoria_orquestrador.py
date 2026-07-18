@@ -55,12 +55,70 @@ VOCABULARIO_MEDICO = {
     "alk": 2.0, "ros1": 2.0, "braf": 2.0, "ntrk": 2.0,
     "her2": 2.0, "pi3k": 1.5, "tp53": 1.5,
 
-    # Subtipos tumorais
+    # Subtipos tumorais — ORIGINAIS
     "nsclc": 2.5, "non-small cell lung": 2.5, "lung cancer": 2.0,
     "triple negative breast": 2.5, "tnbc": 2.5, "breast cancer": 2.0,
     "colorectal cancer": 1.5, "melanoma": 1.5, "renal cell": 1.5,
 
-    # Modalidades terapêuticas
+    # === NEOPLASIA GLOBAL — EXPANSAO ===
+    # Cabeca e pescoco
+    "head and neck cancer": 2.0, "oropharyngeal": 1.8, "nasal cavity": 2.2,
+    "paranasal sinus": 2.3, "sinonasal": 2.3, "tonsillar": 2.0,
+    "hpv positive": 2.0, "hpv+": 2.0, "hpv associated": 1.8,
+    "p16": 1.8, "scchn": 2.0, "squamous cell carcinoma": 1.5,
+    "adenoid cystic carcinoma": 2.5, "acc salivary": 2.3,
+    "salivary gland": 2.0, "myb-nfib": 2.8, "perineural invasion": 2.0,
+
+    # Hepatobiliar e pancreas
+    "cholangiocarcinoma": 2.5, "biliary tract cancer": 2.3, "bile duct": 2.2,
+    "ampulla of vater": 2.5, "ampullary carcinoma": 2.5,
+    "gallbladder": 1.8, "hepatobiliary": 2.0,
+    "fgfr2": 2.5, "idh1 mutation": 2.3, "fibroblast growth factor": 2.0,
+    "abc-02": 2.0, "folfirinox": 1.8, "gemcitabine cisplatin": 2.0,
+
+    # Ginecologicos
+    "fallopian tube": 2.5, "fallopian tube cancer": 2.8,
+    "ovarian cancer": 2.0, "serous ovarian": 1.8,
+    "brca": 2.3, "brca1": 2.3, "brca2": 2.3,
+    "pax8": 1.8, "ca-125": 2.0, "he4": 1.8,
+    "parathyroid": 2.5, "parathyroid carcinoma": 2.8,
+    "hyperparathyroidism": 1.8, "pth": 2.0, "cdc73": 2.3,
+    "cinacalcet": 2.0, "calcium sensing receptor": 1.5,
+
+    # Gastrointestinais raros
+    "appendiceal": 2.5, "appendix cancer": 2.8, "appendiceal neoplasm": 2.5,
+    "carcinoid": 2.0, "neuroendocrine tumor": 2.3, "net": 1.5,
+    "pseudomyxoma peritonei": 2.5, "hipec": 2.5, "intraperitoneal chemotherapy": 2.0,
+    "chromogranin a": 2.0, "serotonin": 1.5,
+    "lu-177": 2.3, "prrt": 2.5, "dotatate": 2.3, "somatostatin receptor": 2.0,
+
+    # Oncologia geral e mecanismos
+    "neoplasia": 2.0, "malignancy": 1.8, "tumorigenesis": 2.0,
+    "carcinogenesis": 2.0, "metastasis": 2.0, "metastatic": 1.8,
+    "angiogenesis": 2.0, "lymphangiogenesis": 1.5,
+    "epithelial mesenchymal transition": 2.3, "emt": 1.5,
+    "tumor suppressor": 2.0, "oncogene": 2.0, "driver mutation": 2.2,
+    "passenger mutation": 1.5, "tumor heterogeneity": 2.0,
+    "cancer stem cell": 2.3, "tumor microenvironment": 2.5,
+    "tumor immune microenvironment": 2.3, "immune evasion": 2.0,
+    "immune escape": 2.0, "immune surveillance": 1.8,
+    "tumor mutational signature": 1.8, "mutational signature": 1.5,
+    "genomic instability": 2.0, "chromosomal instability": 1.8,
+    "dna damage response": 2.0, "dna repair": 1.8,
+    "homologous recombination": 1.8, "homologous recombination deficiency": 2.2, "hrd": 1.8,
+    "synthetic lethality": 2.3, "parp inhibitor": 2.3, "olaparib": 2.0,
+    "microbiome": 1.8, "gut microbiome": 1.5, "tumor microbiome": 2.0,
+    "epigenetic": 1.8, "methylation": 1.5, "histone modification": 1.5,
+    "non-coding rna": 1.5, "microrna": 1.5, "long non-coding rna": 1.8,
+    "tumor metabolism": 2.0, "warburg effect": 1.8, "tumor hypoxia": 2.0,
+    "hypoxia induucible factor": 2.0, "hif-1": 1.8,
+
+    # Biópsia líquida avançada
+    "exosomal dna": 2.3, "exosome": 2.0, "circulating rna": 2.0,
+    "cell-free rna": 1.8, "tumor educated platelets": 2.0,
+    "liquid biopsy biomarker": 2.5, "blood-based biomarker": 2.0,
+
+    # Modalidades terapêuticas — EXPANSAO
     "immunotherapy": 2.5, "checkpoint blockade": 2.0,
     "car-t": 3.0, "car-t cell": 3.0, "chimeric antigen": 2.5,
     "antibody drug conjugate": 2.5, "adc": 2.0,
@@ -68,6 +126,15 @@ VOCABULARIO_MEDICO = {
     "neoadjuvant": 2.0, "adjuvant": 1.5, "first-line": 1.5,
     "adaptive therapy": 2.5, "evolutionary therapy": 2.0,
     "combination therapy": 1.5, "sequential therapy": 1.5,
+    "hipec": 2.5, "cytoreductive surgery": 2.0, "debulking": 1.5,
+    "radioembolization": 2.0, "y-90": 1.8, "transarterial": 1.5,
+    "photodynamic therapy": 1.8, "laser interstitial": 1.5,
+    "oncolytic virus": 2.3, "viral therapy": 2.0,
+    "bispecific antibody": 2.5, "t-cell engager": 2.3,
+    "adoptive cell transfer": 2.3, "til therapy": 2.0,
+    "cancer vaccine": 2.5, "neoantigen vaccine": 2.8,
+    "radioimmunotherapy": 2.0, "radionuclide therapy": 2.0,
+    "lenvatinibe": 2.0, "multi-kinase inhibitor": 2.0, "anti-angiogenic": 2.0,
 
     # DIMHEX / Protocolo
     "apheresis": 2.0, "extracorporeal": 2.5, "hemodialysis": 1.5,
@@ -106,6 +173,7 @@ VOCABULARIO_MEDICO = {
 
 # N-gramas compostos para capturar relações entre termos
 BIGRAMAS_MEDICOS = [
+    # Originais
     ("immune", "checkpoint"), ("car", "cell"), ("antibody", "drug"),
     ("conjugate", "oncology"), ("tumor", "mutational"), ("circulating", "tumor"),
     ("minimal", "residual"), ("triple", "negative"), ("non-small", "cell"),
@@ -115,6 +183,23 @@ BIGRAMAS_MEDICOS = [
     ("extracorporeal", "blood"), ("immune", "potentiation"),
     ("clonal", "evolution"), ("tumor", "microenvironment"),
     ("cytokine", "engineering"), ("treg", "depletion"),
+    # === CANCERES RAROS — EXPANSAO ===
+    ("paranasal", "sinus"), ("nasal", "cavity"), ("sinonasal", "carcinoma"),
+    ("adenoid", "cystic"), ("salivary", "gland"), ("perineural", "invasion"),
+    ("myb", "nfib"), ("bile", "duct"), ("biliary", "tract"),
+    ("cholangio", "carcinoma"), ("ampulla", "vater"), ("fgfr2", "fusion"),
+    ("fallopian", "tube"), ("parathyroid", "carcinoma"), ("appendiceal", "neoplasm"),
+    ("pseudo", "myxoma"), ("neuroendocrine", "tumor"), ("somatostatin", "receptor"),
+    ("chromogranin", "serotonin"), ("lu-177", "dotatate"), ("oropharyngeal", "carcinoma"),
+    ("hpv", "positive"), ("p16", "expression"),
+    # === NEOPLASIA GERAL ===
+    ("epithelial", "mesenchymal"), ("cancer", "stem"), ("immune", "evasion"),
+    ("driver", "mutation"), ("tumor", "suppressor"), ("genomic", "instability"),
+    ("dna", "damage"), ("homologous", "recombination"), ("synthetic", "lethality"),
+    ("parp", "inhibitor"), ("tumor", "hypoxia"), ("liquid", "biopsy"),
+    ("exosomal", "dna"), ("cell-free", "rna"), ("bispecific", "antibody"),
+    ("t-cell", "engager"), ("adoptive", "cell"), ("neoantigen", "vaccine"),
+    ("oncolytic", "virus"), ("cytoreductive", "surgery"), ("hyper", "calcemia"),
 ]
 
 

@@ -24,21 +24,45 @@ class ScorerRelevanciaClinica:
     """
 
     # Biomarcadores monitorados pelo AI Doctor
+    # EXPANSAO v2.2: +8 biomarcadores especializados para canceres raros e neoplasia global
     BIOMARCADORES_SISTEMA = {
-        "ctdna": {"peso": 0.20, "variantes": ["ctDNA", "circulating tumor DNA", "ctdna", "liquid biopsy", "MRD", "minimal residual disease"]},
-        "ctc": {"peso": 0.15, "variantes": ["CTC", "circulating tumor cell", "circulating tumor cells"]},
-        "tmb": {"peso": 0.15, "variantes": ["TMB", "tumor mutational burden", "mutational load", "mutational burden"]},
-        "pdl1": {"peso": 0.15, "variantes": ["PD-L1", "PDL1", "PD1", "PD-1", "programmed death-ligand", "checkpoint inhibitor"]},
-        "tils": {"peso": 0.15, "variantes": ["TIL", "TILs", "tumor infiltrating lymphocyte", "immune infiltrate"]},
-        "ecog": {"peso": 0.10, "variantes": ["ECOG", "performance status", "functional status", "frailty"]},
-        "resistencia": {"peso": 0.10, "variantes": ["resistance", "resistant", "resistência", "clonal evolution", "acquired resistance"]},
+        # === BIOMARCADORES ORIGINAIS ===
+        "ctdna": {"peso": 0.14, "variantes": ["ctDNA", "circulating tumor DNA", "ctdna", "liquid biopsy", "MRD", "minimal residual disease", "cell-free DNA", "cfDNA", "exosomal DNA"]},
+        "ctc": {"peso": 0.10, "variantes": ["CTC", "circulating tumor cell", "circulating tumor cells"]},
+        "tmb": {"peso": 0.09, "variantes": ["TMB", "tumor mutational burden", "mutational load", "mutational burden"]},
+        "pdl1": {"peso": 0.09, "variantes": ["PD-L1", "PDL1", "PD1", "PD-1", "programmed death-ligand", "checkpoint inhibitor", "CTLA-4", "ctla4"]},
+        "tils": {"peso": 0.09, "variantes": ["TIL", "TILs", "tumor infiltrating lymphocyte", "immune infiltrate"]},
+        "ecog": {"peso": 0.06, "variantes": ["ECOG", "performance status", "functional status", "frailty"]},
+        "resistencia": {"peso": 0.07, "variantes": ["resistance", "resistant", "resistência", "clonal evolution", "acquired resistance"]},
+        # === BIOMARCADORES EXPANDIDOS — NEOPLASIA GLOBAL ===
+        "hpv_p16": {"peso": 0.07, "variantes": ["HPV", "p16", "human papillomavirus", "p16 INK4A", "HPV positive", "HPV-driven", "HPV+"]},
+        "fgfr2": {"peso": 0.06, "variantes": ["FGFR2", "fibroblast growth factor receptor 2", "FGFR2 fusion", "FGFR2 rearrangement", "pemigatinib"]},
+        "idh1": {"peso": 0.05, "variantes": ["IDH1", "isocitrate dehydrogenase 1", "IDH1 mutation", "IDH1 R132C", "ivosidenib"]},
+        "her2": {"peso": 0.06, "variantes": ["HER2", "ERBB2", "human epidermal growth factor receptor 2", "HER2 amplification", "HER2-positive", "trastuzumab"]},
+        "brca": {"peso": 0.07, "variantes": ["BRCA", "BRCA1", "BRCA2", "breast cancer gene", "homologous recombination deficiency", "HRD", "PARP inhibitor", "olaparib"]},
+        "msi": {"peso": 0.06, "variantes": ["MSI", "MSI-H", "microsatellite instability", "dMMR", "mismatch repair", "pembrolizumab MSI"]},
+        "ca125": {"peso": 0.05, "variantes": ["CA-125", "CA125", "cancer antigen 125", "MUC16", "HE4", "human epididymis protein 4", "fallopian tube"]},
+        "neuroendocrino": {"peso": 0.06, "variantes": ["chromogranin A", "CgA", "serotonin", "neuroendocrine", "somatostatin receptor", "NET", "carcinoid", "PRRT", "Lu-177", "DOTATATE"]},
+        "paratormonio": {"peso": 0.05, "variantes": ["PTH", "parathyroid hormone", "hyperparathyroidism", "calcium", "cinacalcet", "CDC73", "parathyroid carcinoma"]},
+        "ampular": {"peso": 0.05, "variantes": ["CA 19-9", "CA19-9", "ampullary", "ampulla of vater", "periampullary", "duodenal adenocarcinoma"]},
     }
 
-    # Subtipos tumorais cobertos pelo mapeador NCCN
+    # Subtipos tumorais cobertos pelo mapeador NCCN/ESMO
+    # EXPANSAO v2.2: +8 canceres raros
     SUBTIPOS_SISTEMA = {
+        # === ORIGINAIS ===
         "NSCLC_KRAS_G12C": ["KRAS G12C", "KRAS-G12C", "NSCLC", "non-small cell", "lung cancer"],
         "NSCLC_EGFR_MUTADO": ["EGFR", "epidermal growth factor receptor", "osimertinib", "TKI"],
-        "TRIPLO_NEGATIVO_MAMARIO": ["triple negative", "TNBC", "breast cancer", "sacituzumab", "nab-paclitaxel"]
+        "TRIPLO_NEGATIVO_MAMARIO": ["triple negative", "TNBC", "breast cancer", "sacituzumab", "nab-paclitaxel"],
+        # === CANCERES RAROS ===
+        "CANCER_SEIOS_FACE": ["sinonasal", "paranasal sinus", "nasal cavity", "sinonasal carcinoma", "head and neck cancer", "esthesioneuroblastoma"],
+        "CANCER_DUCTO_BILIAR": ["cholangiocarcinoma", "bile duct", "biliary tract", "gallbladder cancer", "ampulla", "cholangio"],
+        "CARCINOMA_ADENOIDE_CISTICO": ["adenoid cystic carcinoma", "ACC", "salivary gland", "MYB-NFIB", "perineural invasion"],
+        "CANCER_AMIGDALA": ["tonsillar", "oropharyngeal", "tonsil cancer", "HPV positive oropharynx", "p16 oropharynx", "SCCHN"],
+        "CANCER_TROMPA_FALOPIO": ["fallopian tube", "tubal carcinoma", "serous tubal", "PAX8 positive", "WT1 positive"],
+        "CANCER_APPENDICE": ["appendiceal", "appendix cancer", "carcinoid", "neuroendocrine appendix", "pseudomyxoma", "HIPEC"],
+        "CANCER_PARATIREOIDE": ["parathyroid carcinoma", "parathyroid cancer", "malignant hyperparathyroidism", "CDC73 mutation"],
+        "CANCER_AMPULAR": ["ampullary carcinoma", "ampulla of vater", "periampullary", "duodenal papilla"],
     }
 
     # Pesos por tipo de publicacao (prioridade para evidencia forte)

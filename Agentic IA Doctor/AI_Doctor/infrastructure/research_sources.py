@@ -104,7 +104,7 @@ class PubMedConnector(FontePesquisaBase):
         "clonal resistance evolution cancer",
         "microsatellite instability immunotherapy",
         "next generation sequencing clinical decision",
-        "precision oncology clinical trial"
+        "precision oncology clinical trial",
     ]
 
     def buscar(self, termos_busca: List[str] = None, data_inicio: str = None,

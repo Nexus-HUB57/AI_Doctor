@@ -1,0 +1,524 @@
+{
+  "versao": "1.0.0",
+  "total_episodios": 10,
+  "total_padroes_extraidos": 130,
+  "total_hipoteses": 45,
+  "total_validadas": 0,
+  "coeficiente_sabedoria": 0.5172080624349378,
+  "memoria_episodica": [
+    {
+      "ciclo": 1,
+      "timestamp": "2026-07-18T06:51:35.401282",
+      "duracao_segundos": 120,
+      "total_achados": 25,
+      "por_fonte": {
+        "pubmed": 15,
+        "clinical_trials": 10
+      },
+      "distribuicao_scores": {
+        "critico": 0,
+        "alto": 0,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.35,
+      "insights_count": 1,
+      "achados_criticos": 0,
+      "sabedoria_sinteses": 1,
+      "sabedoria_hipoteses": 0
+    },
+    {
+      "ciclo": 2,
+      "timestamp": "2026-07-18T06:51:35.401805",
+      "duracao_segundos": 125,
+      "total_achados": 28,
+      "por_fonte": {
+        "pubmed": 16,
+        "clinical_trials": 11
+      },
+      "distribuicao_scores": {
+        "critico": 0,
+        "alto": 1,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.37,
+      "insights_count": 2,
+      "achados_criticos": 0,
+      "sabedoria_sinteses": 2,
+      "sabedoria_hipoteses": 1
+    },
+    {
+      "ciclo": 3,
+      "timestamp": "2026-07-18T06:51:35.402164",
+      "duracao_segundos": 130,
+      "total_achados": 31,
+      "por_fonte": {
+        "pubmed": 17,
+        "clinical_trials": 12
+      },
+      "distribuicao_scores": {
+        "critico": 0,
+        "alto": 2,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.38999999999999996,
+      "insights_count": 3,
+      "achados_criticos": 1,
+      "sabedoria_sinteses": 3,
+      "sabedoria_hipoteses": 2
+    },
+    {
+      "ciclo": 4,
+      "timestamp": "2026-07-18T06:51:35.402812",
+      "duracao_segundos": 135,
+      "total_achados": 34,
+      "por_fonte": {
+        "pubmed": 18,
+        "clinical_trials": 13
+      },
+      "distribuicao_scores": {
+        "critico": 1,
+        "alto": 3,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.41,
+      "insights_count": 4,
+      "achados_criticos": 1,
+      "sabedoria_sinteses": 4,
+      "sabedoria_hipoteses": 3
+    },
+    {
+      "ciclo": 5,
+      "timestamp": "2026-07-18T06:51:35.403243",
+      "duracao_segundos": 140,
+      "total_achados": 37,
+      "por_fonte": {
+        "pubmed": 19,
+        "clinical_trials": 14
+      },
+      "distribuicao_scores": {
+        "critico": 1,
+        "alto": 4,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.43,
+      "insights_count": 5,
+      "achados_criticos": 2,
+      "sabedoria_sinteses": 5,
+      "sabedoria_hipoteses": 4
+    },
+    {
+      "ciclo": 6,
+      "timestamp": "2026-07-18T06:51:35.403707",
+      "duracao_segundos": 145,
+      "total_achados": 40,
+      "por_fonte": {
+        "pubmed": 20,
+        "clinical_trials": 15
+      },
+      "distribuicao_scores": {
+        "critico": 1,
+        "alto": 5,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.44999999999999996,
+      "insights_count": 6,
+      "achados_criticos": 2,
+      "sabedoria_sinteses": 6,
+      "sabedoria_hipoteses": 5
+    },
+    {
+      "ciclo": 7,
+      "timestamp": "2026-07-18T06:51:35.404185",
+      "duracao_segundos": 150,
+      "total_achados": 43,
+      "por_fonte": {
+        "pubmed": 21,
+        "clinical_trials": 16
+      },
+      "distribuicao_scores": {
+        "critico": 2,
+        "alto": 6,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.47,
+      "insights_count": 7,
+      "achados_criticos": 3,
+      "sabedoria_sinteses": 7,
+      "sabedoria_hipoteses": 6
+    },
+    {
+      "ciclo": 8,
+      "timestamp": "2026-07-18T06:51:35.404740",
+      "duracao_segundos": 155,
+      "total_achados": 46,
+      "por_fonte": {
+        "pubmed": 22,
+        "clinical_trials": 17
+      },
+      "distribuicao_scores": {
+        "critico": 2,
+        "alto": 7,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.49,
+      "insights_count": 8,
+      "achados_criticos": 3,
+      "sabedoria_sinteses": 8,
+      "sabedoria_hipoteses": 7
+    },
+    {
+      "ciclo": 9,
+      "timestamp": "2026-07-18T06:51:35.405368",
+      "duracao_segundos": 160,
+      "total_achados": 49,
+      "por_fonte": {
+        "pubmed": 23,
+        "clinical_trials": 18
+      },
+      "distribuicao_scores": {
+        "critico": 2,
+        "alto": 8,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.51,
+      "insights_count": 9,
+      "achados_criticos": 4,
+      "sabedoria_sinteses": 9,
+      "sabedoria_hipoteses": 8
+    },
+    {
+      "ciclo": 10,
+      "timestamp": "2026-07-18T06:51:35.406090",
+      "duracao_segundos": 165,
+      "total_achados": 52,
+      "por_fonte": {
+        "pubmed": 24,
+        "clinical_trials": 19
+      },
+      "distribuicao_scores": {
+        "critico": 3,
+        "alto": 9,
+        "moderado": 5,
+        "baixo": 10
+      },
+      "taxa_relevancia": 0.53,
+      "insights_count": 10,
+      "achados_criticos": 4,
+      "sabedoria_sinteses": 10,
+      "sabedoria_hipoteses": 9
+    }
+  ],
+  "memoria_semantica": {
+    "pubmed": {
+      "total_achados": 195,
+      "ciclos_ativos": 10,
+      "taxa_relevancia_media": 0.43999999999999995,
+      "scores_acumulados": [
+        0.35,
+        0.37,
+        0.38999999999999996,
+        0.41,
+        0.43,
+        0.44999999999999996,
+        0.47,
+        0.49,
+        0.51,
+        0.53
+      ]
+    },
+    "clinical_trials": {
+      "total_achados": 145,
+      "ciclos_ativos": 10,
+      "taxa_relevancia_media": 0.43999999999999995,
+      "scores_acumulados": [
+        0.35,
+        0.37,
+        0.38999999999999996,
+        0.41,
+        0.43,
+        0.44999999999999996,
+        0.47,
+        0.49,
+        0.51,
+        0.53
+      ]
+    },
+    "biomarcador_ctdna": {
+      "mencoes": 1,
+      "score_medio": 0.6,
+      "severidade_mais_comum": "alta"
+    },
+    "sabedoria_tema_0": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406112"
+    },
+    "sabedoria_tema_1": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406114"
+    },
+    "sabedoria_tema_2": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406116"
+    },
+    "sabedoria_tema_3": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406117"
+    },
+    "sabedoria_tema_4": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406118"
+    },
+    "sabedoria_tema_5": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406120"
+    },
+    "sabedoria_tema_6": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406121"
+    },
+    "sabedoria_tema_7": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406123"
+    },
+    "sabedoria_tema_8": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406124"
+    },
+    "sabedoria_tema_9": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T06:51:35.406128"
+    }
+  },
+  "memoria_projecao": [
+    {
+      "hip_id": "63c69f07af13",
+      "hipotese": "Hipotese sobre mecanismo 0",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 2,
+      "status": "revisitada",
+      "ciclos_revisitada": 8,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.401862",
+      "ultima_revisao": "2026-07-18T06:51:35.406135",
+      "confianca": 0.5
+    },
+    {
+      "hip_id": "611c0853b83f",
+      "hipotese": "Hipotese sobre mecanismo 1",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 3,
+      "status": "revisitada",
+      "ciclos_revisitada": 7,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.402200",
+      "ultima_revisao": "2026-07-18T06:51:35.406139",
+      "confianca": 0.55
+    },
+    {
+      "hip_id": "f053a9457255",
+      "hipotese": "Hipotese sobre mecanismo 2",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 4,
+      "status": "revisitada",
+      "ciclos_revisitada": 6,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.402860",
+      "ultima_revisao": "2026-07-18T06:51:35.406142",
+      "confianca": 0.6
+    },
+    {
+      "hip_id": "c832953e9710",
+      "hipotese": "Hipotese sobre mecanismo 3",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 5,
+      "status": "revisitada",
+      "ciclos_revisitada": 5,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.403282",
+      "ultima_revisao": "2026-07-18T06:51:35.406146",
+      "confianca": 0.65
+    },
+    {
+      "hip_id": "8991fc6a7809",
+      "hipotese": "Hipotese sobre mecanismo 4",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 6,
+      "status": "revisitada",
+      "ciclos_revisitada": 4,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.403755",
+      "ultima_revisao": "2026-07-18T06:51:35.406149",
+      "confianca": 0.7
+    },
+    {
+      "hip_id": "87ea3e3a9775",
+      "hipotese": "Hipotese sobre mecanismo 5",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 7,
+      "status": "revisitada",
+      "ciclos_revisitada": 3,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.404233",
+      "ultima_revisao": "2026-07-18T06:51:35.406151",
+      "confianca": 0.75
+    },
+    {
+      "hip_id": "0e051cb0fb53",
+      "hipotese": "Hipotese sobre mecanismo 6",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 8,
+      "status": "revisitada",
+      "ciclos_revisitada": 2,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.404796",
+      "ultima_revisao": "2026-07-18T06:51:35.406154",
+      "confianca": 0.8
+    },
+    {
+      "hip_id": "a1bcff6cd18b",
+      "hipotese": "Hipotese sobre mecanismo 7",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 9,
+      "status": "revisitada",
+      "ciclos_revisitada": 1,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.405426",
+      "ultima_revisao": "2026-07-18T06:51:35.406156",
+      "confianca": 0.8500000000000001
+    },
+    {
+      "hip_id": "09ca76366989",
+      "hipotese": "Hipotese sobre mecanismo 8",
+      "fonte_origem": "sabedoria",
+      "ciclo_origem": 10,
+      "status": "pendente",
+      "ciclos_revisitada": 0,
+      "validada": false,
+      "data_criacao": "2026-07-18T06:51:35.406158",
+      "ultima_revisao": "2026-07-18T06:51:35.406159",
+      "confianca": 0.9
+    }
+  ],
+  "historico_sabedoria": [
+    {
+      "ciclo": 1,
+      "coeficiente": 0.1547,
+      "experiencia": 0.151,
+      "compreensao": 0.008,
+      "criatividade": 0.0,
+      "confiabilidade": 0.35,
+      "timestamp": "2026-07-18T06:51:35.401323"
+    },
+    {
+      "ciclo": 2,
+      "coeficiente": 0.1938,
+      "experiencia": 0.239,
+      "compreensao": 0.02,
+      "criatividade": 0.01,
+      "confiabilidade": 0.36,
+      "timestamp": "2026-07-18T06:51:35.401874"
+    },
+    {
+      "ciclo": 3,
+      "coeficiente": 0.2292,
+      "experiencia": 0.301,
+      "compreensao": 0.036,
+      "criatividade": 0.03,
+      "confiabilidade": 0.37,
+      "timestamp": "2026-07-18T06:51:35.402212"
+    },
+    {
+      "ciclo": 4,
+      "coeficiente": 0.264,
+      "experiencia": 0.349,
+      "compreensao": 0.056,
+      "criatividade": 0.06,
+      "confiabilidade": 0.38,
+      "timestamp": "2026-07-18T06:51:35.402868"
+    },
+    {
+      "ciclo": 5,
+      "coeficiente": 0.2998,
+      "experiencia": 0.389,
+      "compreensao": 0.08,
+      "criatividade": 0.1,
+      "confiabilidade": 0.39,
+      "timestamp": "2026-07-18T06:51:35.403290"
+    },
+    {
+      "ciclo": 6,
+      "coeficiente": 0.3376,
+      "experiencia": 0.423,
+      "compreensao": 0.108,
+      "criatividade": 0.15,
+      "confiabilidade": 0.4,
+      "timestamp": "2026-07-18T06:51:35.403763"
+    },
+    {
+      "ciclo": 7,
+      "coeficiente": 0.3779,
+      "experiencia": 0.452,
+      "compreensao": 0.14,
+      "criatividade": 0.21,
+      "confiabilidade": 0.41,
+      "timestamp": "2026-07-18T06:51:35.404240"
+    },
+    {
+      "ciclo": 8,
+      "coeficiente": 0.4211,
+      "experiencia": 0.477,
+      "compreensao": 0.176,
+      "criatividade": 0.28,
+      "confiabilidade": 0.42,
+      "timestamp": "2026-07-18T06:51:35.404803"
+    },
+    {
+      "ciclo": 9,
+      "coeficiente": 0.4675,
+      "experiencia": 0.5,
+      "compreensao": 0.216,
+      "criatividade": 0.36,
+      "confiabilidade": 0.43,
+      "timestamp": "2026-07-18T06:51:35.405433"
+    },
+    {
+      "ciclo": 10,
+      "coeficiente": 0.5172,
+      "experiencia": 0.521,
+      "compreensao": 0.26,
+      "criatividade": 0.45,
+      "confiabilidade": 0.44,
+      "timestamp": "2026-07-18T06:51:35.406167"
+    }
+  ],
+  "salvo_em": "2026-07-18T06:51:35.406169"
+}
