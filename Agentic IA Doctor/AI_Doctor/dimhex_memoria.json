@@ -1,0 +1,140 @@
+{
+  "versao": "2.0.0",
+  "total_episodios": 3,
+  "total_padroes_extraidos": 10,
+  "total_hipoteses": 0,
+  "total_validadas": 0,
+  "coeficiente_sabedoria": 0.24390125600438098,
+  "memoria_episodica": [
+    {
+      "ciclo": 999,
+      "timestamp": "2026-07-18T14:34:27.136576",
+      "duracao_segundos": 45.2,
+      "total_achados": 25,
+      "por_fonte": {
+        "pubmed": 15,
+        "clinical_trials": 10
+      },
+      "distribuicao_scores": {
+        "critico": 2,
+        "alto": 5,
+        "moderado": 8,
+        "baixo": 7,
+        "irrelevante": 3
+      },
+      "taxa_relevancia": 0.6,
+      "insights_count": 1,
+      "achados_criticos": 0,
+      "sabedoria_sinteses": 1,
+      "sabedoria_hipoteses": 0
+    },
+    {
+      "ciclo": 1,
+      "timestamp": "2026-07-18T14:36:34.304040",
+      "duracao_segundos": 30,
+      "total_achados": 10,
+      "por_fonte": {
+        "pubmed": 10
+      },
+      "distribuicao_scores": {
+        "critico": 1,
+        "alto": 2,
+        "moderado": 3,
+        "baixo": 2,
+        "irrelevante": 2
+      },
+      "taxa_relevancia": 0.6,
+      "insights_count": 1,
+      "achados_criticos": 0,
+      "sabedoria_sinteses": 1,
+      "sabedoria_hipoteses": 0
+    },
+    {
+      "ciclo": 1,
+      "timestamp": "2026-07-18T14:36:38.007168",
+      "duracao_segundos": 30,
+      "total_achados": 10,
+      "por_fonte": {
+        "pubmed": 10
+      },
+      "distribuicao_scores": {
+        "critico": 1,
+        "alto": 2,
+        "moderado": 3,
+        "baixo": 2,
+        "irrelevante": 2
+      },
+      "taxa_relevancia": 0.6,
+      "insights_count": 1,
+      "achados_criticos": 0,
+      "sabedoria_sinteses": 1,
+      "sabedoria_hipoteses": 0
+    }
+  ],
+  "memoria_semantica": {
+    "pubmed": {
+      "total_achados": 35,
+      "ciclos_ativos": 3,
+      "taxa_relevancia_media": 0.6,
+      "scores_acumulados": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "clinical_trials": {
+      "total_achados": 10,
+      "ciclos_ativos": 1,
+      "taxa_relevancia_media": 0.6,
+      "scores_acumulados": [
+        0.6
+      ]
+    },
+    "biomarcador_ctDNA": {
+      "mencoes": 1,
+      "score_medio": 0.7,
+      "severidade_mais_comum": "alta"
+    },
+    "sabedoria_ctDNA": {
+      "tipo": "sintese",
+      "ocorrencias": 1,
+      "fontes_conectadas": "set()",
+      "ultima_atualizacao": "2026-07-18T14:36:38.007186"
+    }
+  },
+  "memoria_projecao": [],
+  "memoria_profunda": [],
+  "historico_sabedoria": [
+    {
+      "ciclo": 1,
+      "coeficiente": 0.1943,
+      "experiencia": 0.151,
+      "compreensao": 0.008,
+      "criatividade": 0.0,
+      "confiabilidade": 0.6,
+      "profundidade": 0.0,
+      "timestamp": "2026-07-18T14:34:27.136618"
+    },
+    {
+      "ciclo": 2,
+      "coeficiente": 0.2225,
+      "experiencia": 0.239,
+      "compreensao": 0.014,
+      "criatividade": 0.0,
+      "confiabilidade": 0.6,
+      "profundidade": 0.0,
+      "timestamp": "2026-07-18T14:36:34.304076"
+    },
+    {
+      "ciclo": 3,
+      "coeficiente": 0.2439,
+      "experiencia": 0.301,
+      "compreensao": 0.02,
+      "criatividade": 0.0,
+      "confiabilidade": 0.6,
+      "profundidade": 0.0,
+      "timestamp": "2026-07-18T14:36:38.007200"
+    }
+  ],
+  "salvo_em": "2026-07-18T14:36:38.007202"
+}

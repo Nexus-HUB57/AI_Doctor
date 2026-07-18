@@ -1,0 +1,5490 @@
+{
+  "resumo": {
+    "data_execucao": "2026-07-18T04:47:53.089414",
+    "versao_sistema": "DIMHEX v2.1",
+    "n_canceres_testados": 8,
+    "testes_por_cancer": [
+      "Scoring 5D",
+      "Motor Probabilidade",
+      "Otimizador MO",
+      "CVM",
+      "Monte Carlo"
+    ],
+    "resumo_por_cancer": [
+      {
+        "id": 1,
+        "nome": "Cancer dos Seios da Face",
+        "score_medio": 0.2577,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.2013,
+        "P_cura_L1": 0.0397,
+        "P_tox_L1": 0.216,
+        "IT_L1": 0.932,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.793,
+        "taxa_melhora_mc": 0.5
+      },
+      {
+        "id": 2,
+        "nome": "Cancer do Ducto Biliar",
+        "score_medio": 0.2496,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.1694,
+        "P_cura_L1": 0.028,
+        "P_tox_L1": 0.2008,
+        "IT_L1": 0.844,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.424,
+        "taxa_melhora_mc": 0.5667
+      },
+      {
+        "id": 3,
+        "nome": "Carcinoma Adenoide Cistico",
+        "score_medio": 0.244,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.2125,
+        "P_cura_L1": 0.044,
+        "P_tox_L1": 0.2011,
+        "IT_L1": 1.057,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.949,
+        "taxa_melhora_mc": 0.6
+      },
+      {
+        "id": 4,
+        "nome": "Cancer de Amigdala",
+        "score_medio": 0.2402,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.2291,
+        "P_cura_L1": 0.0484,
+        "P_tox_L1": 0.1945,
+        "IT_L1": 1.178,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.915,
+        "taxa_melhora_mc": 0.6
+      },
+      {
+        "id": 5,
+        "nome": "Cancer de Trompa de Falopio",
+        "score_medio": 0.2423,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.1972,
+        "P_cura_L1": 0.0361,
+        "P_tox_L1": 0.2084,
+        "IT_L1": 0.946,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.578,
+        "taxa_melhora_mc": 0.4333
+      },
+      {
+        "id": 6,
+        "nome": "Cancer de Apendice",
+        "score_medio": 0.2612,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.2278,
+        "P_cura_L1": 0.0476,
+        "P_tox_L1": 0.2051,
+        "IT_L1": 1.111,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 1.029,
+        "taxa_melhora_mc": 0.5667
+      },
+      {
+        "id": 7,
+        "nome": "Cancer de Paratireoide",
+        "score_medio": 0.2513,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.1966,
+        "P_cura_L1": 0.0397,
+        "P_tox_L1": 0.2077,
+        "IT_L1": 0.947,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.935,
+        "taxa_melhora_mc": 0.4667
+      },
+      {
+        "id": 8,
+        "nome": "Cancer Ampular",
+        "score_medio": 0.2518,
+        "taxa_relevancia": 0.0,
+        "P_resposta_L1": 0.1909,
+        "P_cura_L1": 0.0327,
+        "P_tox_L1": 0.1962,
+        "IT_L1": 0.973,
+        "acao_otima": "INTENSIFICAR",
+        "indice_cvm": 83.0,
+        "classificacao_cvm": "FORTEMENTE_SUPORTADA",
+        "IT_monte_carlo": 0.465,
+        "taxa_melhora_mc": 0.5
+      }
+    ]
+  },
+  "resultados_detalhados": [
+    {
+      "id": 1,
+      "nome": "Cancer dos Seios da Face",
+      "nome_cientifico": "Carcinoma de Cavidade Nasal e Seios Paranasais",
+      "localizacao": "Cavidade nasal e seios paranasais",
+      "incidencia_usa": "~2.000/ano",
+      "descricao": "Cancer que afeta a cavidade nasal e a regiao dos seios paranasais, espacos abertos acima e atras do nariz. Pode causar congestao nasal persistente e e mais comum na cavidade nasal do que nos seios paranasais.",
+      "desafios": "Diagnostico complexo devido a variedade de tipos de cancer em cabeca e pescoco.",
+      "biomarcadores": {
+        "ctDNA": 0.35,
+        "CTC": 8,
+        "TMB": 4.5,
+        "PD_L1": 0.15,
+        "TILs": 0.08
+      },
+      "ecog": 1,
+      "reserva_fisiologica": 0.75,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2577,
+        "max_score": 0.31,
+        "min_score": 0.2125,
+        "desvio_padrao": 0.0294,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_1_0",
+            "score_final": 0.2725,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.73,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.3,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.73)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_1_1",
+            "score_final": 0.2125,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.1,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_1_2",
+            "score_final": 0.2975,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.89,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.1,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.89)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_1_3",
+            "score_final": 0.2265,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.63,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.1,
+              "impacto": 0.09
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.63)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_1_4",
+            "score_final": 0.2125,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.1,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.2013,
+          "IC95_inf": 0.1457,
+          "IC95_sup": 0.2568,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.216,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.932,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9723,
+          "fator_fisiologico": 0.828,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.2013,
+          "IC95_inf": 0.1457,
+          "IC95_sup": 0.2568,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1358,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.482,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9723,
+          "fator_fisiologico": 0.828,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.2013,
+          "IC95_inf": 0.1457,
+          "IC95_sup": 0.2568,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2778,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.725,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9723,
+          "fator_fisiologico": 0.828,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.5185,
+        "utilidade_cura": 0.2085,
+        "utilidade_toxicidade": 0.1768,
+        "utilidade_qualidade": 0.8363,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0779,
+        "p_tox_projetada": 0.315,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.518). P(cura) projetada: 7.8% com P(tox): 31.5%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.5185,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.5034,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.4935,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4783,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.4973,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.3545,
+            "dose": 0.3,
+            "P_resposta": 0.1997,
+            "P_cura": 0.0438,
+            "P_tox": 0.2134,
+            "indice_terapeutico": 0.936,
+            "eficacia_clonal": 0.9775,
+            "ecog": 0,
+            "reserva_media": 0.7175,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.3341,
+            "dose": 0.3,
+            "P_resposta": 0.2158,
+            "P_cura": 0.0515,
+            "P_tox": 0.1835,
+            "indice_terapeutico": 1.176,
+            "eficacia_clonal": 0.975,
+            "ecog": 0,
+            "reserva_media": 0.7025,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.3434,
+            "dose": 0.3,
+            "P_resposta": 0.2142,
+            "P_cura": 0.055,
+            "P_tox": 0.1816,
+            "indice_terapeutico": 1.18,
+            "eficacia_clonal": 0.9722,
+            "ecog": 0,
+            "reserva_media": 0.6875,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.3406,
+            "dose": 0.3,
+            "P_resposta": 0.2128,
+            "P_cura": 0.0588,
+            "P_tox": 0.1796,
+            "indice_terapeutico": 1.185,
+            "eficacia_clonal": 0.9694,
+            "ecog": 0,
+            "reserva_media": 0.6725,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.365,
+            "dose": 0.3,
+            "P_resposta": 0.2111,
+            "P_cura": 0.0614,
+            "P_tox": 0.1776,
+            "indice_terapeutico": 1.189,
+            "eficacia_clonal": 0.9664,
+            "ecog": 0,
+            "reserva_media": 0.6575,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.3428,
+            "dose": 0.3,
+            "P_resposta": 0.2099,
+            "P_cura": 0.0659,
+            "P_tox": 0.1756,
+            "indice_terapeutico": 1.195,
+            "eficacia_clonal": 0.9633,
+            "ecog": 0,
+            "reserva_media": 0.6425,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.3587,
+            "dose": 0.3,
+            "P_resposta": 0.2082,
+            "P_cura": 0.0686,
+            "P_tox": 0.1736,
+            "indice_terapeutico": 1.199,
+            "eficacia_clonal": 0.96,
+            "ecog": 0,
+            "reserva_media": 0.6275,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.3852,
+            "dose": 0.3,
+            "P_resposta": 0.2065,
+            "P_cura": 0.0707,
+            "P_tox": 0.1716,
+            "indice_terapeutico": 1.203,
+            "eficacia_clonal": 0.9566,
+            "ecog": 0,
+            "reserva_media": 0.6125,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.3721,
+            "dose": 0.3,
+            "P_resposta": 0.2052,
+            "P_cura": 0.0746,
+            "P_tox": 0.1696,
+            "indice_terapeutico": 1.21,
+            "eficacia_clonal": 0.9529,
+            "ecog": 0,
+            "reserva_media": 0.5975,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.3423,
+            "dose": 0.3,
+            "P_resposta": 0.204,
+            "P_cura": 0.0793,
+            "P_tox": 0.1676,
+            "indice_terapeutico": 1.217,
+            "eficacia_clonal": 0.9491,
+            "ecog": 0,
+            "reserva_media": 0.5825,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.3439,
+            "dose": 0.3,
+            "P_resposta": 0.2026,
+            "P_cura": 0.0785,
+            "P_tox": 0.1656,
+            "indice_terapeutico": 1.223,
+            "eficacia_clonal": 0.9452,
+            "ecog": 0,
+            "reserva_media": 0.5675,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.358,
+            "dose": 0.3,
+            "P_resposta": 0.201,
+            "P_cura": 0.077,
+            "P_tox": 0.1637,
+            "indice_terapeutico": 1.228,
+            "eficacia_clonal": 0.941,
+            "ecog": 0,
+            "reserva_media": 0.5525,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.3208,
+            "dose": 0.3,
+            "P_resposta": 0.1999,
+            "P_cura": 0.078,
+            "P_tox": 0.1617,
+            "indice_terapeutico": 1.236,
+            "eficacia_clonal": 0.9366,
+            "ecog": 0,
+            "reserva_media": 0.5375,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.3349,
+            "dose": 0.3,
+            "P_resposta": 0.1983,
+            "P_cura": 0.0765,
+            "P_tox": 0.1597,
+            "indice_terapeutico": 1.242,
+            "eficacia_clonal": 0.932,
+            "ecog": 0,
+            "reserva_media": 0.5225,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.3586,
+            "dose": 0.3,
+            "P_resposta": 0.1966,
+            "P_cura": 0.0745,
+            "P_tox": 0.1577,
+            "indice_terapeutico": 1.247,
+            "eficacia_clonal": 0.9271,
+            "ecog": 0,
+            "reserva_media": 0.5075,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.3478,
+            "dose": 0.3,
+            "P_resposta": 0.1952,
+            "P_cura": 0.0742,
+            "P_tox": 0.1557,
+            "indice_terapeutico": 1.254,
+            "eficacia_clonal": 0.922,
+            "ecog": 1,
+            "reserva_media": 0.4925,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.3839,
+            "dose": 0.3,
+            "P_resposta": 0.1779,
+            "P_cura": 0.0659,
+            "P_tox": 0.1768,
+            "indice_terapeutico": 1.006,
+            "eficacia_clonal": 0.9167,
+            "ecog": 2,
+            "reserva_media": 0.4775,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.3392,
+            "dose": 0.3,
+            "P_resposta": 0.1501,
+            "P_cura": 0.0569,
+            "P_tox": 0.1972,
+            "indice_terapeutico": 0.761,
+            "eficacia_clonal": 0.911,
+            "ecog": 3,
+            "reserva_media": 0.4625,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.3317,
+            "dose": 0.3,
+            "P_resposta": 0.105,
+            "P_cura": 0.0398,
+            "P_tox": 0.2171,
+            "indice_terapeutico": 0.484,
+            "eficacia_clonal": 0.9051,
+            "ecog": 4,
+            "reserva_media": 0.4475,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.3344,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0184,
+            "P_tox": 0.2364,
+            "indice_terapeutico": 0.206,
+            "eficacia_clonal": 0.8989,
+            "ecog": 4,
+            "reserva_media": 0.4325,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.3502,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0181,
+            "P_tox": 0.2332,
+            "indice_terapeutico": 0.208,
+            "eficacia_clonal": 0.8924,
+            "ecog": 4,
+            "reserva_media": 0.4175,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.3472,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.018,
+            "P_tox": 0.23,
+            "indice_terapeutico": 0.211,
+            "eficacia_clonal": 0.8855,
+            "ecog": 4,
+            "reserva_media": 0.4025,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.389,
+            "dose": 0.3,
+            "P_resposta": 0.0485,
+            "P_cura": 0.0174,
+            "P_tox": 0.2268,
+            "indice_terapeutico": 0.214,
+            "eficacia_clonal": 0.8783,
+            "ecog": 4,
+            "reserva_media": 0.3875,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.343,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0179,
+            "P_tox": 0.2237,
+            "indice_terapeutico": 0.217,
+            "eficacia_clonal": 0.8708,
+            "ecog": 4,
+            "reserva_media": 0.3725,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.351,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0177,
+            "P_tox": 0.2205,
+            "indice_terapeutico": 0.22,
+            "eficacia_clonal": 0.8628,
+            "ecog": 4,
+            "reserva_media": 0.3575,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.3655,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0174,
+            "P_tox": 0.2173,
+            "indice_terapeutico": 0.224,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.3425,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.3481,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0175,
+            "P_tox": 0.2141,
+            "indice_terapeutico": 0.227,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.3275,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.3597,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0172,
+            "P_tox": 0.2109,
+            "indice_terapeutico": 0.23,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.3125,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.3569,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0171,
+            "P_tox": 0.2077,
+            "indice_terapeutico": 0.234,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.2975,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.3647,
+            "dose": 0.3,
+            "P_resposta": 0.0486,
+            "P_cura": 0.0169,
+            "P_tox": 0.2046,
+            "indice_terapeutico": 0.238,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.2825,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.1997,
+          "P_resposta_final": 0.0486,
+          "variacao_P_resposta": -0.1511,
+          "P_cura_final": 0.0169,
+          "ciclos_melhora_ctDNA": 15,
+          "taxa_melhora": 0.5,
+          "reserva_final": 0.2825,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.793,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 2,
+      "nome": "Cancer do Ducto Biliar",
+      "nome_cientifico": "Colangiocarcinoma",
+      "localizacao": "Ductos biliares (intra-hepatico e extra-hepatico)",
+      "incidencia_usa": "~8.000/ano",
+      "descricao": "Afeta os tubos que transportam a bile do figado para o intestino delgado. Existem dois tipos: intra-hepatico (dentro do figado) e extra-hepatico (fora do figado). Mais comum no Sudeste Asiatico.",
+      "desafios": "Raridade e proximidade com orgaos vitais levam a diagnostico erroneo e incerteza sobre prevalencia real.",
+      "biomarcadores": {
+        "ctDNA": 0.55,
+        "CTC": 15,
+        "TMB": 3.2,
+        "PD_L1": 0.1,
+        "TILs": 0.05
+      },
+      "ecog": 1,
+      "reserva_fisiologica": 0.65,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2496,
+        "max_score": 0.2925,
+        "min_score": 0.2025,
+        "desvio_padrao": 0.0277,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_2_0",
+            "score_final": 0.2565,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.81,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.09
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.81)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_2_1",
+            "score_final": 0.2425,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.79,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.79)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_2_2",
+            "score_final": 0.2365,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.73,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.09
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.73)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_2_3",
+            "score_final": 0.2425,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.79,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.79)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_2_4",
+            "score_final": 0.2925,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.99,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.99)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.1694,
+          "IC95_inf": 0.1174,
+          "IC95_sup": 0.2214,
+          "P_cura": 0.028,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2008,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.844,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8563,
+          "fator_fisiologico": 0.7912,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.1694,
+          "IC95_inf": 0.1174,
+          "IC95_sup": 0.2214,
+          "P_cura": 0.028,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1262,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.342,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8563,
+          "fator_fisiologico": 0.7912,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.1694,
+          "IC95_inf": 0.1174,
+          "IC95_sup": 0.2214,
+          "P_cura": 0.028,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2582,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.656,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8563,
+          "fator_fisiologico": 0.7912,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.4764,
+        "utilidade_cura": 0.1802,
+        "utilidade_toxicidade": 0.1642,
+        "utilidade_qualidade": 0.6777,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0662,
+        "p_tox_projetada": 0.2998,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.476). P(cura) projetada: 6.6% com P(tox): 30.0%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.4764,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.4597,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.449,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4353,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.4527,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.5294,
+            "dose": 0.3,
+            "P_resposta": 0.1691,
+            "P_cura": 0.0317,
+            "P_tox": 0.1985,
+            "indice_terapeutico": 0.852,
+            "eficacia_clonal": 0.9775,
+            "ecog": 1,
+            "reserva_media": 0.6198,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.5862,
+            "dose": 0.3,
+            "P_resposta": 0.1654,
+            "P_cura": 0.032,
+            "P_tox": 0.1962,
+            "indice_terapeutico": 0.843,
+            "eficacia_clonal": 0.975,
+            "ecog": 1,
+            "reserva_media": 0.6048,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.5843,
+            "dose": 0.3,
+            "P_resposta": 0.1643,
+            "P_cura": 0.0344,
+            "P_tox": 0.1939,
+            "indice_terapeutico": 0.847,
+            "eficacia_clonal": 0.9722,
+            "ecog": 1,
+            "reserva_media": 0.5898,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.5059,
+            "dose": 0.3,
+            "P_resposta": 0.1665,
+            "P_cura": 0.0396,
+            "P_tox": 0.1916,
+            "indice_terapeutico": 0.869,
+            "eficacia_clonal": 0.9694,
+            "ecog": 1,
+            "reserva_media": 0.5748,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.5096,
+            "dose": 0.3,
+            "P_resposta": 0.1651,
+            "P_cura": 0.0419,
+            "P_tox": 0.1893,
+            "indice_terapeutico": 0.872,
+            "eficacia_clonal": 0.9664,
+            "ecog": 1,
+            "reserva_media": 0.5598,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.5028,
+            "dose": 0.3,
+            "P_resposta": 0.1642,
+            "P_cura": 0.0445,
+            "P_tox": 0.187,
+            "indice_terapeutico": 0.878,
+            "eficacia_clonal": 0.9633,
+            "ecog": 1,
+            "reserva_media": 0.5448,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.6011,
+            "dose": 0.3,
+            "P_resposta": 0.1589,
+            "P_cura": 0.0427,
+            "P_tox": 0.1847,
+            "indice_terapeutico": 0.86,
+            "eficacia_clonal": 0.96,
+            "ecog": 1,
+            "reserva_media": 0.5298,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.5524,
+            "dose": 0.3,
+            "P_resposta": 0.1598,
+            "P_cura": 0.0469,
+            "P_tox": 0.1825,
+            "indice_terapeutico": 0.876,
+            "eficacia_clonal": 0.9566,
+            "ecog": 1,
+            "reserva_media": 0.5148,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.5486,
+            "dose": 0.3,
+            "P_resposta": 0.1588,
+            "P_cura": 0.0492,
+            "P_tox": 0.1802,
+            "indice_terapeutico": 0.881,
+            "eficacia_clonal": 0.9529,
+            "ecog": 2,
+            "reserva_media": 0.4998,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.5653,
+            "dose": 0.3,
+            "P_resposta": 0.133,
+            "P_cura": 0.0428,
+            "P_tox": 0.2011,
+            "indice_terapeutico": 0.661,
+            "eficacia_clonal": 0.9491,
+            "ecog": 3,
+            "reserva_media": 0.4848,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.5235,
+            "dose": 0.3,
+            "P_resposta": 0.0941,
+            "P_cura": 0.0311,
+            "P_tox": 0.2214,
+            "indice_terapeutico": 0.425,
+            "eficacia_clonal": 0.9452,
+            "ecog": 4,
+            "reserva_media": 0.4698,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.545,
+            "dose": 0.3,
+            "P_resposta": 0.0429,
+            "P_cura": 0.0139,
+            "P_tox": 0.2411,
+            "indice_terapeutico": 0.178,
+            "eficacia_clonal": 0.941,
+            "ecog": 4,
+            "reserva_media": 0.4548,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.5175,
+            "dose": 0.3,
+            "P_resposta": 0.0432,
+            "P_cura": 0.0142,
+            "P_tox": 0.2379,
+            "indice_terapeutico": 0.182,
+            "eficacia_clonal": 0.9366,
+            "ecog": 4,
+            "reserva_media": 0.4398,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.5666,
+            "dose": 0.3,
+            "P_resposta": 0.0426,
+            "P_cura": 0.0135,
+            "P_tox": 0.2348,
+            "indice_terapeutico": 0.181,
+            "eficacia_clonal": 0.932,
+            "ecog": 4,
+            "reserva_media": 0.4248,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.5238,
+            "dose": 0.3,
+            "P_resposta": 0.0431,
+            "P_cura": 0.0141,
+            "P_tox": 0.2316,
+            "indice_terapeutico": 0.186,
+            "eficacia_clonal": 0.9271,
+            "ecog": 4,
+            "reserva_media": 0.4098,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.5599,
+            "dose": 0.3,
+            "P_resposta": 0.0427,
+            "P_cura": 0.0135,
+            "P_tox": 0.2284,
+            "indice_terapeutico": 0.187,
+            "eficacia_clonal": 0.922,
+            "ecog": 4,
+            "reserva_media": 0.3948,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.5792,
+            "dose": 0.3,
+            "P_resposta": 0.0425,
+            "P_cura": 0.0132,
+            "P_tox": 0.2252,
+            "indice_terapeutico": 0.189,
+            "eficacia_clonal": 0.9167,
+            "ecog": 4,
+            "reserva_media": 0.3798,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.5468,
+            "dose": 0.3,
+            "P_resposta": 0.0429,
+            "P_cura": 0.0136,
+            "P_tox": 0.222,
+            "indice_terapeutico": 0.193,
+            "eficacia_clonal": 0.911,
+            "ecog": 4,
+            "reserva_media": 0.3648,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.5727,
+            "dose": 0.3,
+            "P_resposta": 0.0426,
+            "P_cura": 0.0132,
+            "P_tox": 0.2189,
+            "indice_terapeutico": 0.195,
+            "eficacia_clonal": 0.9051,
+            "ecog": 4,
+            "reserva_media": 0.3498,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.5167,
+            "dose": 0.3,
+            "P_resposta": 0.0432,
+            "P_cura": 0.0139,
+            "P_tox": 0.2157,
+            "indice_terapeutico": 0.2,
+            "eficacia_clonal": 0.8989,
+            "ecog": 4,
+            "reserva_media": 0.3348,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.5173,
+            "dose": 0.3,
+            "P_resposta": 0.0432,
+            "P_cura": 0.0138,
+            "P_tox": 0.2125,
+            "indice_terapeutico": 0.203,
+            "eficacia_clonal": 0.8924,
+            "ecog": 4,
+            "reserva_media": 0.3198,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.556,
+            "dose": 0.3,
+            "P_resposta": 0.0427,
+            "P_cura": 0.0132,
+            "P_tox": 0.2093,
+            "indice_terapeutico": 0.204,
+            "eficacia_clonal": 0.8855,
+            "ecog": 4,
+            "reserva_media": 0.3048,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.5441,
+            "dose": 0.3,
+            "P_resposta": 0.0429,
+            "P_cura": 0.0133,
+            "P_tox": 0.2061,
+            "indice_terapeutico": 0.208,
+            "eficacia_clonal": 0.8783,
+            "ecog": 4,
+            "reserva_media": 0.2898,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.5112,
+            "dose": 0.3,
+            "P_resposta": 0.0432,
+            "P_cura": 0.0136,
+            "P_tox": 0.2029,
+            "indice_terapeutico": 0.213,
+            "eficacia_clonal": 0.8708,
+            "ecog": 4,
+            "reserva_media": 0.2748,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.5367,
+            "dose": 0.3,
+            "P_resposta": 0.043,
+            "P_cura": 0.0133,
+            "P_tox": 0.1998,
+            "indice_terapeutico": 0.215,
+            "eficacia_clonal": 0.8628,
+            "ecog": 4,
+            "reserva_media": 0.2598,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.583,
+            "dose": 0.3,
+            "P_resposta": 0.0424,
+            "P_cura": 0.0126,
+            "P_tox": 0.1966,
+            "indice_terapeutico": 0.216,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.2448,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.5306,
+            "dose": 0.3,
+            "P_resposta": 0.043,
+            "P_cura": 0.0132,
+            "P_tox": 0.1934,
+            "indice_terapeutico": 0.222,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.2298,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.5507,
+            "dose": 0.3,
+            "P_resposta": 0.0428,
+            "P_cura": 0.0128,
+            "P_tox": 0.1902,
+            "indice_terapeutico": 0.225,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.2148,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.5392,
+            "dose": 0.3,
+            "P_resposta": 0.0429,
+            "P_cura": 0.0129,
+            "P_tox": 0.187,
+            "indice_terapeutico": 0.229,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.1998,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.5553,
+            "dose": 0.3,
+            "P_resposta": 0.0428,
+            "P_cura": 0.0126,
+            "P_tox": 0.1838,
+            "indice_terapeutico": 0.233,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.1848,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.1691,
+          "P_resposta_final": 0.0428,
+          "variacao_P_resposta": -0.1263,
+          "P_cura_final": 0.0126,
+          "ciclos_melhora_ctDNA": 17,
+          "taxa_melhora": 0.5667,
+          "reserva_final": 0.1848,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.424,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 3,
+      "nome": "Carcinoma Adenoide Cistico",
+      "nome_cientifico": "Carcinoma Adenoide Cistico (CAC)",
+      "localizacao": "Glandulas salivares (principalmente), pulmoes, mamas, prostata, pele",
+      "incidencia_usa": "~4.5/100.000/ano",
+      "descricao": "Afeta os tecidos de varias glandulas do corpo, mais comum nas glandulas salivares. Nao ha fatores de risco conhecidos e ocorre aleatoriamente. Muitas vezes nao causa sintomas, atrasando o diagnostico.",
+      "desafios": "Ausencia de fatores de risco conhecidos e diagnostico tardio devido a assintomaticidade.",
+      "biomarcadores": {
+        "ctDNA": 0.25,
+        "CTC": 5,
+        "TMB": 2.8,
+        "PD_L1": 0.08,
+        "TILs": 0.12
+      },
+      "ecog": 0,
+      "reserva_fisiologica": 0.85,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.244,
+        "max_score": 0.295,
+        "min_score": 0.1975,
+        "desvio_padrao": 0.0316,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_3_0",
+            "score_final": 0.2025,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.63,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.63)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_3_1",
+            "score_final": 0.2025,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.63,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.63)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_3_2",
+            "score_final": 0.2575,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.85,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.85)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_3_3",
+            "score_final": 0.2025,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.63,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.63)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_3_4",
+            "score_final": 0.295,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 1.0,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 1.00)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.2125,
+          "IC95_inf": 0.1558,
+          "IC95_sup": 0.2692,
+          "P_cura": 0.044,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2011,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.057,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9043,
+          "fator_fisiologico": 0.94,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.2125,
+          "IC95_inf": 0.1558,
+          "IC95_sup": 0.2692,
+          "P_cura": 0.044,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1264,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.681,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9043,
+          "fator_fisiologico": 0.94,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.2125,
+          "IC95_inf": 0.1558,
+          "IC95_sup": 0.2692,
+          "P_cura": 0.044,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2586,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.822,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9043,
+          "fator_fisiologico": 0.94,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.539,
+        "utilidade_cura": 0.2187,
+        "utilidade_toxicidade": 0.1644,
+        "utilidade_qualidade": 0.8949,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0822,
+        "p_tox_projetada": 0.3001,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.539). P(cura) projetada: 8.2% com P(tox): 30.0%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.539,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.5238,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.514,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4987,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.5176,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.2503,
+            "dose": 0.3,
+            "P_resposta": 0.2107,
+            "P_cura": 0.0487,
+            "P_tox": 0.1985,
+            "indice_terapeutico": 1.061,
+            "eficacia_clonal": 0.9775,
+            "ecog": 0,
+            "reserva_media": 0.8152,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.2533,
+            "dose": 0.3,
+            "P_resposta": 0.2092,
+            "P_cura": 0.0519,
+            "P_tox": 0.1965,
+            "indice_terapeutico": 1.065,
+            "eficacia_clonal": 0.975,
+            "ecog": 0,
+            "reserva_media": 0.8002,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.2451,
+            "dose": 0.3,
+            "P_resposta": 0.2082,
+            "P_cura": 0.0561,
+            "P_tox": 0.1945,
+            "indice_terapeutico": 1.07,
+            "eficacia_clonal": 0.9722,
+            "ecog": 0,
+            "reserva_media": 0.7852,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.2474,
+            "dose": 0.3,
+            "P_resposta": 0.2067,
+            "P_cura": 0.0598,
+            "P_tox": 0.1925,
+            "indice_terapeutico": 1.074,
+            "eficacia_clonal": 0.9694,
+            "ecog": 0,
+            "reserva_media": 0.7702,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.2341,
+            "dose": 0.3,
+            "P_resposta": 0.2058,
+            "P_cura": 0.0641,
+            "P_tox": 0.1905,
+            "indice_terapeutico": 1.08,
+            "eficacia_clonal": 0.9664,
+            "ecog": 0,
+            "reserva_media": 0.7552,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.2175,
+            "dose": 0.3,
+            "P_resposta": 0.205,
+            "P_cura": 0.0686,
+            "P_tox": 0.1885,
+            "indice_terapeutico": 1.088,
+            "eficacia_clonal": 0.9633,
+            "ecog": 0,
+            "reserva_media": 0.7402,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.2536,
+            "dose": 0.3,
+            "P_resposta": 0.2025,
+            "P_cura": 0.0704,
+            "P_tox": 0.1866,
+            "indice_terapeutico": 1.085,
+            "eficacia_clonal": 0.96,
+            "ecog": 0,
+            "reserva_media": 0.7252,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.2391,
+            "dose": 0.3,
+            "P_resposta": 0.2016,
+            "P_cura": 0.0747,
+            "P_tox": 0.1846,
+            "indice_terapeutico": 1.092,
+            "eficacia_clonal": 0.9566,
+            "ecog": 0,
+            "reserva_media": 0.7102,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.2549,
+            "dose": 0.3,
+            "P_resposta": 0.1997,
+            "P_cura": 0.0772,
+            "P_tox": 0.1826,
+            "indice_terapeutico": 1.094,
+            "eficacia_clonal": 0.9529,
+            "ecog": 0,
+            "reserva_media": 0.6952,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.2617,
+            "dose": 0.3,
+            "P_resposta": 0.1981,
+            "P_cura": 0.0801,
+            "P_tox": 0.1806,
+            "indice_terapeutico": 1.097,
+            "eficacia_clonal": 0.9491,
+            "ecog": 0,
+            "reserva_media": 0.6802,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.2498,
+            "dose": 0.3,
+            "P_resposta": 0.1972,
+            "P_cura": 0.08,
+            "P_tox": 0.1786,
+            "indice_terapeutico": 1.104,
+            "eficacia_clonal": 0.9452,
+            "ecog": 0,
+            "reserva_media": 0.6652,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.2532,
+            "dose": 0.3,
+            "P_resposta": 0.1957,
+            "P_cura": 0.079,
+            "P_tox": 0.1766,
+            "indice_terapeutico": 1.108,
+            "eficacia_clonal": 0.941,
+            "ecog": 0,
+            "reserva_media": 0.6502,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.2316,
+            "dose": 0.3,
+            "P_resposta": 0.195,
+            "P_cura": 0.0795,
+            "P_tox": 0.1746,
+            "indice_terapeutico": 1.117,
+            "eficacia_clonal": 0.9366,
+            "ecog": 0,
+            "reserva_media": 0.6352,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.26,
+            "dose": 0.3,
+            "P_resposta": 0.1927,
+            "P_cura": 0.077,
+            "P_tox": 0.1726,
+            "indice_terapeutico": 1.116,
+            "eficacia_clonal": 0.932,
+            "ecog": 0,
+            "reserva_media": 0.6202,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.2281,
+            "dose": 0.3,
+            "P_resposta": 0.1924,
+            "P_cura": 0.0781,
+            "P_tox": 0.1706,
+            "indice_terapeutico": 1.128,
+            "eficacia_clonal": 0.9271,
+            "ecog": 0,
+            "reserva_media": 0.6052,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.2438,
+            "dose": 0.3,
+            "P_resposta": 0.1906,
+            "P_cura": 0.0764,
+            "P_tox": 0.1687,
+            "indice_terapeutico": 1.13,
+            "eficacia_clonal": 0.922,
+            "ecog": 0,
+            "reserva_media": 0.5902,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.2374,
+            "dose": 0.3,
+            "P_resposta": 0.1894,
+            "P_cura": 0.0759,
+            "P_tox": 0.1667,
+            "indice_terapeutico": 1.136,
+            "eficacia_clonal": 0.9167,
+            "ecog": 0,
+            "reserva_media": 0.5752,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.2503,
+            "dose": 0.3,
+            "P_resposta": 0.1876,
+            "P_cura": 0.0743,
+            "P_tox": 0.1647,
+            "indice_terapeutico": 1.139,
+            "eficacia_clonal": 0.911,
+            "ecog": 0,
+            "reserva_media": 0.5602,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.2485,
+            "dose": 0.3,
+            "P_resposta": 0.1864,
+            "P_cura": 0.0736,
+            "P_tox": 0.1627,
+            "indice_terapeutico": 1.146,
+            "eficacia_clonal": 0.9051,
+            "ecog": 0,
+            "reserva_media": 0.5452,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.2307,
+            "dose": 0.3,
+            "P_resposta": 0.1856,
+            "P_cura": 0.0737,
+            "P_tox": 0.1607,
+            "indice_terapeutico": 1.155,
+            "eficacia_clonal": 0.8989,
+            "ecog": 0,
+            "reserva_media": 0.5302,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.2424,
+            "dose": 0.3,
+            "P_resposta": 0.1838,
+            "P_cura": 0.0722,
+            "P_tox": 0.1587,
+            "indice_terapeutico": 1.158,
+            "eficacia_clonal": 0.8924,
+            "ecog": 0,
+            "reserva_media": 0.5152,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.2326,
+            "dose": 0.3,
+            "P_resposta": 0.1828,
+            "P_cura": 0.0718,
+            "P_tox": 0.1567,
+            "indice_terapeutico": 1.167,
+            "eficacia_clonal": 0.8855,
+            "ecog": 0,
+            "reserva_media": 0.5002,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.2422,
+            "dose": 0.3,
+            "P_resposta": 0.1811,
+            "P_cura": 0.0704,
+            "P_tox": 0.1547,
+            "indice_terapeutico": 1.171,
+            "eficacia_clonal": 0.8783,
+            "ecog": 1,
+            "reserva_media": 0.4852,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.2542,
+            "dose": 0.3,
+            "P_resposta": 0.165,
+            "P_cura": 0.0634,
+            "P_tox": 0.1756,
+            "indice_terapeutico": 0.94,
+            "eficacia_clonal": 0.8708,
+            "ecog": 2,
+            "reserva_media": 0.4702,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.2307,
+            "dose": 0.3,
+            "P_resposta": 0.1394,
+            "P_cura": 0.0539,
+            "P_tox": 0.196,
+            "indice_terapeutico": 0.711,
+            "eficacia_clonal": 0.8628,
+            "ecog": 3,
+            "reserva_media": 0.4552,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.2709,
+            "dose": 0.3,
+            "P_resposta": 0.0969,
+            "P_cura": 0.0364,
+            "P_tox": 0.2157,
+            "indice_terapeutico": 0.449,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.4402,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.2438,
+            "dose": 0.3,
+            "P_resposta": 0.0453,
+            "P_cura": 0.0172,
+            "P_tox": 0.2348,
+            "indice_terapeutico": 0.193,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.4252,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.2584,
+            "dose": 0.3,
+            "P_resposta": 0.0451,
+            "P_cura": 0.0168,
+            "P_tox": 0.2317,
+            "indice_terapeutico": 0.195,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.4102,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.2781,
+            "dose": 0.3,
+            "P_resposta": 0.045,
+            "P_cura": 0.0165,
+            "P_tox": 0.2285,
+            "indice_terapeutico": 0.197,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.3952,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.2293,
+            "dose": 0.3,
+            "P_resposta": 0.0454,
+            "P_cura": 0.017,
+            "P_tox": 0.2253,
+            "indice_terapeutico": 0.202,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.3802,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.2107,
+          "P_resposta_final": 0.0454,
+          "variacao_P_resposta": -0.1653,
+          "P_cura_final": 0.017,
+          "ciclos_melhora_ctDNA": 18,
+          "taxa_melhora": 0.6,
+          "reserva_final": 0.3802,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.949,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 4,
+      "nome": "Cancer de Amigdala",
+      "nome_cientifico": "Carcinoma Escamoso de Amigdala / Linfoma",
+      "localizacao": "Amigdalas (tecido linfatico posterior da garganta)",
+      "incidencia_usa": "~8/100.000/ano",
+      "descricao": "Subtipo de cancer de garganta que afeta as amigdalas. Maioria sao carcinomas de celulas escamosas, mas podem ser linfomas. Associado ao HPV (papilomavirus humano).",
+      "desafios": "Causa nem sempre clara, associacao com HPV requer abordagem terapeutica especifica.",
+      "biomarcadores": {
+        "ctDNA": 0.4,
+        "CTC": 12,
+        "TMB": 6.5,
+        "PD_L1": 0.35,
+        "TILs": 0.18
+      },
+      "ecog": 0,
+      "reserva_fisiologica": 0.8,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2402,
+        "max_score": 0.2875,
+        "min_score": 0.1975,
+        "desvio_padrao": 0.0249,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_4_0",
+            "score_final": 0.2095,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.12
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_4_1",
+            "score_final": 0.2625,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.87,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.87)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_4_2",
+            "score_final": 0.2875,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.97,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.97)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_4_3",
+            "score_final": 0.2445,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.75,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.12
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.75)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_4_4",
+            "score_final": 0.2325,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.69,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.69)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.2291,
+          "IC95_inf": 0.1709,
+          "IC95_sup": 0.2874,
+          "P_cura": 0.0484,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1945,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.178,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9962,
+          "fator_fisiologico": 0.92,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.2291,
+          "IC95_inf": 0.1709,
+          "IC95_sup": 0.2874,
+          "P_cura": 0.0484,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1222,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.875,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9962,
+          "fator_fisiologico": 0.92,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.2291,
+          "IC95_inf": 0.1709,
+          "IC95_sup": 0.2874,
+          "P_cura": 0.0484,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2501,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.916,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9962,
+          "fator_fisiologico": 0.92,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.5399,
+        "utilidade_cura": 0.2289,
+        "utilidade_toxicidade": 0.159,
+        "utilidade_qualidade": 0.8656,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0866,
+        "p_tox_projetada": 0.2935,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.540). P(cura) projetada: 8.7% com P(tox): 29.3%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.5399,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.5249,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.5152,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.5,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.5188,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.4117,
+            "dose": 0.3,
+            "P_resposta": 0.2273,
+            "P_cura": 0.0532,
+            "P_tox": 0.192,
+            "indice_terapeutico": 1.184,
+            "eficacia_clonal": 0.9775,
+            "ecog": 0,
+            "reserva_media": 0.7663,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.4246,
+            "dose": 0.3,
+            "P_resposta": 0.2257,
+            "P_cura": 0.0563,
+            "P_tox": 0.19,
+            "indice_terapeutico": 1.188,
+            "eficacia_clonal": 0.975,
+            "ecog": 0,
+            "reserva_media": 0.7513,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.4164,
+            "dose": 0.3,
+            "P_resposta": 0.2243,
+            "P_cura": 0.0608,
+            "P_tox": 0.188,
+            "indice_terapeutico": 1.193,
+            "eficacia_clonal": 0.9722,
+            "ecog": 0,
+            "reserva_media": 0.7363,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.384,
+            "dose": 0.3,
+            "P_resposta": 0.2228,
+            "P_cura": 0.0662,
+            "P_tox": 0.186,
+            "indice_terapeutico": 1.198,
+            "eficacia_clonal": 0.9694,
+            "ecog": 0,
+            "reserva_media": 0.7213,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.4082,
+            "dose": 0.3,
+            "P_resposta": 0.2213,
+            "P_cura": 0.0693,
+            "P_tox": 0.1841,
+            "indice_terapeutico": 1.202,
+            "eficacia_clonal": 0.9664,
+            "ecog": 0,
+            "reserva_media": 0.7063,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.3965,
+            "dose": 0.3,
+            "P_resposta": 0.2198,
+            "P_cura": 0.0738,
+            "P_tox": 0.1821,
+            "indice_terapeutico": 1.207,
+            "eficacia_clonal": 0.9633,
+            "ecog": 0,
+            "reserva_media": 0.6913,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.3985,
+            "dose": 0.3,
+            "P_resposta": 0.2183,
+            "P_cura": 0.0776,
+            "P_tox": 0.1801,
+            "indice_terapeutico": 1.212,
+            "eficacia_clonal": 0.96,
+            "ecog": 0,
+            "reserva_media": 0.6763,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.3887,
+            "dose": 0.3,
+            "P_resposta": 0.2168,
+            "P_cura": 0.0819,
+            "P_tox": 0.1781,
+            "indice_terapeutico": 1.217,
+            "eficacia_clonal": 0.9566,
+            "ecog": 0,
+            "reserva_media": 0.6613,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.3981,
+            "dose": 0.3,
+            "P_resposta": 0.2153,
+            "P_cura": 0.0851,
+            "P_tox": 0.1761,
+            "indice_terapeutico": 1.223,
+            "eficacia_clonal": 0.9529,
+            "ecog": 0,
+            "reserva_media": 0.6463,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.4171,
+            "dose": 0.3,
+            "P_resposta": 0.2138,
+            "P_cura": 0.0877,
+            "P_tox": 0.1741,
+            "indice_terapeutico": 1.228,
+            "eficacia_clonal": 0.9491,
+            "ecog": 0,
+            "reserva_media": 0.6313,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.3828,
+            "dose": 0.3,
+            "P_resposta": 0.2124,
+            "P_cura": 0.0888,
+            "P_tox": 0.1721,
+            "indice_terapeutico": 1.234,
+            "eficacia_clonal": 0.9452,
+            "ecog": 0,
+            "reserva_media": 0.6163,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.4003,
+            "dose": 0.3,
+            "P_resposta": 0.2108,
+            "P_cura": 0.0869,
+            "P_tox": 0.1701,
+            "indice_terapeutico": 1.239,
+            "eficacia_clonal": 0.941,
+            "ecog": 0,
+            "reserva_media": 0.6013,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.4313,
+            "dose": 0.3,
+            "P_resposta": 0.2093,
+            "P_cura": 0.0843,
+            "P_tox": 0.1681,
+            "indice_terapeutico": 1.245,
+            "eficacia_clonal": 0.9366,
+            "ecog": 0,
+            "reserva_media": 0.5863,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.3906,
+            "dose": 0.3,
+            "P_resposta": 0.2079,
+            "P_cura": 0.0857,
+            "P_tox": 0.1662,
+            "indice_terapeutico": 1.251,
+            "eficacia_clonal": 0.932,
+            "ecog": 0,
+            "reserva_media": 0.5713,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.3922,
+            "dose": 0.3,
+            "P_resposta": 0.2064,
+            "P_cura": 0.0847,
+            "P_tox": 0.1642,
+            "indice_terapeutico": 1.257,
+            "eficacia_clonal": 0.9271,
+            "ecog": 0,
+            "reserva_media": 0.5563,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.4163,
+            "dose": 0.3,
+            "P_resposta": 0.2048,
+            "P_cura": 0.0825,
+            "P_tox": 0.1622,
+            "indice_terapeutico": 1.263,
+            "eficacia_clonal": 0.922,
+            "ecog": 0,
+            "reserva_media": 0.5413,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.4015,
+            "dose": 0.3,
+            "P_resposta": 0.2034,
+            "P_cura": 0.0824,
+            "P_tox": 0.1602,
+            "indice_terapeutico": 1.27,
+            "eficacia_clonal": 0.9167,
+            "ecog": 0,
+            "reserva_media": 0.5263,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.398,
+            "dose": 0.3,
+            "P_resposta": 0.2019,
+            "P_cura": 0.0816,
+            "P_tox": 0.1582,
+            "indice_terapeutico": 1.276,
+            "eficacia_clonal": 0.911,
+            "ecog": 0,
+            "reserva_media": 0.5113,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.4325,
+            "dose": 0.3,
+            "P_resposta": 0.2003,
+            "P_cura": 0.0789,
+            "P_tox": 0.1562,
+            "indice_terapeutico": 1.282,
+            "eficacia_clonal": 0.9051,
+            "ecog": 1,
+            "reserva_media": 0.4963,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.3733,
+            "dose": 0.3,
+            "P_resposta": 0.183,
+            "P_cura": 0.0745,
+            "P_tox": 0.1774,
+            "indice_terapeutico": 1.032,
+            "eficacia_clonal": 0.8989,
+            "ecog": 2,
+            "reserva_media": 0.4813,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.3973,
+            "dose": 0.3,
+            "P_resposta": 0.154,
+            "P_cura": 0.0615,
+            "P_tox": 0.1979,
+            "indice_terapeutico": 0.778,
+            "eficacia_clonal": 0.8924,
+            "ecog": 3,
+            "reserva_media": 0.4663,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.3904,
+            "dose": 0.3,
+            "P_resposta": 0.1077,
+            "P_cura": 0.043,
+            "P_tox": 0.2179,
+            "indice_terapeutico": 0.494,
+            "eficacia_clonal": 0.8855,
+            "ecog": 4,
+            "reserva_media": 0.4513,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.3681,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.02,
+            "P_tox": 0.2372,
+            "indice_terapeutico": 0.21,
+            "eficacia_clonal": 0.8783,
+            "ecog": 4,
+            "reserva_media": 0.4363,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.3826,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0197,
+            "P_tox": 0.234,
+            "indice_terapeutico": 0.213,
+            "eficacia_clonal": 0.8708,
+            "ecog": 4,
+            "reserva_media": 0.4213,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.3993,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0194,
+            "P_tox": 0.2308,
+            "indice_terapeutico": 0.216,
+            "eficacia_clonal": 0.8628,
+            "ecog": 4,
+            "reserva_media": 0.4063,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.3695,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0197,
+            "P_tox": 0.2277,
+            "indice_terapeutico": 0.219,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.3913,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.3975,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0192,
+            "P_tox": 0.2245,
+            "indice_terapeutico": 0.222,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.3763,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.3948,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0191,
+            "P_tox": 0.2213,
+            "indice_terapeutico": 0.225,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.3613,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.4199,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0187,
+            "P_tox": 0.2181,
+            "indice_terapeutico": 0.228,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.3463,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.4064,
+            "dose": 0.3,
+            "P_resposta": 0.0498,
+            "P_cura": 0.0187,
+            "P_tox": 0.2149,
+            "indice_terapeutico": 0.232,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.3313,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.2273,
+          "P_resposta_final": 0.0498,
+          "variacao_P_resposta": -0.1775,
+          "P_cura_final": 0.0187,
+          "ciclos_melhora_ctDNA": 18,
+          "taxa_melhora": 0.6,
+          "reserva_final": 0.3313,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.915,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 5,
+      "nome": "Cancer de Trompa de Falopio",
+      "nome_cientifico": "Carcinoma de Trompa de Falopio",
+      "localizacao": "Trompas uterinas (conectam ovarios ao utero)",
+      "incidencia_usa": "300-400/ano",
+      "descricao": "Representa 1-2% de todos os cancerees ginecologicos. Sintomas semelhantes a outros cancerees ginecologicos dificultam o diagnostico. Genetica pode desempenhar papel na patogenese.",
+      "desafios": "Raridade extrema e semelhanca sintomatica com outras doencas ginecologicas.",
+      "biomarcadores": {
+        "ctDNA": 0.5,
+        "CTC": 18,
+        "TMB": 5.0,
+        "PD_L1": 0.2,
+        "TILs": 0.1
+      },
+      "ecog": 1,
+      "reserva_fisiologica": 0.7,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2423,
+        "max_score": 0.295,
+        "min_score": 0.1975,
+        "desvio_padrao": 0.0281,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_5_0",
+            "score_final": 0.295,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 1.0,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 1.00)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_5_1",
+            "score_final": 0.2775,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.81,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.81)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_5_2",
+            "score_final": 0.2425,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.79,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.79)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_5_3",
+            "score_final": 0.2065,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.09
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_5_4",
+            "score_final": 0.1975,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.1972,
+          "IC95_inf": 0.142,
+          "IC95_sup": 0.2523,
+          "P_cura": 0.0361,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2084,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.946,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9742,
+          "fator_fisiologico": 0.8096,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.1972,
+          "IC95_inf": 0.142,
+          "IC95_sup": 0.2523,
+          "P_cura": 0.0361,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.131,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.505,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9742,
+          "fator_fisiologico": 0.8096,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.1972,
+          "IC95_inf": 0.142,
+          "IC95_sup": 0.2523,
+          "P_cura": 0.0361,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.268,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.736,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9742,
+          "fator_fisiologico": 0.8096,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.4902,
+        "utilidade_cura": 0.1999,
+        "utilidade_toxicidade": 0.1704,
+        "utilidade_qualidade": 0.707,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0743,
+        "p_tox_projetada": 0.3074,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.490). P(cura) projetada: 7.4% com P(tox): 30.7%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.4902,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.4746,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.4644,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4487,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.4681,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.4788,
+            "dose": 0.3,
+            "P_resposta": 0.1959,
+            "P_cura": 0.0406,
+            "P_tox": 0.2059,
+            "indice_terapeutico": 0.951,
+            "eficacia_clonal": 0.9775,
+            "ecog": 1,
+            "reserva_media": 0.6687,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.5326,
+            "dose": 0.3,
+            "P_resposta": 0.1941,
+            "P_cura": 0.0417,
+            "P_tox": 0.2036,
+            "indice_terapeutico": 0.953,
+            "eficacia_clonal": 0.975,
+            "ecog": 1,
+            "reserva_media": 0.6537,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.5231,
+            "dose": 0.3,
+            "P_resposta": 0.1928,
+            "P_cura": 0.0451,
+            "P_tox": 0.2013,
+            "indice_terapeutico": 0.958,
+            "eficacia_clonal": 0.9722,
+            "ecog": 1,
+            "reserva_media": 0.6387,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.516,
+            "dose": 0.3,
+            "P_resposta": 0.1915,
+            "P_cura": 0.0484,
+            "P_tox": 0.1991,
+            "indice_terapeutico": 0.962,
+            "eficacia_clonal": 0.9694,
+            "ecog": 1,
+            "reserva_media": 0.6237,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.4736,
+            "dose": 0.3,
+            "P_resposta": 0.1906,
+            "P_cura": 0.053,
+            "P_tox": 0.1968,
+            "indice_terapeutico": 0.968,
+            "eficacia_clonal": 0.9664,
+            "ecog": 1,
+            "reserva_media": 0.6087,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.5449,
+            "dose": 0.3,
+            "P_resposta": 0.1886,
+            "P_cura": 0.0532,
+            "P_tox": 0.1945,
+            "indice_terapeutico": 0.97,
+            "eficacia_clonal": 0.9633,
+            "ecog": 1,
+            "reserva_media": 0.5937,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.4747,
+            "dose": 0.3,
+            "P_resposta": 0.1879,
+            "P_cura": 0.0589,
+            "P_tox": 0.1922,
+            "indice_terapeutico": 0.978,
+            "eficacia_clonal": 0.96,
+            "ecog": 1,
+            "reserva_media": 0.5787,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.5206,
+            "dose": 0.3,
+            "P_resposta": 0.1861,
+            "P_cura": 0.0597,
+            "P_tox": 0.1899,
+            "indice_terapeutico": 0.98,
+            "eficacia_clonal": 0.9566,
+            "ecog": 1,
+            "reserva_media": 0.5637,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.4926,
+            "dose": 0.3,
+            "P_resposta": 0.185,
+            "P_cura": 0.0637,
+            "P_tox": 0.1876,
+            "indice_terapeutico": 0.986,
+            "eficacia_clonal": 0.9529,
+            "ecog": 1,
+            "reserva_media": 0.5487,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.4852,
+            "dose": 0.3,
+            "P_resposta": 0.1837,
+            "P_cura": 0.0667,
+            "P_tox": 0.1853,
+            "indice_terapeutico": 0.991,
+            "eficacia_clonal": 0.9491,
+            "ecog": 1,
+            "reserva_media": 0.5337,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.4652,
+            "dose": 0.3,
+            "P_resposta": 0.1826,
+            "P_cura": 0.067,
+            "P_tox": 0.183,
+            "indice_terapeutico": 0.998,
+            "eficacia_clonal": 0.9452,
+            "ecog": 1,
+            "reserva_media": 0.5187,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.5276,
+            "dose": 0.3,
+            "P_resposta": 0.1807,
+            "P_cura": 0.0635,
+            "P_tox": 0.1808,
+            "indice_terapeutico": 0.999,
+            "eficacia_clonal": 0.941,
+            "ecog": 1,
+            "reserva_media": 0.5037,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.4767,
+            "dose": 0.3,
+            "P_resposta": 0.1798,
+            "P_cura": 0.0651,
+            "P_tox": 0.1785,
+            "indice_terapeutico": 1.007,
+            "eficacia_clonal": 0.9366,
+            "ecog": 2,
+            "reserva_media": 0.4887,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.4764,
+            "dose": 0.3,
+            "P_resposta": 0.1513,
+            "P_cura": 0.0546,
+            "P_tox": 0.1992,
+            "indice_terapeutico": 0.76,
+            "eficacia_clonal": 0.932,
+            "ecog": 3,
+            "reserva_media": 0.4737,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.5109,
+            "dose": 0.3,
+            "P_resposta": 0.1057,
+            "P_cura": 0.0372,
+            "P_tox": 0.2193,
+            "indice_terapeutico": 0.482,
+            "eficacia_clonal": 0.9271,
+            "ecog": 4,
+            "reserva_media": 0.4587,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.5199,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.017,
+            "P_tox": 0.2388,
+            "indice_terapeutico": 0.204,
+            "eficacia_clonal": 0.922,
+            "ecog": 4,
+            "reserva_media": 0.4437,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.518,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0169,
+            "P_tox": 0.2356,
+            "indice_terapeutico": 0.207,
+            "eficacia_clonal": 0.9167,
+            "ecog": 4,
+            "reserva_media": 0.4287,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.5022,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.017,
+            "P_tox": 0.2324,
+            "indice_terapeutico": 0.21,
+            "eficacia_clonal": 0.911,
+            "ecog": 4,
+            "reserva_media": 0.4137,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.4669,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0174,
+            "P_tox": 0.2292,
+            "indice_terapeutico": 0.213,
+            "eficacia_clonal": 0.9051,
+            "ecog": 4,
+            "reserva_media": 0.3987,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.5013,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0169,
+            "P_tox": 0.226,
+            "indice_terapeutico": 0.215,
+            "eficacia_clonal": 0.8989,
+            "ecog": 4,
+            "reserva_media": 0.3837,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.4541,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0174,
+            "P_tox": 0.2228,
+            "indice_terapeutico": 0.219,
+            "eficacia_clonal": 0.8924,
+            "ecog": 4,
+            "reserva_media": 0.3687,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.5082,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0167,
+            "P_tox": 0.2197,
+            "indice_terapeutico": 0.222,
+            "eficacia_clonal": 0.8855,
+            "ecog": 4,
+            "reserva_media": 0.3537,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.5119,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0165,
+            "P_tox": 0.2165,
+            "indice_terapeutico": 0.225,
+            "eficacia_clonal": 0.8783,
+            "ecog": 4,
+            "reserva_media": 0.3387,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.5042,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0165,
+            "P_tox": 0.2133,
+            "indice_terapeutico": 0.228,
+            "eficacia_clonal": 0.8708,
+            "ecog": 4,
+            "reserva_media": 0.3237,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.4784,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0167,
+            "P_tox": 0.2101,
+            "indice_terapeutico": 0.232,
+            "eficacia_clonal": 0.8628,
+            "ecog": 4,
+            "reserva_media": 0.3087,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.5227,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0161,
+            "P_tox": 0.2069,
+            "indice_terapeutico": 0.235,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.2937,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.5106,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0162,
+            "P_tox": 0.2038,
+            "indice_terapeutico": 0.239,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.2787,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.4447,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0168,
+            "P_tox": 0.2006,
+            "indice_terapeutico": 0.243,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.2637,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.4586,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0165,
+            "P_tox": 0.1974,
+            "indice_terapeutico": 0.247,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.2487,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.508,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0158,
+            "P_tox": 0.1942,
+            "indice_terapeutico": 0.251,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.2337,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.1959,
+          "P_resposta_final": 0.0487,
+          "variacao_P_resposta": -0.1472,
+          "P_cura_final": 0.0158,
+          "ciclos_melhora_ctDNA": 13,
+          "taxa_melhora": 0.4333,
+          "reserva_final": 0.2337,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.578,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 6,
+      "nome": "Cancer de Apendice",
+      "nome_cientifico": "Adenocarcinoma Apendicular",
+      "localizacao": "Apendice (orgao proximo aos intestinos)",
+      "incidencia_usa": "1-2/milhao/ano",
+      "descricao": "Incidencia extremamente baixa mas com aumento constante: taxas triplicando a quadruplicando entre nascidos na decada de 1980 vs 1940. Funcao exata do apendice ainda e debatida.",
+      "desafios": "Pouco estudado devido a raridade, mas tendencia de aumento exige maior atencao research.",
+      "biomarcadores": {
+        "ctDNA": 0.3,
+        "CTC": 7,
+        "TMB": 3.8,
+        "PD_L1": 0.12,
+        "TILs": 0.15
+      },
+      "ecog": 0,
+      "reserva_fisiologica": 0.88,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2612,
+        "max_score": 0.295,
+        "min_score": 0.2115,
+        "desvio_padrao": 0.0268,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_6_0",
+            "score_final": 0.2875,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.97,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.97)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_6_1",
+            "score_final": 0.2825,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.89,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.89)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_6_2",
+            "score_final": 0.2325,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.63,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.63)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_6_3",
+            "score_final": 0.2275,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_6_4",
+            "score_final": 0.2925,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.99,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.99)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.2278,
+          "IC95_inf": 0.1697,
+          "IC95_sup": 0.286,
+          "P_cura": 0.0476,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2051,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.111,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9573,
+          "fator_fisiologico": 0.952,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.2278,
+          "IC95_inf": 0.1697,
+          "IC95_sup": 0.286,
+          "P_cura": 0.0476,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1289,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.767,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9573,
+          "fator_fisiologico": 0.952,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.2278,
+          "IC95_inf": 0.1697,
+          "IC95_sup": 0.286,
+          "P_cura": 0.0476,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2637,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.864,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9573,
+          "fator_fisiologico": 0.952,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.5457,
+        "utilidade_cura": 0.2271,
+        "utilidade_toxicidade": 0.1677,
+        "utilidade_qualidade": 0.9124,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0858,
+        "p_tox_projetada": 0.3041,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.546). P(cura) projetada: 8.6% com P(tox): 30.4%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.5457,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.531,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.5214,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.5065,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.5251,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.2851,
+            "dose": 0.3,
+            "P_resposta": 0.2261,
+            "P_cura": 0.0533,
+            "P_tox": 0.2024,
+            "indice_terapeutico": 1.117,
+            "eficacia_clonal": 0.9775,
+            "ecog": 0,
+            "reserva_media": 0.8445,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.284,
+            "dose": 0.3,
+            "P_resposta": 0.2247,
+            "P_cura": 0.0569,
+            "P_tox": 0.2004,
+            "indice_terapeutico": 1.121,
+            "eficacia_clonal": 0.975,
+            "ecog": 0,
+            "reserva_media": 0.8295,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.2904,
+            "dose": 0.3,
+            "P_resposta": 0.2232,
+            "P_cura": 0.0609,
+            "P_tox": 0.1984,
+            "indice_terapeutico": 1.125,
+            "eficacia_clonal": 0.9722,
+            "ecog": 0,
+            "reserva_media": 0.8145,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.3159,
+            "dose": 0.3,
+            "P_resposta": 0.2213,
+            "P_cura": 0.0639,
+            "P_tox": 0.1964,
+            "indice_terapeutico": 1.127,
+            "eficacia_clonal": 0.9694,
+            "ecog": 0,
+            "reserva_media": 0.7995,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.2976,
+            "dose": 0.3,
+            "P_resposta": 0.2202,
+            "P_cura": 0.0687,
+            "P_tox": 0.1944,
+            "indice_terapeutico": 1.133,
+            "eficacia_clonal": 0.9664,
+            "ecog": 0,
+            "reserva_media": 0.7845,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.3164,
+            "dose": 0.3,
+            "P_resposta": 0.2184,
+            "P_cura": 0.0718,
+            "P_tox": 0.1924,
+            "indice_terapeutico": 1.135,
+            "eficacia_clonal": 0.9633,
+            "ecog": 0,
+            "reserva_media": 0.7695,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.2689,
+            "dose": 0.3,
+            "P_resposta": 0.2178,
+            "P_cura": 0.078,
+            "P_tox": 0.1904,
+            "indice_terapeutico": 1.144,
+            "eficacia_clonal": 0.96,
+            "ecog": 0,
+            "reserva_media": 0.7545,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.3105,
+            "dose": 0.3,
+            "P_resposta": 0.2156,
+            "P_cura": 0.0796,
+            "P_tox": 0.1884,
+            "indice_terapeutico": 1.144,
+            "eficacia_clonal": 0.9566,
+            "ecog": 0,
+            "reserva_media": 0.7395,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.3251,
+            "dose": 0.3,
+            "P_resposta": 0.214,
+            "P_cura": 0.0825,
+            "P_tox": 0.1865,
+            "indice_terapeutico": 1.147,
+            "eficacia_clonal": 0.9529,
+            "ecog": 0,
+            "reserva_media": 0.7245,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.294,
+            "dose": 0.3,
+            "P_resposta": 0.213,
+            "P_cura": 0.0878,
+            "P_tox": 0.1845,
+            "indice_terapeutico": 1.154,
+            "eficacia_clonal": 0.9491,
+            "ecog": 0,
+            "reserva_media": 0.7095,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.3349,
+            "dose": 0.3,
+            "P_resposta": 0.2109,
+            "P_cura": 0.0846,
+            "P_tox": 0.1825,
+            "indice_terapeutico": 1.156,
+            "eficacia_clonal": 0.9452,
+            "ecog": 0,
+            "reserva_media": 0.6945,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.285,
+            "dose": 0.3,
+            "P_resposta": 0.2103,
+            "P_cura": 0.0866,
+            "P_tox": 0.1805,
+            "indice_terapeutico": 1.165,
+            "eficacia_clonal": 0.941,
+            "ecog": 0,
+            "reserva_media": 0.6795,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.2916,
+            "dose": 0.3,
+            "P_resposta": 0.2088,
+            "P_cura": 0.0854,
+            "P_tox": 0.1785,
+            "indice_terapeutico": 1.17,
+            "eficacia_clonal": 0.9366,
+            "ecog": 0,
+            "reserva_media": 0.6645,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.2699,
+            "dose": 0.3,
+            "P_resposta": 0.2077,
+            "P_cura": 0.0858,
+            "P_tox": 0.1765,
+            "indice_terapeutico": 1.177,
+            "eficacia_clonal": 0.932,
+            "ecog": 0,
+            "reserva_media": 0.6495,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.2945,
+            "dose": 0.3,
+            "P_resposta": 0.2058,
+            "P_cura": 0.0835,
+            "P_tox": 0.1745,
+            "indice_terapeutico": 1.179,
+            "eficacia_clonal": 0.9271,
+            "ecog": 0,
+            "reserva_media": 0.6345,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.2812,
+            "dose": 0.3,
+            "P_resposta": 0.2046,
+            "P_cura": 0.0834,
+            "P_tox": 0.1725,
+            "indice_terapeutico": 1.186,
+            "eficacia_clonal": 0.922,
+            "ecog": 0,
+            "reserva_media": 0.6195,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.3306,
+            "dose": 0.3,
+            "P_resposta": 0.2024,
+            "P_cura": 0.0798,
+            "P_tox": 0.1705,
+            "indice_terapeutico": 1.187,
+            "eficacia_clonal": 0.9167,
+            "ecog": 0,
+            "reserva_media": 0.6045,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.3089,
+            "dose": 0.3,
+            "P_resposta": 0.2013,
+            "P_cura": 0.0801,
+            "P_tox": 0.1686,
+            "indice_terapeutico": 1.194,
+            "eficacia_clonal": 0.911,
+            "ecog": 0,
+            "reserva_media": 0.5895,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.3234,
+            "dose": 0.3,
+            "P_resposta": 0.1997,
+            "P_cura": 0.0784,
+            "P_tox": 0.1666,
+            "indice_terapeutico": 1.199,
+            "eficacia_clonal": 0.9051,
+            "ecog": 0,
+            "reserva_media": 0.5745,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.3277,
+            "dose": 0.3,
+            "P_resposta": 0.1981,
+            "P_cura": 0.0773,
+            "P_tox": 0.1646,
+            "indice_terapeutico": 1.204,
+            "eficacia_clonal": 0.8989,
+            "ecog": 0,
+            "reserva_media": 0.5595,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.2834,
+            "dose": 0.3,
+            "P_resposta": 0.1974,
+            "P_cura": 0.0787,
+            "P_tox": 0.1626,
+            "indice_terapeutico": 1.214,
+            "eficacia_clonal": 0.8924,
+            "ecog": 0,
+            "reserva_media": 0.5445,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.277,
+            "dose": 0.3,
+            "P_resposta": 0.196,
+            "P_cura": 0.078,
+            "P_tox": 0.1606,
+            "indice_terapeutico": 1.22,
+            "eficacia_clonal": 0.8855,
+            "ecog": 0,
+            "reserva_media": 0.5295,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.3249,
+            "dose": 0.3,
+            "P_resposta": 0.1939,
+            "P_cura": 0.0746,
+            "P_tox": 0.1586,
+            "indice_terapeutico": 1.223,
+            "eficacia_clonal": 0.8783,
+            "ecog": 0,
+            "reserva_media": 0.5145,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.2864,
+            "dose": 0.3,
+            "P_resposta": 0.193,
+            "P_cura": 0.0756,
+            "P_tox": 0.1566,
+            "indice_terapeutico": 1.232,
+            "eficacia_clonal": 0.8708,
+            "ecog": 1,
+            "reserva_media": 0.4995,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.3057,
+            "dose": 0.3,
+            "P_resposta": 0.176,
+            "P_cura": 0.0678,
+            "P_tox": 0.1778,
+            "indice_terapeutico": 0.99,
+            "eficacia_clonal": 0.8628,
+            "ecog": 2,
+            "reserva_media": 0.4845,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.293,
+            "dose": 0.3,
+            "P_resposta": 0.1483,
+            "P_cura": 0.0572,
+            "P_tox": 0.1984,
+            "indice_terapeutico": 0.747,
+            "eficacia_clonal": 0.8545,
+            "ecog": 3,
+            "reserva_media": 0.4695,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.3016,
+            "dose": 0.3,
+            "P_resposta": 0.1037,
+            "P_cura": 0.0395,
+            "P_tox": 0.2185,
+            "indice_terapeutico": 0.475,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.4545,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.2936,
+            "dose": 0.3,
+            "P_resposta": 0.0479,
+            "P_cura": 0.0182,
+            "P_tox": 0.2379,
+            "indice_terapeutico": 0.201,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.4395,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.3065,
+            "dose": 0.3,
+            "P_resposta": 0.0478,
+            "P_cura": 0.0179,
+            "P_tox": 0.2347,
+            "indice_terapeutico": 0.204,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.4245,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.2917,
+            "dose": 0.3,
+            "P_resposta": 0.0479,
+            "P_cura": 0.018,
+            "P_tox": 0.2315,
+            "indice_terapeutico": 0.207,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.4095,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.2261,
+          "P_resposta_final": 0.0479,
+          "variacao_P_resposta": -0.1782,
+          "P_cura_final": 0.018,
+          "ciclos_melhora_ctDNA": 17,
+          "taxa_melhora": 0.5667,
+          "reserva_final": 0.4095,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 1.029,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 7,
+      "nome": "Cancer de Paratireoide",
+      "nome_cientifico": "Carcinoma de Paratireoide",
+      "localizacao": "Glandulas paratireoides (atras da tireoide, no pescoco)",
+      "incidencia_usa": "<1/100.000/ano (3.5-5.7/10 milhao/ano mundial)",
+      "descricao": "Causa hiperatividade das paratireoides com liberacao excessiva de hormonio paratireoideo, levando a hipercalcemia. Extremamente raro.",
+      "desafios": "Raridade extrema dificulta estudos robustos e definicao de protocolos padronizados.",
+      "biomarcadores": {
+        "ctDNA": 0.2,
+        "CTC": 4,
+        "TMB": 2.0,
+        "PD_L1": 0.05,
+        "TILs": 0.06
+      },
+      "ecog": 0,
+      "reserva_fisiologica": 0.9,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2513,
+        "max_score": 0.295,
+        "min_score": 0.2025,
+        "desvio_padrao": 0.0223,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_7_0",
+            "score_final": 0.295,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 1.0,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 1.00)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_7_1",
+            "score_final": 0.2375,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.71,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.71)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_7_2",
+            "score_final": 0.2625,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.81,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.81)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_7_3",
+            "score_final": 0.2725,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.79,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.79)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_7_4",
+            "score_final": 0.2275,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.1966,
+          "IC95_inf": 0.1415,
+          "IC95_sup": 0.2517,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2077,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.947,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8191,
+          "fator_fisiologico": 0.96,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.1966,
+          "IC95_inf": 0.1415,
+          "IC95_sup": 0.2517,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1306,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.505,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8191,
+          "fator_fisiologico": 0.96,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.1966,
+          "IC95_inf": 0.1415,
+          "IC95_sup": 0.2517,
+          "P_cura": 0.0397,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2671,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.736,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.8191,
+          "fator_fisiologico": 0.96,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.5381,
+        "utilidade_cura": 0.2085,
+        "utilidade_toxicidade": 0.1699,
+        "utilidade_qualidade": 0.9242,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0779,
+        "p_tox_projetada": 0.3067,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.538). P(cura) projetada: 7.8% com P(tox): 30.7%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.5381,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.5228,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.5128,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4973,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.5165,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.1896,
+            "dose": 0.3,
+            "P_resposta": 0.1955,
+            "P_cura": 0.0443,
+            "P_tox": 0.205,
+            "indice_terapeutico": 0.954,
+            "eficacia_clonal": 0.9775,
+            "ecog": 0,
+            "reserva_media": 0.864,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.1918,
+            "dose": 0.3,
+            "P_resposta": 0.1941,
+            "P_cura": 0.0472,
+            "P_tox": 0.203,
+            "indice_terapeutico": 0.956,
+            "eficacia_clonal": 0.975,
+            "ecog": 0,
+            "reserva_media": 0.849,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.2067,
+            "dose": 0.3,
+            "P_resposta": 0.192,
+            "P_cura": 0.0501,
+            "P_tox": 0.201,
+            "indice_terapeutico": 0.955,
+            "eficacia_clonal": 0.9722,
+            "ecog": 0,
+            "reserva_media": 0.834,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.2182,
+            "dose": 0.3,
+            "P_resposta": 0.19,
+            "P_cura": 0.0529,
+            "P_tox": 0.199,
+            "indice_terapeutico": 0.955,
+            "eficacia_clonal": 0.9694,
+            "ecog": 0,
+            "reserva_media": 0.819,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.1856,
+            "dose": 0.3,
+            "P_resposta": 0.1908,
+            "P_cura": 0.0579,
+            "P_tox": 0.197,
+            "indice_terapeutico": 0.969,
+            "eficacia_clonal": 0.9664,
+            "ecog": 0,
+            "reserva_media": 0.804,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.2023,
+            "dose": 0.3,
+            "P_resposta": 0.1886,
+            "P_cura": 0.0603,
+            "P_tox": 0.195,
+            "indice_terapeutico": 0.967,
+            "eficacia_clonal": 0.9633,
+            "ecog": 0,
+            "reserva_media": 0.789,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.2034,
+            "dose": 0.3,
+            "P_resposta": 0.1873,
+            "P_cura": 0.0635,
+            "P_tox": 0.193,
+            "indice_terapeutico": 0.97,
+            "eficacia_clonal": 0.96,
+            "ecog": 0,
+            "reserva_media": 0.774,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.2023,
+            "dose": 0.3,
+            "P_resposta": 0.1861,
+            "P_cura": 0.0667,
+            "P_tox": 0.191,
+            "indice_terapeutico": 0.974,
+            "eficacia_clonal": 0.9566,
+            "ecog": 0,
+            "reserva_media": 0.759,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.1999,
+            "dose": 0.3,
+            "P_resposta": 0.185,
+            "P_cura": 0.0699,
+            "P_tox": 0.1891,
+            "indice_terapeutico": 0.978,
+            "eficacia_clonal": 0.9529,
+            "ecog": 0,
+            "reserva_media": 0.744,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.218,
+            "dose": 0.3,
+            "P_resposta": 0.1827,
+            "P_cura": 0.0717,
+            "P_tox": 0.1871,
+            "indice_terapeutico": 0.976,
+            "eficacia_clonal": 0.9491,
+            "ecog": 0,
+            "reserva_media": 0.729,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.2137,
+            "dose": 0.3,
+            "P_resposta": 0.1817,
+            "P_cura": 0.0713,
+            "P_tox": 0.1851,
+            "indice_terapeutico": 0.982,
+            "eficacia_clonal": 0.9452,
+            "ecog": 0,
+            "reserva_media": 0.714,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.1974,
+            "dose": 0.3,
+            "P_resposta": 0.1815,
+            "P_cura": 0.0717,
+            "P_tox": 0.1831,
+            "indice_terapeutico": 0.991,
+            "eficacia_clonal": 0.941,
+            "ecog": 0,
+            "reserva_media": 0.699,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.1955,
+            "dose": 0.3,
+            "P_resposta": 0.1804,
+            "P_cura": 0.0711,
+            "P_tox": 0.1811,
+            "indice_terapeutico": 0.996,
+            "eficacia_clonal": 0.9366,
+            "ecog": 0,
+            "reserva_media": 0.684,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.2057,
+            "dose": 0.3,
+            "P_resposta": 0.1785,
+            "P_cura": 0.0697,
+            "P_tox": 0.1791,
+            "indice_terapeutico": 0.997,
+            "eficacia_clonal": 0.932,
+            "ecog": 0,
+            "reserva_media": 0.669,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.1899,
+            "dose": 0.3,
+            "P_resposta": 0.1782,
+            "P_cura": 0.07,
+            "P_tox": 0.1771,
+            "indice_terapeutico": 1.006,
+            "eficacia_clonal": 0.9271,
+            "ecog": 0,
+            "reserva_media": 0.654,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.1887,
+            "dose": 0.3,
+            "P_resposta": 0.1771,
+            "P_cura": 0.0693,
+            "P_tox": 0.1751,
+            "indice_terapeutico": 1.011,
+            "eficacia_clonal": 0.922,
+            "ecog": 0,
+            "reserva_media": 0.639,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.2106,
+            "dose": 0.3,
+            "P_resposta": 0.1746,
+            "P_cura": 0.0673,
+            "P_tox": 0.1731,
+            "indice_terapeutico": 1.009,
+            "eficacia_clonal": 0.9167,
+            "ecog": 0,
+            "reserva_media": 0.624,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.2103,
+            "dose": 0.3,
+            "P_resposta": 0.1734,
+            "P_cura": 0.0666,
+            "P_tox": 0.1711,
+            "indice_terapeutico": 1.013,
+            "eficacia_clonal": 0.911,
+            "ecog": 0,
+            "reserva_media": 0.609,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.2014,
+            "dose": 0.3,
+            "P_resposta": 0.1727,
+            "P_cura": 0.0663,
+            "P_tox": 0.1692,
+            "indice_terapeutico": 1.021,
+            "eficacia_clonal": 0.9051,
+            "ecog": 0,
+            "reserva_media": 0.594,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.2059,
+            "dose": 0.3,
+            "P_resposta": 0.1712,
+            "P_cura": 0.0653,
+            "P_tox": 0.1672,
+            "indice_terapeutico": 1.024,
+            "eficacia_clonal": 0.8989,
+            "ecog": 0,
+            "reserva_media": 0.579,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.1899,
+            "dose": 0.3,
+            "P_resposta": 0.1708,
+            "P_cura": 0.0654,
+            "P_tox": 0.1652,
+            "indice_terapeutico": 1.034,
+            "eficacia_clonal": 0.8924,
+            "ecog": 0,
+            "reserva_media": 0.564,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.1815,
+            "dose": 0.3,
+            "P_resposta": 0.1701,
+            "P_cura": 0.0651,
+            "P_tox": 0.1632,
+            "indice_terapeutico": 1.042,
+            "eficacia_clonal": 0.8855,
+            "ecog": 0,
+            "reserva_media": 0.549,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.1977,
+            "dose": 0.3,
+            "P_resposta": 0.168,
+            "P_cura": 0.0634,
+            "P_tox": 0.1612,
+            "indice_terapeutico": 1.042,
+            "eficacia_clonal": 0.8783,
+            "ecog": 0,
+            "reserva_media": 0.534,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.2038,
+            "dose": 0.3,
+            "P_resposta": 0.1664,
+            "P_cura": 0.0623,
+            "P_tox": 0.1592,
+            "indice_terapeutico": 1.045,
+            "eficacia_clonal": 0.8708,
+            "ecog": 0,
+            "reserva_media": 0.519,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.1953,
+            "dose": 0.3,
+            "P_resposta": 0.1656,
+            "P_cura": 0.0619,
+            "P_tox": 0.1572,
+            "indice_terapeutico": 1.053,
+            "eficacia_clonal": 0.8628,
+            "ecog": 0,
+            "reserva_media": 0.504,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.1978,
+            "dose": 0.3,
+            "P_resposta": 0.1643,
+            "P_cura": 0.061,
+            "P_tox": 0.1552,
+            "indice_terapeutico": 1.059,
+            "eficacia_clonal": 0.8545,
+            "ecog": 1,
+            "reserva_media": 0.489,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.2035,
+            "dose": 0.3,
+            "P_resposta": 0.1497,
+            "P_cura": 0.055,
+            "P_tox": 0.1762,
+            "indice_terapeutico": 0.85,
+            "eficacia_clonal": 0.8457,
+            "ecog": 2,
+            "reserva_media": 0.474,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.1979,
+            "dose": 0.3,
+            "P_resposta": 0.1262,
+            "P_cura": 0.0462,
+            "P_tox": 0.1966,
+            "indice_terapeutico": 0.642,
+            "eficacia_clonal": 0.8365,
+            "ecog": 3,
+            "reserva_media": 0.459,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.2041,
+            "dose": 0.3,
+            "P_resposta": 0.0881,
+            "P_cura": 0.0319,
+            "P_tox": 0.2164,
+            "indice_terapeutico": 0.407,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.444,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.2102,
+            "dose": 0.3,
+            "P_resposta": 0.0408,
+            "P_cura": 0.0146,
+            "P_tox": 0.2356,
+            "indice_terapeutico": 0.173,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.429,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.1955,
+          "P_resposta_final": 0.0408,
+          "variacao_P_resposta": -0.1547,
+          "P_cura_final": 0.0146,
+          "ciclos_melhora_ctDNA": 14,
+          "taxa_melhora": 0.4667,
+          "reserva_final": 0.429,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.935,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    },
+    {
+      "id": 8,
+      "nome": "Cancer Ampular",
+      "nome_cientifico": "Carcinoma Ampular",
+      "localizacao": "Ampola de Vater (uniao dos ductos biliar e pancreatico)",
+      "incidencia_usa": "4-10/milhao/ano",
+      "descricao": "Afeta area critica do trato digestivo onde ductos biliar e pancreatico se unem ao intestino delgado. Tumor em crescimento pode afetar pancreas, intestino e figado simultaneamente.",
+      "desafios": "Localizacao critica causa impacto multi-organico: acúmulo de bile, inflamacao pancreatica, problemas GI.",
+      "biomarcadores": {
+        "ctDNA": 0.6,
+        "CTC": 20,
+        "TMB": 5.5,
+        "PD_L1": 0.18,
+        "TILs": 0.09
+      },
+      "ecog": 1,
+      "reserva_fisiologica": 0.62,
+      "scoring": {
+        "n_achados": 20,
+        "distribuicao": {
+          "baixo": 20
+        },
+        "media_score": 0.2518,
+        "max_score": 0.2925,
+        "min_score": 0.1975,
+        "desvio_padrao": 0.0288,
+        "taxa_relevancia": 0.0,
+        "scores_detalhados": [
+          {
+            "id_dimhex": "DIMHEX_8_0",
+            "score_final": 0.1975,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.61,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: artigo_cientifico, score: 0.61)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_8_1",
+            "score_final": 0.2725,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.79,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.79)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_8_2",
+            "score_final": 0.2775,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.87,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.15
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.87)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_8_3",
+            "score_final": 0.2475,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.81,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.0,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: meta_analise, score: 0.81)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          },
+          {
+            "id_dimhex": "DIMHEX_8_4",
+            "score_final": 0.2575,
+            "classificacao": "baixo",
+            "cor_prioridade": "#65A30D",
+            "scores_parciais": {
+              "dominio": 0.0,
+              "evidencia": 0.73,
+              "novidade": 0.2997,
+              "aplicabilidade": 0.2,
+              "impacto": 0.0
+            },
+            "justificativas": [
+              "Evidencia clinica robusta (tipo: ensaio_clinico, score: 0.73)"
+            ],
+            "biomarcadores_mencionados": [],
+            "subtipos_mencionados": []
+          }
+        ]
+      },
+      "motor_prob": {
+        "L1": {
+          "P_resposta": 0.1909,
+          "IC95_inf": 0.1364,
+          "IC95_sup": 0.2453,
+          "P_cura": 0.0327,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1962,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.973,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Pembrolizumabe + Carboplatina + Pemetrexede",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9786,
+          "fator_fisiologico": 0.7802,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L2": {
+          "P_resposta": 0.1909,
+          "IC95_inf": 0.1364,
+          "IC95_sup": 0.2453,
+          "P_cura": 0.0327,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.1233,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 1.548,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Sotorasibe (960mg VO/dia)",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9786,
+          "fator_fisiologico": 0.7802,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        },
+        "L3": {
+          "P_resposta": 0.1909,
+          "IC95_inf": 0.1364,
+          "IC95_sup": 0.2453,
+          "P_cura": 0.0327,
+          "nivel_cura": "MINIMO",
+          "P_toxicidade": 0.2523,
+          "risco_tox": "BAIXO",
+          "indice_terapeutico": 0.757,
+          "recomendacao": "TROCAR_LINHA",
+          "justificativa": "Potencial de cura minimo na linha atual",
+          "esquema": "Docetaxel + Ramucirumabe",
+          "fator_evidencia": 1.0,
+          "likelihood_biomo": 0.9786,
+          "fator_fisiologico": 0.7802,
+          "prior_original": 0.25,
+          "referencia": "Fallback: media ORR tumores solidos"
+        }
+      },
+      "otimizador": {
+        "acao_otima": "INTENSIFICAR",
+        "utilidade_total": 0.4798,
+        "utilidade_cura": 0.1917,
+        "utilidade_toxicidade": 0.1604,
+        "utilidade_qualidade": 0.6601,
+        "fator_emocional": 1.048,
+        "p_cura_projetada": 0.0709,
+        "p_tox_projetada": 0.2952,
+        "justificativa": "Acao INTENSIFICAR selecionada (U=0.480). P(cura) projetada: 7.1% com P(tox): 29.5%. Reserva organica e ECOG permitem intensificacao.",
+        "todas_acoes": [
+          {
+            "acao": "INTENSIFICAR",
+            "utilidade": 0.4798,
+            "viavel": true
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "utilidade": 0.4634,
+            "viavel": true
+          },
+          {
+            "acao": "MANTER_DOSE",
+            "utilidade": 0.4529,
+            "viavel": true
+          },
+          {
+            "acao": "REDUZIR",
+            "utilidade": 0.4365,
+            "viavel": true
+          },
+          {
+            "acao": "OBSERVAR",
+            "utilidade": 0.4565,
+            "viavel": true
+          }
+        ]
+      },
+      "cvm": {
+        "ranking": [
+          {
+            "acao": "MANTER_DOSE",
+            "indice_evidencia": 83.0,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 1
+          },
+          {
+            "acao": "INTENSIFICAR_MODERADO",
+            "indice_evidencia": 81.7,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 4
+          },
+          {
+            "acao": "OBSERVAR",
+            "indice_evidencia": 81.5,
+            "classificacao": "FORTEMENTE_SUPORTADA",
+            "cor_semaforo": "verde",
+            "acao_recomendada": "Aprovado — implementar conforme protocolo",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "REDUZIR",
+            "indice_evidencia": 79.0,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 2
+          },
+          {
+            "acao": "INTENSIFICAR",
+            "indice_evidencia": 77.9,
+            "classificacao": "SUPORTADA",
+            "cor_semaforo": "amarelo",
+            "acao_recomendada": "Aprovado com monitoramento adicional",
+            "n_evidencias": 3
+          }
+        ],
+        "acao_melhor_evidenciada": "MANTER_DOSE",
+        "melhor_indice": 83.0
+      },
+      "simulacao": {
+        "n_ciclos": 30,
+        "historico": [
+          {
+            "ciclo": 1,
+            "ctDNA": 0.5532,
+            "dose": 0.3,
+            "P_resposta": 0.1899,
+            "P_cura": 0.0376,
+            "P_tox": 0.194,
+            "indice_terapeutico": 0.979,
+            "eficacia_clonal": 0.9775,
+            "ecog": 1,
+            "reserva_media": 0.5905,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 2,
+            "ctDNA": 0.5991,
+            "dose": 0.3,
+            "P_resposta": 0.1882,
+            "P_cura": 0.0387,
+            "P_tox": 0.1917,
+            "indice_terapeutico": 0.982,
+            "eficacia_clonal": 0.975,
+            "ecog": 1,
+            "reserva_media": 0.5755,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 3,
+            "ctDNA": 0.5814,
+            "dose": 0.3,
+            "P_resposta": 0.187,
+            "P_cura": 0.0422,
+            "P_tox": 0.1894,
+            "indice_terapeutico": 0.987,
+            "eficacia_clonal": 0.9722,
+            "ecog": 1,
+            "reserva_media": 0.5605,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 4,
+            "ctDNA": 0.5561,
+            "dose": 0.3,
+            "P_resposta": 0.1858,
+            "P_cura": 0.0458,
+            "P_tox": 0.1871,
+            "indice_terapeutico": 0.993,
+            "eficacia_clonal": 0.9694,
+            "ecog": 1,
+            "reserva_media": 0.5455,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 5,
+            "ctDNA": 0.6424,
+            "dose": 0.3,
+            "P_resposta": 0.1838,
+            "P_cura": 0.0456,
+            "P_tox": 0.1849,
+            "indice_terapeutico": 0.994,
+            "eficacia_clonal": 0.9664,
+            "ecog": 1,
+            "reserva_media": 0.5305,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 6,
+            "ctDNA": 0.5857,
+            "dose": 0.3,
+            "P_resposta": 0.1829,
+            "P_cura": 0.0503,
+            "P_tox": 0.1826,
+            "indice_terapeutico": 1.002,
+            "eficacia_clonal": 0.9633,
+            "ecog": 1,
+            "reserva_media": 0.5155,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 7,
+            "ctDNA": 0.5766,
+            "dose": 0.3,
+            "P_resposta": 0.1816,
+            "P_cura": 0.0533,
+            "P_tox": 0.1803,
+            "indice_terapeutico": 1.007,
+            "eficacia_clonal": 0.96,
+            "ecog": 1,
+            "reserva_media": 0.5005,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 8,
+            "ctDNA": 0.6321,
+            "dose": 0.3,
+            "P_resposta": 0.1799,
+            "P_cura": 0.0536,
+            "P_tox": 0.178,
+            "indice_terapeutico": 1.011,
+            "eficacia_clonal": 0.9566,
+            "ecog": 2,
+            "reserva_media": 0.4855,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 9,
+            "ctDNA": 0.5615,
+            "dose": 0.3,
+            "P_resposta": 0.1518,
+            "P_cura": 0.05,
+            "P_tox": 0.1986,
+            "indice_terapeutico": 0.764,
+            "eficacia_clonal": 0.9529,
+            "ecog": 3,
+            "reserva_media": 0.4705,
+            "recomendacao": "MANTER"
+          },
+          {
+            "ciclo": 10,
+            "ctDNA": 0.5602,
+            "dose": 0.3,
+            "P_resposta": 0.1062,
+            "P_cura": 0.0368,
+            "P_tox": 0.2187,
+            "indice_terapeutico": 0.486,
+            "eficacia_clonal": 0.9491,
+            "ecog": 4,
+            "reserva_media": 0.4555,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 11,
+            "ctDNA": 0.6038,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0164,
+            "P_tox": 0.2381,
+            "indice_terapeutico": 0.205,
+            "eficacia_clonal": 0.9452,
+            "ecog": 4,
+            "reserva_media": 0.4405,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 12,
+            "ctDNA": 0.6259,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0161,
+            "P_tox": 0.2349,
+            "indice_terapeutico": 0.208,
+            "eficacia_clonal": 0.941,
+            "ecog": 4,
+            "reserva_media": 0.4255,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 13,
+            "ctDNA": 0.6209,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0161,
+            "P_tox": 0.2317,
+            "indice_terapeutico": 0.211,
+            "eficacia_clonal": 0.9366,
+            "ecog": 4,
+            "reserva_media": 0.4105,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 14,
+            "ctDNA": 0.59,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0164,
+            "P_tox": 0.2285,
+            "indice_terapeutico": 0.214,
+            "eficacia_clonal": 0.932,
+            "ecog": 4,
+            "reserva_media": 0.3955,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 15,
+            "ctDNA": 0.5701,
+            "dose": 0.3,
+            "P_resposta": 0.049,
+            "P_cura": 0.0166,
+            "P_tox": 0.2254,
+            "indice_terapeutico": 0.217,
+            "eficacia_clonal": 0.9271,
+            "ecog": 4,
+            "reserva_media": 0.3805,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 16,
+            "ctDNA": 0.648,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0156,
+            "P_tox": 0.2222,
+            "indice_terapeutico": 0.22,
+            "eficacia_clonal": 0.922,
+            "ecog": 4,
+            "reserva_media": 0.3655,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 17,
+            "ctDNA": 0.6994,
+            "dose": 0.3,
+            "P_resposta": 0.0487,
+            "P_cura": 0.0149,
+            "P_tox": 0.219,
+            "indice_terapeutico": 0.222,
+            "eficacia_clonal": 0.9167,
+            "ecog": 4,
+            "reserva_media": 0.3505,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 18,
+            "ctDNA": 0.6296,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0157,
+            "P_tox": 0.2158,
+            "indice_terapeutico": 0.227,
+            "eficacia_clonal": 0.911,
+            "ecog": 4,
+            "reserva_media": 0.3355,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 19,
+            "ctDNA": 0.6037,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0159,
+            "P_tox": 0.2126,
+            "indice_terapeutico": 0.23,
+            "eficacia_clonal": 0.9051,
+            "ecog": 4,
+            "reserva_media": 0.3205,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 20,
+            "ctDNA": 0.6223,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0157,
+            "P_tox": 0.2095,
+            "indice_terapeutico": 0.233,
+            "eficacia_clonal": 0.8989,
+            "ecog": 4,
+            "reserva_media": 0.3055,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 21,
+            "ctDNA": 0.5882,
+            "dose": 0.3,
+            "P_resposta": 0.049,
+            "P_cura": 0.016,
+            "P_tox": 0.2063,
+            "indice_terapeutico": 0.238,
+            "eficacia_clonal": 0.8924,
+            "ecog": 4,
+            "reserva_media": 0.2905,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 22,
+            "ctDNA": 0.6044,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0157,
+            "P_tox": 0.2031,
+            "indice_terapeutico": 0.241,
+            "eficacia_clonal": 0.8855,
+            "ecog": 4,
+            "reserva_media": 0.2755,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 23,
+            "ctDNA": 0.5876,
+            "dose": 0.3,
+            "P_resposta": 0.049,
+            "P_cura": 0.0158,
+            "P_tox": 0.1999,
+            "indice_terapeutico": 0.245,
+            "eficacia_clonal": 0.8783,
+            "ecog": 4,
+            "reserva_media": 0.2605,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 24,
+            "ctDNA": 0.5952,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0156,
+            "P_tox": 0.1967,
+            "indice_terapeutico": 0.249,
+            "eficacia_clonal": 0.8708,
+            "ecog": 4,
+            "reserva_media": 0.2455,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 25,
+            "ctDNA": 0.6042,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0154,
+            "P_tox": 0.1935,
+            "indice_terapeutico": 0.253,
+            "eficacia_clonal": 0.8628,
+            "ecog": 4,
+            "reserva_media": 0.2305,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 26,
+            "ctDNA": 0.6086,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0153,
+            "P_tox": 0.1904,
+            "indice_terapeutico": 0.257,
+            "eficacia_clonal": 0.8545,
+            "ecog": 4,
+            "reserva_media": 0.2155,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 27,
+            "ctDNA": 0.5916,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0154,
+            "P_tox": 0.1872,
+            "indice_terapeutico": 0.261,
+            "eficacia_clonal": 0.8457,
+            "ecog": 4,
+            "reserva_media": 0.2005,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 28,
+            "ctDNA": 0.6513,
+            "dose": 0.3,
+            "P_resposta": 0.0488,
+            "P_cura": 0.0146,
+            "P_tox": 0.184,
+            "indice_terapeutico": 0.265,
+            "eficacia_clonal": 0.8365,
+            "ecog": 4,
+            "reserva_media": 0.1855,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 29,
+            "ctDNA": 0.5955,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0151,
+            "P_tox": 0.1808,
+            "indice_terapeutico": 0.27,
+            "eficacia_clonal": 0.8268,
+            "ecog": 4,
+            "reserva_media": 0.1705,
+            "recomendacao": "TROCAR_LINHA"
+          },
+          {
+            "ciclo": 30,
+            "ctDNA": 0.6207,
+            "dose": 0.3,
+            "P_resposta": 0.0489,
+            "P_cura": 0.0147,
+            "P_tox": 0.1776,
+            "indice_terapeutico": 0.275,
+            "eficacia_clonal": 0.8166,
+            "ecog": 4,
+            "reserva_media": 0.1555,
+            "recomendacao": "TROCAR_LINHA"
+          }
+        ],
+        "estatisticas": {
+          "P_resposta_inicial": 0.1899,
+          "P_resposta_final": 0.0489,
+          "variacao_P_resposta": -0.141,
+          "P_cura_final": 0.0147,
+          "ciclos_melhora_ctDNA": 15,
+          "taxa_melhora": 0.5,
+          "reserva_final": 0.1555,
+          "ecog_final": 4,
+          "dose_final": 0.3,
+          "indice_terapeutico_medio": 0.465,
+          "eficacia_clonal_final": 0.8166
+        }
+      }
+    }
+  ]
+}

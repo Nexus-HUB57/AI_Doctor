@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+!.env.fullstack.example
+__pycache__/
+*.pyc
+chroma_db/
+*.db
+models/

@@ -207,6 +207,11 @@ class DIMHEX:
                 total += 1
 
         print(f"  [FASE 1/7] {total} achados coletados de {len(resultados)} fontes")
+        if self.fontes._historico_execucoes:
+            ultimo = self.fontes._historico_execucoes[-1]
+            q_raros = ultimo.get("queries_raros_injetadas", 0)
+            if q_raros:
+                print(f"  [FASE 1/7] Pipeline Raros: {q_raros} queries de canceres raros injetadas neste ciclo")
 
         return {
             "resultados_por_fonte": resultados,
@@ -348,7 +353,7 @@ class DIMHEX:
             self.relatorios_ciclo = self.relatorios_ciclo[-50:]
 
         # Acumular insights criticos
-        for insight in fase345["insights"]:
+        for insight in fase356["insights"]:
             if insight.get("severidade") in ("critica", "alta"):
                 self.insights_acumulados.append({
                     **insight,
@@ -474,6 +479,8 @@ class DIMHEX:
             "sabedoria": self.sabedoria.obter_metricas(),
             "senciencia": self.senciencia.obter_metricas_sabedoria(),
             "proximo_ciclo": self.config["intervalo_minutos"],
+            "pipeline_raros_ativo": CONFIG.get("DIMHEX_RARE_CANCER_PIPELINE", True),
+            "canceres_raros_cobertos": 8,
         }
 
     def buscar_evidencia_para_decisao(self, contexto_clinico: str, top_k: int = 5) -> List[Dict]:

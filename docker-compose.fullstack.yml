@@ -1,0 +1,270 @@
+# AI_Doctor — Full-Stack Environment (Web + Agente Python + DIMHEX)
+# Usage: docker compose -f docker-compose.fullstack.yml up -d --build
+#
+# Full-stack includes:
+#   - Nginx reverse proxy (SSL ready)
+#   - React + Express + tRPC (Web app)
+#   - Python Agente Oncologico (DIMHEX + Monte Carlo + ChromaDB)
+#   - Streamlit Dashboard
+#   - MySQL (TiDB compatible)
+#   - Redis (cache/sessions)
+#   - ChromaDB (vector store)
+#   - Persistent volumes for data, knowledge, and memory
+
+version: '3.8'
+
+services:
+  # ── Nginx Reverse Proxy ───────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: ai-doctor-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      web:
+        condition: service_healthy
+      streamlit:
+        condition: service_started
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    networks:
+      - frontend
+      - backend
+
+  # ── Web Application (React + Express + tRPC) ─────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-doctor-web
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY:?ERROR: GEMINI_API_KEY is required}
+      - JWT_SECRET=${JWT_SECRET:?ERROR: JWT_SECRET is required. Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=${DB_USER:-ai_doctor}
+      - DB_PASSWORD=${DB_PASSWORD:?ERROR: DB_PASSWORD is required}
+      - DB_NAME=${DB_NAME:-ai_doctor}
+      - DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@mysql:3306/${DB_NAME}
+      - REDIS_URL=redis://redis:6379
+      - PORT=3000
+      - DISABLE_HMR=true
+      # AWS S3 (optional)
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - S3_BUCKET=${S3_BUCKET:-ai-doctor-files}
+      # Scientific APIs
+      - PUBMED_API_KEY=${PUBMED_API_KEY:-}
+      - SERPAPI_KEY=${SERPAPI_KEY:-}
+    volumes:
+      - web_data:/app/data
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 8s
+      retries: 3
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.5'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    networks:
+      - frontend
+      - backend
+
+  # ── Python Agente Oncologico (DIMHEX Engine) ─────
+  agente:
+    build:
+      context: .
+      dockerfile: Dockerfile.agente
+    container_name: ai-doctor-agente
+    expose:
+      - "8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DB_URL=sqlite:///data/ai_doctor_audit.db
+      - CHROMA_DB_PATH=/data/chroma_db
+      - SCHEDULE_INTERVAL_HOURS=24
+      - DIMHEX_INTERVAL_MINUTES=240
+      - DIMHEX_LOOKBACK_DAYS=30
+      - DIMHEX_MAX_RESULTS_PER_SOURCE=50
+      - DIMHEX_MIN_SCORE=0.25
+      - DIMHEX_PESQUISA_ATIVA=true
+      - DIMHEX_ACTIVE_SOURCES=["pubmed","clinical_trials","google_scholar"]
+      - DIMHEX_MEMORY_PATH=/data/dimhex_memoria.json
+      - DIMHEX_WISDOM_PATH=/data/dimhex_sabedoria.json
+      - CHROMA_HOST=http://chromadb:8000
+    volumes:
+      - agente_data:/data
+    depends_on:
+      chromadb:
+        condition: service_started
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import chromadb; c=chromadb.HttpClient(host=\"chromadb\",port=8000); print(c.heartbeat())' || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'
+    networks:
+      - backend
+
+  # ── Streamlit Dashboard ──────────────────────────
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: ai-doctor-streamlit
+    expose:
+      - "8501"
+    environment:
+      - CHROMA_DB_PATH=/data/chroma_db
+    volumes:
+      - agente_data:/data
+    depends_on:
+      agente:
+        condition: service_started
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+    networks:
+      - backend
+
+  # ── MySQL / TiDB ─────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: ai-doctor-mysql
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:?ERROR: DB_ROOT_PASSWORD is required}
+      - MYSQL_DATABASE=${DB_NAME:-ai_doctor}
+      - MYSQL_USER=${DB_USER:-ai_doctor}
+      - MYSQL_PASSWORD=${DB_PASSWORD:?ERROR: DB_PASSWORD is required}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    networks:
+      - backend
+
+  # ── Redis ────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ai-doctor-redis
+    expose:
+      - "6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+    networks:
+      - backend
+
+  # ── ChromaDB (Vector Store) ──────────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: ai-doctor-chromadb
+    expose:
+      - "8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - chromadb_data:/chroma/chroma
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    networks:
+      - backend
+
+volumes:
+  web_data:
+    name: ai-doctor-web-data
+  agente_data:
+    name: ai-doctor-agente-data
+  mysql_data:
+    name: ai-doctor-mysql-data
+  redis_data:
+    name: ai-doctor-redis-data
+  chromadb_data:
+    name: ai-doctor-chromadb-data
+  nginx_logs:
+    name: ai-doctor-nginx-logs
+
+networks:
+  frontend:
+    name: ai-doctor-frontend
+    driver: bridge
+  backend:
+    name: ai-doctor-backend
+    driver: bridge

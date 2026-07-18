@@ -11,6 +11,7 @@ import hashlib
 import requests
 from typing import List, Dict, Optional
 from config import CONFIG
+from infrastructure.pipeline_raros import obter_todas_queries_expandidas
 
 try:
     from datetime import timezone
@@ -354,6 +355,7 @@ class RegistroFontesPesquisa:
             print(f"   [RegistroFontes] Google Scholar desativado: {e}")
         self._historico_execucoes: List[Dict] = []
         self._queries_expandidas: List[str] = []  # Feedback loop de auto sabedoria
+        self._ciclo_contador = 0  # Contador para rotacao de queries de canceres raros
 
     def adicionar_queries_expandidas(self, queries: List[str]):
         """Adiciona queries geradas pela auto sabedoria ao proximo ciclo."""
@@ -392,15 +394,38 @@ class RegistroFontesPesquisa:
         print(f"  Fontes ativas: {len(self.fontes)}")
         if queries_adicionais:
             print(f"  Queries expandidas (sabedoria): {len(queries_adicionais)}")
+
+        # Obter queries do pipeline de canceres raros (se ativo)
+        queries_raros = []
+        queries_raros_injetadas = 0
+        if CONFIG.get("DIMHEX_RARE_CANCER_PIPELINE", True):
+            try:
+                queries_raros = obter_todas_queries_expandidas()
+            except Exception:
+                queries_raros = []
+        queries_raros_por_ciclo = CONFIG.get("DIMHEX_RARE_QUERIES_PER_CYCLE", 5)
+        if queries_raros:
+            print(f"  Queries canceres raros disponiveis: {len(queries_raros)}")
+
         print(f"{'='*60}")
 
         for nome, fonte in self.fontes.items():
             print(f"\n   [{nome}] Buscando...")
             try:
-                # Injetar queries expandidas no PubMed e Google Scholar
+                # Injetar queries expandidas (sabedoria + canceres raros) no PubMed e Google Scholar
                 termos_extra = None
-                if nome in ("pubmed", "google_scholar") and queries_adicionais:
-                    termos_extra = queries_adicionais[:3]
+                if nome in ("pubmed", "google_scholar"):
+                    combinadas = list(queries_adicionais)
+                    if queries_raros:
+                        n_raros = queries_raros_por_ciclo - len(combinadas)
+                        if n_raros > 0:
+                            inicio_rotacao = (self._ciclo_contador * queries_raros_por_ciclo) % len(queries_raros)
+                            rotacionadas = queries_raros[inicio_rotacao:inicio_rotacao + n_raros]
+                            if len(rotacionadas) < n_raros:
+                                rotacionadas += queries_raros[:n_raros - len(rotacionadas)]
+                            combinadas.extend(rotacionadas)
+                            queries_raros_injetadas += len(rotacionadas)
+                    termos_extra = combinadas if combinadas else None
 
                 resultados = fonte.buscar(
                     termos_busca=termos_extra,
@@ -415,16 +440,21 @@ class RegistroFontesPesquisa:
                 print(f"   [{nome}] ERRO: {e}")
                 todos_resultados[nome] = []
 
+        self._ciclo_contador += 1
+
         self._historico_execucoes.append({
             "timestamp": _utcnow_iso(),
             "data_inicio": data_inicio,
             "data_fim": data_fim,
             "total_resultados": total_geral,
-            "por_fonte": {k: len(v) for k, v in todos_resultados.items()}
+            "por_fonte": {k: len(v) for k, v in todos_resultados.items()},
+            "queries_raros_injetadas": queries_raros_injetadas,
         })
 
         print(f"\n{'='*60}")
         print(f"  DIMHEX — Ciclo Finalizado | Total: {total_geral} achados")
+        if queries_raros_injetadas:
+            print(f"  Pipeline Raros: {queries_raros_injetadas} queries canceres raros injetadas")
         print(f"{'='*60}\n")
 
         return todos_resultados

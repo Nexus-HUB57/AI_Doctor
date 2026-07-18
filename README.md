@@ -380,6 +380,70 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **14** | CI/CD pipelines, staging/prod, health endpoint, deploy |
 | **15** | Production Hardening: Security, Performance, Accessibility |
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
+| **17** | DIMHEX v2.1, 4 camadas probabilísticas, Senciência, pipeline cânceres raros |
+
+---
+
+## Relatórios Técnicos (`reports/`)
+
+Todos os relatórios de arquitetura, validação e planejamento estão disponíveis em PDF no diretório [`reports/`](reports/):
+
+| Relatório | Descrição |
+|-----------|-----------|
+| [01_Arquitetura_Completa_v2.0.pdf](reports/01_Arquitetura_Completa_v2.0.pdf) | Arquitetura completa: stack, DIMHEX, agente oncologico, FENIX, Senciência |
+| [02_Resumo_Desenvolvimento.pdf](reports/02_Resumo_Desenvolvimento.pdf) | 16 fases de desenvolvimento, 201+ testes, 100 stress tests |
+| [03_Implementacao_Seguranca.pdf](reports/03_Implementacao_Seguranca.pdf) | JWT, RBAC, Helmet/CORS, rate limiting, S3 seguro, validação de entrada |
+| [04_Roadmap_Deploy_Proximo_Nivel.pdf](reports/04_Roadmap_Deploy_Proximo_Nivel.pdf) | Transição para deploy: infraestrutura, checklist, roadmap pós-deploy |
+| [05_Pipeline_Canceres_Raros.pdf](reports/05_Pipeline_Canceres_Raros.pdf) | 56 termos PubMed, 34 ClinicalTrials, 8 cânceres raros validados |
+| [Relatorio_Validacao_DIMHEX_v2.1_Canceres_Raros.pdf](reports/Relatorio_Validacao_DIMHEX_v2.1_Canceres_Raros.pdf) | Validação completa contra 8 cânceres raros com 18 referências |
+
+---
+
+## Deploy — Próximo Nível
+
+### Arquitetura de Produção (7 Serviços)
+
+```
+┌────────────┐     ┌──────────────┐     ┌────────────────┐
+│   Nginx    │────>│  Express API │────>│  MySQL / TiDB  │
+│  :80/443   │     │   :3001      │     │    :3306       │
+│            │────>│  Frontend    │     ├────────────────┤
+│  (SSL/    │     │  (static)    │     │  Redis :6379   │
+│   proxy)  │     ├──────────────┤     └────────────────┘
+│            │     │  Streamlit   │     ┌────────────────┐
+│            │────>│  Dashboard   │────>│  ChromaDB :8000│
+└────────────┘     │   :8501      │     └────────────────┘
+                   │  Agente Python     ┌────────────────┐
+                   │  (DIMHEX 240min)   │  Scheduler     │
+                   └───────────────────┴────────────────┘
+```
+
+### Comandos de Deploy
+
+```bash
+# Desenvolvimento (stack completa)
+docker compose up -d --build
+
+# Staging
+docker compose -f docker-compose.staging.yml up -d --build
+
+# Produção (recomendado com Nginx)
+docker compose -f docker-compose.prod.yml up -d --build
+
+# Verificar saúde
+curl http://localhost:3001/health
+docker compose ps
+```
+
+### Roadmap Pós-Deploy
+
+| Fase | Período | Entregáveis |
+|------|---------|-------------|
+| **Maturação** | Dias 1-30 | Monitoramento, bug fixes, otimização de queries |
+| **Expansão DIMHEX** | Dias 30-60 | 4 recomendações implementadas, priores expandidos |
+| **Integração LLM** | Dias 60-90 | Orquestração LLM + RAG avançada, auto-sabedoria |
+| **Escala** | Dias 90-120 | Kubernetes, autoscaling, CDN, multi-região |
+| **Produção** | Dias 120+ | SLA 99.9%, disaster recovery, compliance HIPAA |
 
 ---
 

@@ -192,6 +192,30 @@ class AtualizadorBaseConhecimento:
             "overall survival": 2.5, "progression free": 2.0,
             "response rate": 2.0, "complete response": 2.5,
             "hazard ratio": 2.0,
+            # === EXPANSAO v3.0 — CANCERES RAROS ===
+            "sinonasal": 2.0, "paranasal": 2.0, "cholangiocarcinoma": 2.5,
+            "adenoid cystic": 2.5, "salivary gland": 1.5, "tonsillar": 2.0,
+            "oropharyngeal": 2.0, "fallopian tube": 2.0, "appendiceal": 2.0,
+            "parathyroid carcinoma": 2.5, "ampullary": 2.0, "pseudomyxoma": 2.0,
+            "hipec": 2.0, "prrt": 2.5, "dotatate": 2.0, "lu-177": 2.0,
+            # Terapias emergentes
+            "car-t": 2.5, "bispecific": 2.0, "antibody drug conjugate": 2.0,
+            "oncolytic virus": 2.0, "neoantigen vaccine": 2.5, "adoptive cell": 2.0,
+            "tiragolumab": 2.0, "lag-3": 1.8, "tigit": 1.8, "tim-3": 1.5,
+            # Biomarcadores expandidos
+            "ntrk": 2.0, "larotrectinib": 2.5, "entrectinib": 2.0,
+            "braf v600e": 2.5, "vemurafenib": 2.0, "dabrafenib": 2.0,
+            "alk rearrangement": 2.5, "alectinib": 2.0, "lorlatinib": 2.0,
+            "ret fusion": 2.0, "selpercatinib": 2.5, "met exon 14": 2.5,
+            "capmatinib": 2.0, "msi-h": 2.0, "dmmr": 2.0,
+            "hrd": 2.0, "homologous recombination": 1.8,
+            # Mecanismos de resistencia
+            "resistance mechanism": 1.5, "emt": 1.5, "cancer stem cell": 1.5,
+            "tumor microenvironment": 2.0, "immune evasion": 2.0,
+            "epithelial mesenchymal": 1.8, "tumor hypoxia": 1.5,
+            # Genomica avancada
+            "mutational signature": 1.5, "comprehensive genomic": 2.0,
+            "basket trial": 2.0, "tumor agnostic": 2.0,
         }
 
         texto_lower = texto.lower()

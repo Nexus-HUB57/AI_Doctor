@@ -45,6 +45,17 @@ class ScorerRelevanciaClinica:
         "neuroendocrino": {"peso": 0.06, "variantes": ["chromogranin A", "CgA", "serotonin", "neuroendocrine", "somatostatin receptor", "NET", "carcinoid", "PRRT", "Lu-177", "DOTATATE"]},
         "paratormonio": {"peso": 0.05, "variantes": ["PTH", "parathyroid hormone", "hyperparathyroidism", "calcium", "cinacalcet", "CDC73", "parathyroid carcinoma"]},
         "ampular": {"peso": 0.05, "variantes": ["CA 19-9", "CA19-9", "ampullary", "ampulla of vater", "periampullary", "duodenal adenocarcinoma"]},
+        # === BIOMARCADORES EXPANDIDOS v3.0 — NEOPLASIA GLOBAL ===
+        "ntrk": {"peso": 0.06, "variantes": ["NTRK", "NTRK fusion", "TRK inhibitor", "larotrectinib", "entrectinib", "tumor agnostic", "TRKA", "TRKB", "TRKC"]},
+        "alk": {"peso": 0.06, "variantes": ["ALK", "anaplastic lymphoma kinase", "alectinib", "crizotinib", "lorlatinib", "ALK rearrangement", "EML4-ALK"]},
+        "ros1": {"peso": 0.05, "variantes": ["ROS1", "ROS1 fusion", "crizotinib", "entrectinib", "ROS1 rearrangement"]},
+        "braf": {"peso": 0.06, "variantes": ["BRAF", "BRAF V600E", "BRAF mutation", "vemurafenib", "dabrafenib", "trametinib", "encorafenib", "binimetinib"]},
+        "egfr_mutation": {"peso": 0.06, "variantes": ["EGFR mutation", "EGFR exon 19", "EGFR L858R", "EGFR T790M", "osimertinib", "erlotinib", "gefitinib", "afatinib"]},
+        "ret": {"peso": 0.04, "variantes": ["RET fusion", "RET", "selpercatinib", "pralsetinib", "RET rearrangement", "CCDC6-RET"]},
+        "met": {"peso": 0.05, "variantes": ["MET", "MET exon 14", "MET amplification", "capmatinib", "tepotinib", "crizotinib MET"]},
+        "kras_general": {"peso": 0.06, "variantes": ["KRAS", "KRAS mutation", "KRAS G12D", "KRAS G12V", "KRAS G13D", "adagrasib", "sotorasib"]},
+        "tp53": {"peso": 0.05, "variantes": ["TP53", "p53", "p53 mutation", "tumor suppressor", "MDM2", "MDM2 inhibitor", "nutlin"]},
+        "raridade": {"peso": 0.05, "variantes": ["rare cancer", "rare tumor", "orphan disease", "NCI rare", "EORTC rare", "incidence < 6", "rare neoplasm"]},
     }
 
     # Subtipos tumorais cobertos pelo mapeador NCCN/ESMO

@@ -1,0 +1,448 @@
+{
+  "versao_sistema": "DIMHEX v2.2",
+  "data_validacao": "2026-07-18T06:51:35.406962",
+  "subtipos_testados": 11,
+  "subtipos_originais": 3,
+  "subtipos_raros": 8,
+  "scoring_5d": {
+    "total_avaliados": 10,
+    "distribuicao": {
+      "critico": 0,
+      "alto": 0,
+      "moderado": 2,
+      "baixo": 7,
+      "irrelevante": 1
+    },
+    "taxa_relevancia": 0.2,
+    "detalhes_scores": [
+      {
+        "titulo": "sim_71950",
+        "score": 0.3215,
+        "classificacao": "baixo",
+        "biomarcadores": [
+          "fgfr2"
+        ],
+        "subtipos": [
+          "CANCER_DUCTO_BILIAR"
+        ]
+      },
+      {
+        "titulo": "sim_50462",
+        "score": 0.2036,
+        "classificacao": "baixo",
+        "biomarcadores": [
+          "pdl1"
+        ],
+        "subtipos": [
+          "CARCINOMA_ADENOIDE_CISTICO"
+        ]
+      },
+      {
+        "titulo": "sim_90366",
+        "score": 0.3981,
+        "classificacao": "moderado",
+        "biomarcadores": [
+          "hpv_p16"
+        ],
+        "subtipos": [
+          "CANCER_AMIGDALA"
+        ]
+      },
+      {
+        "titulo": "sim_53631",
+        "score": 0.2658,
+        "classificacao": "baixo",
+        "biomarcadores": [],
+        "subtipos": [
+          "CANCER_APPENDICE"
+        ]
+      },
+      {
+        "titulo": "sim_99264",
+        "score": 0.1472,
+        "classificacao": "irrelevante",
+        "biomarcadores": [
+          "paratormonio"
+        ],
+        "subtipos": [
+          "CANCER_PARATIREOIDE"
+        ]
+      },
+      {
+        "titulo": "sim_63866",
+        "score": 0.4533,
+        "classificacao": "moderado",
+        "biomarcadores": [
+          "ampular"
+        ],
+        "subtipos": [
+          "CANCER_DUCTO_BILIAR",
+          "CANCER_AMPULAR"
+        ]
+      },
+      {
+        "titulo": "sim_72455",
+        "score": 0.2032,
+        "classificacao": "baixo",
+        "biomarcadores": [
+          "brca",
+          "ca125"
+        ],
+        "subtipos": [
+          "CANCER_TROMPA_FALOPIO"
+        ]
+      },
+      {
+        "titulo": "sim_85713",
+        "score": 0.3074,
+        "classificacao": "baixo",
+        "biomarcadores": [
+          "ctdna",
+          "pdl1"
+        ],
+        "subtipos": [
+          "CANCER_SEIOS_FACE"
+        ]
+      },
+      {
+        "titulo": "sim_47651",
+        "score": 0.2579,
+        "classificacao": "baixo",
+        "biomarcadores": [
+          "ctdna"
+        ],
+        "subtipos": []
+      },
+      {
+        "titulo": "sim_01502",
+        "score": 0.2484,
+        "classificacao": "baixo",
+        "biomarcadores": [],
+        "subtipos": []
+      }
+    ]
+  },
+  "motor_probabilidade": {
+    "NSCLC_KRAS_G12C": {
+      "nome": "NSCLC KRAS-G12C",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.031,
+      "P_cura": 0.0051,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.2678,
+      "indice_terapeutico": 0.075,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "CodeBreak 100 + Keynote-189 pooled"
+    },
+    "NSCLC_EGFR_MUTADO": {
+      "nome": "NSCLC EGFR Mutado",
+      "P_resposta": 0.0329,
+      "IC95_inf": 0.0222,
+      "IC95_sup": 0.0435,
+      "P_cura": 0.0081,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.1724,
+      "indice_terapeutico": 0.191,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "FLAURA trial (osimertinibe)"
+    },
+    "TRIPLO_NEGATIVO_MAMARIO": {
+      "nome": "Triplo Negativo Mamario",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0327,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3839,
+      "indice_terapeutico": 0.052,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "ASCENT trial (sacituzumabe govitecan)"
+    },
+    "CANCER_SEIOS_FACE": {
+      "nome": "Cancer dos Seios da Face",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0498,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.206,
+      "indice_terapeutico": 0.097,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "NCI SEER + meta-analise cavidade nasal (Robin et al., 2023)"
+    },
+    "CANCER_DUCTO_BILIAR": {
+      "nome": "Cancer do Ducto Biliar",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.045,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3414,
+      "indice_terapeutico": 0.059,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "ABC-02 trial + meta-analise colangiocarcinoma (Valle et al., 2010; Rizvi 2023)"
+    },
+    "CARCINOMA_ADENOIDE_CISTICO": {
+      "nome": "Carcinoma Adenoide Cistico",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0596,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.2374,
+      "indice_terapeutico": 0.084,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "Estudos de terapia alvo em ACC com MYB-NFIB"
+    },
+    "CANCER_AMIGDALA": {
+      "nome": "Cancer da Amigdala",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0462,
+      "P_cura": 0.0052,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3961,
+      "indice_terapeutico": 0.05,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "Meta-analise carcinoma orofaringe HPV+ (Ragin & Taioli, 2023)"
+    },
+    "CANCER_TROMPA_FALOPIO": {
+      "nome": "Cancer da Trompa de Falopio",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0523,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3595,
+      "indice_terapeutico": 0.056,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "SEER + meta-analise carcinoma tubário (Alvarado-Cabrero 2023)"
+    },
+    "CANCER_APPENDICE": {
+      "nome": "Cancer do Apendice",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.057,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3047,
+      "indice_terapeutico": 0.066,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "Fluorouracil+oxaliplatina em carcinóide appendicular metastático"
+    },
+    "CANCER_PARATIREOIDE": {
+      "nome": "Cancer da Paratireoide",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0671,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.3618,
+      "indice_terapeutico": 0.055,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "Cinacalcet + lenvatinibe em carcinoma paratireoide avançado"
+    },
+    "CANCER_AMPULAR": {
+      "nome": "Cancer Ampular",
+      "P_resposta": 0.02,
+      "IC95_inf": 0.01,
+      "IC95_sup": 0.0468,
+      "P_cura": 0.005,
+      "nivel_cura": "MINIMO",
+      "P_toxicidade": 0.2182,
+      "indice_terapeutico": 0.092,
+      "recomendacao": "TROCAR_LINHA",
+      "referencia": "Meta-analise câncer ampular de Vater (Jang 2023; SEER)"
+    }
+  },
+  "dinamica_clonal": {
+    "NSCLC_KRAS_G12C": {
+      "eficacia_final": 0.5502,
+      "fracao_resistentes": 0.4498,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 16
+    },
+    "NSCLC_EGFR_MUTADO": {
+      "eficacia_final": 0.8175,
+      "fracao_resistentes": 0.1825,
+      "exposicao_acumulada": 6.0,
+      "ciclos_ate_resistencia": 79
+    },
+    "TRIPLO_NEGATIVO_MAMARIO": {
+      "eficacia_final": 0.5812,
+      "fracao_resistentes": 0.4188,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 20
+    },
+    "CANCER_SEIOS_FACE": {
+      "eficacia_final": 0.7503,
+      "fracao_resistentes": 0.2497,
+      "exposicao_acumulada": 8.0,
+      "ciclos_ate_resistencia": 50
+    },
+    "CANCER_DUCTO_BILIAR": {
+      "eficacia_final": 0.6492,
+      "fracao_resistentes": 0.3508,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 28
+    },
+    "CARCINOMA_ADENOIDE_CISTICO": {
+      "eficacia_final": 0.8637,
+      "fracao_resistentes": 0.1363,
+      "exposicao_acumulada": 6.0,
+      "ciclos_ate_resistencia": 117
+    },
+    "CANCER_AMIGDALA": {
+      "eficacia_final": 0.6323,
+      "fracao_resistentes": 0.3677,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 25
+    },
+    "CANCER_TROMPA_FALOPIO": {
+      "eficacia_final": 0.6052,
+      "fracao_resistentes": 0.3948,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 22
+    },
+    "CANCER_APPENDICE": {
+      "eficacia_final": 0.8486,
+      "fracao_resistentes": 0.1514,
+      "exposicao_acumulada": 6.0,
+      "ciclos_ate_resistencia": 103
+    },
+    "CANCER_PARATIREOIDE": {
+      "eficacia_final": 0.5074,
+      "fracao_resistentes": 0.4926,
+      "exposicao_acumulada": 12.0,
+      "ciclos_ate_resistencia": 13
+    },
+    "CANCER_AMPULAR": {
+      "eficacia_final": 0.6179,
+      "fracao_resistentes": 0.3821,
+      "exposicao_acumulada": 10.0,
+      "ciclos_ate_resistencia": 24
+    }
+  },
+  "sistema_limibico": {
+    "NSCLC_KRAS_G12C": {
+      "ansiedade": 0.75,
+      "esperanca": 0.0,
+      "curiosidade": 0.32,
+      "estresse": 0.3,
+      "confianca_interna": 0.06
+    },
+    "NSCLC_EGFR_MUTADO": {
+      "ansiedade": 0.95,
+      "esperanca": 0.0,
+      "curiosidade": 0.599,
+      "estresse": 0.3,
+      "confianca_interna": 0.0
+    },
+    "TRIPLO_NEGATIVO_MAMARIO": {
+      "ansiedade": 0.2,
+      "esperanca": 0.15,
+      "curiosidade": 0.788,
+      "estresse": 0.3,
+      "confianca_interna": 0.45
+    },
+    "CANCER_SEIOS_FACE": {
+      "ansiedade": 0.7,
+      "esperanca": 0.0,
+      "curiosidade": 0.673,
+      "estresse": 0.3,
+      "confianca_interna": 0.09
+    },
+    "CANCER_DUCTO_BILIAR": {
+      "ansiedade": 0.15,
+      "esperanca": 0.6,
+      "curiosidade": 0.319,
+      "estresse": 0.3,
+      "confianca_interna": 0.66
+    },
+    "CARCINOMA_ADENOIDE_CISTICO": {
+      "ansiedade": 0.75,
+      "esperanca": 0.0,
+      "curiosidade": 0.268,
+      "estresse": 0.3,
+      "confianca_interna": 0.06
+    },
+    "CANCER_AMIGDALA": {
+      "ansiedade": 0.15,
+      "esperanca": 0.35,
+      "curiosidade": 0.101,
+      "estresse": 0.3,
+      "confianca_interna": 0.56
+    },
+    "CANCER_TROMPA_FALOPIO": {
+      "ansiedade": 0.8,
+      "esperanca": 0.0,
+      "curiosidade": 0.503,
+      "estresse": 0.3,
+      "confianca_interna": 0.03
+    },
+    "CANCER_APPENDICE": {
+      "ansiedade": 0.55,
+      "esperanca": 0.1,
+      "curiosidade": 0.356,
+      "estresse": 0.3,
+      "confianca_interna": 0.22
+    },
+    "CANCER_PARATIREOIDE": {
+      "ansiedade": 0.8,
+      "esperanca": 0.0,
+      "curiosidade": 0.398,
+      "estresse": 0.3,
+      "confianca_interna": 0.03
+    },
+    "CANCER_AMPULAR": {
+      "ansiedade": 0.55,
+      "esperanca": 0.0,
+      "curiosidade": 0.63,
+      "estresse": 0.3,
+      "confianca_interna": 0.18
+    }
+  },
+  "senciencia": {
+    "versao": "1.0.0",
+    "total_episodios": 10,
+    "total_padroes_extraidos": 130,
+    "total_hipoteses": 45,
+    "total_validadas": 0,
+    "coeficiente_sabedoria": 0.5172,
+    "nivel_sabedoria": "APRENDIZADO_ATIVO",
+    "fontes_avaliadas": 2,
+    "biomarcadores_rastreados": 1,
+    "temas_sabedoria": 10,
+    "hipoteses_pendentes": 1,
+    "historico_tamanho": 10
+  },
+  "tendencias_aprendizado": [
+    {
+      "metrica": "taxa_relevancia",
+      "direcao": "CRESCENTE",
+      "valor_atual": 0.53,
+      "variacao": 0.18
+    },
+    {
+      "metrica": "achados_por_ciclo",
+      "media": 38.5,
+      "ultimo": 52
+    },
+    {
+      "metrica": "coeficiente_sabedoria",
+      "crescimento": 0.1796,
+      "valor_atual": 0.5172,
+      "direcao": "EXPONENCIAL"
+    }
+  ],
+  "pipeline_raros": {
+    "queries_pubmed": 50,
+    "queries_clinicaltrials": 24,
+    "queries_neoplasia_global": 24,
+    "total_queries": 98,
+    "subtipos_mapeador": 11,
+    "biomarcadores_scorer": 17,
+    "subtipos_scorer": 11
+  }
+}

@@ -1,0 +1,28 @@
+# ============================================================
+# AI Doctor — Python Agente Oncologico + DIMHEX Engine
+# ============================================================
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# System deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY AI_Doctor/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy agent code
+COPY AI_Doctor/ ./
+
+# Data directory (mounted as volume)
+RUN mkdir -p /data
+
+# Environment defaults
+ENV PYTHONUNBUFFERED=1
+ENV CHROMA_DB_PATH=/data/chroma_db
+
+# Run the agent daemon (DIMHEX + Scheduler)
+CMD ["python", "main.py"]

@@ -44,4 +44,8 @@ CONFIG = {
     # Caminhos para memória persistente (Senciência)
     "DIMHEX_MEMORY_PATH": os.getenv("DIMHEX_MEMORY_PATH", "./dimhex_memoria.json"),
     "DIMHEX_WISDOM_PATH": os.getenv("DIMHEX_WISDOM_PATH", "./dimhex_sabedoria.json"),
+
+    # Pipeline dedicado canceres raros
+    "DIMHEX_RARE_CANCER_PIPELINE": os.getenv("DIMHEX_RARE_CANCER_PIPELINE", "true").lower() == "true",
+    "DIMHEX_RARE_QUERIES_PER_CYCLE": int(os.getenv("DIMHEX_RARE_QUERIES_PER_CYCLE", "5")),
 }
