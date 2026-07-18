@@ -381,6 +381,7 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **15** | Production Hardening: Security, Performance, Accessibility |
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
 | **17** | DIMHEX v2.1, 4 camadas probabilísticas, Senciência, pipeline cânceres raros |
+| **18** | RAG povoado (585 registros), protocolo aprendizagem 4h, auto-seed |
 
 ---
 
@@ -447,6 +448,40 @@ docker compose ps
 
 ---
 
+## RAG & Protocolo de Aprendizagem
+
+### Base de Conhecimento Povoada (Auto-Seed)
+
+O RAG é automaticamente povoado na primeira execução com **585 registros** em 2 coleções ChromaDB:
+
+| Coleção | Registros | Conteúdo |
+|---------|-----------|----------|
+| `ai_doctor_tumores` | 550 | Casos clínicos sintéticos (11 subtipos, biomarcadores realistas) |
+| `dimhex_conhecimento` | 35 | 31 documentos científicos + 4 protocolos NCCN/ESMO |
+
+**Subtipos tumorais cobertos:** 8 cânceres raros (sinonasal, biliar, adenoide cístico, amígdala, trompa de falópio, apendicular, paratireoide, ampular) + NSCLC KRAS G12C + NSCLC EGFR + TNBC mamário.
+
+### Protocolo de Aprendizagem (Scheduler v3.0)
+
+| Job | Intervalo | Função |
+|-----|-----------|--------|
+| DIMHEX Ciclo Completo | **4 horas** | 7 fases: Coletar → Avaliar → Sabedoria → Integrar → Analisar → Reportar |
+| Auto-Povoamento RAG | Diário | +22 novos casos sintéticos |
+| Manutenção Senciência | Diário | Compacção + sabedoria profunda |
+| Relatório Diário | Diário | Consolidado para dashboard |
+| Health Check | 10 min | Monitora ChromaDB + memória |
+
+### Início Rápido
+
+```bash
+cd "Agentic IA Doctor/AI_Doctor"
+cp .env.example .env
+pip install -r requirements.txt
+python main.py  # Auto-seed RAG + Bootstrap DIMHEX + Scheduler 4h
+```
+
+---
+
 ## Agente Orquestrador de Oncologia de Precisao (`Agentic IA Doctor/`)
 
 Dentro do ecossistema AI_Doctor existe um motor de decisao oncologica independente, escrito em Python, que implementa um **agente agentic** com auto-cura evolutiva. Consulte a documentacao completa em [`Agentic IA Doctor/README.md`](Agentic%20IA%20Doctor/README.md).
@@ -483,11 +518,12 @@ Auto-Cura Evolutiva (se erros >= 3 ou eficacia < 0.2)
 | `core/memoria.py` | RAG in-memory: recuperacao de casos analogos |
 | `core/explicador.py` | XAI: SHAP simulado + relatorio clinico |
 | `core/shap_xai.py` | XAI: SHAP real com RandomForest substituto |
-| `core/dimhex.py` | DIMHEX: motor de inteligencia medica continua (240min) |
-| `core/relevance_scorer.py` | DIMHEX: scoring bayesiano 5D de relevancia clinica |
+| `core/dimhex.py` | **DIMHEX v2.1:** motor de inteligencia medica continua (240min, 7 fases) |
+| `core/relevance_scorer.py` | DIMHEX: scoring bayesiano 5D de relevancia clinica (27 biomarcadores, 11 subtipos) |
 | `infrastructure/chroma_db.py` | ChromaDB persistente (casos + conhecimento DIMHEX) |
+| `infrastructure/rag_seeder.py` | **RAG Seeder v3.0:** povoamento automatico (550 casos + 35 docs + 4 protocolos) |
 | `infrastructure/audit.py` | Auditoria PostgreSQL (SQLAlchemy 2.0) |
-| `infrastructure/scheduler.py` | Aprendizado continuo + DIMHEX (APScheduler) |
+| `infrastructure/scheduler.py` | **Scheduler v3.0:** 5 jobs (DIMHEX 4h, auto-seed, saude, memoria, relatorio) |
 | `infrastructure/research_sources.py` | DIMHEX: PubMed, ClinicalTrials.gov, WHO |
 | `infrastructure/knowledge_updater.py` | DIMHEX: indexacao + geracao de insights |
 | `data_connectors.py` | TCGA GDC API + fallback sintetico |

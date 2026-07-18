@@ -1,17 +1,58 @@
+"""
+DIMHEX AI Doctor — Main v3.0
+Plataforma de Oncologia de Precisão com Motor de Inteligência Médica Contínua.
+
+Inicialização:
+1. Auto-seed do RAG (casos clínicos + base científica)
+2. Modelo de decisão + SHAP
+3. Agente Oncológico de Precisão
+4. DIMHEX v2.1 — Motor de Inteligência Médica
+5. Protocolo de Aprendizagem a cada 4 horas
+6. Loop principal com monitoramento
+"""
+
 import numpy as np
 import pandas as pd
 import os
+import sys
 import datetime
-from core.agente import AgenteOncologicoPrecisao
-from core.explicador import ExplicadorSHAPClinico, atualizar_explicador_shap
-from core.genoma import ParadigmaTerapeuticoAvancado
-from infrastructure.audit import AuditorClinico
-from infrastructure.validacao import SuiteValidacaoProspectiva
-from infrastructure.scheduler import iniciar_scheduler
-from infrastructure.chroma_db import BancoVetorialChromaDB
-from config import CONFIG
+import json
+from pathlib import Path
+
+
+def verificar_rag_povoado() -> bool:
+    """Verifica se o RAG já foi povoado (casos + conhecimento)."""
+    try:
+        from infrastructure.chroma_db import BancoVetorialChromaDB
+
+        chroma_tumores = BancoVetorialChromaDB(colecao_nome="ai_doctor_tumores")
+        chroma_conhecimento = BancoVetorialChromaDB(colecao_nome="dimhex_conhecimento")
+
+        n_tumores = chroma_tumores.collection.count()
+        n_conhecimento = chroma_conhecimento.collection.count()
+
+        return n_tumores >= 50 and n_conhecimento >= 10
+    except Exception:
+        return False
+
+
+def executar_seed_rag():
+    """Executa povoamento do RAG se necessário."""
+    from infrastructure.rag_seeder import RAGSeeder
+
+    seeder = RAGSeeder()
+    resultado = seeder.povoar_rag_completo(n_casos_por_subtipo=50)
+
+    resumo = resultado["resumo_colecoes"]
+    print(f"\n  [RAG] Povoamento concluído:")
+    print(f"    Casos clínicos (ai_doctor_tumores): {resumo['ai_doctor_tumores']}")
+    print(f"    Conhecimento (dimhex_conhecimento): {resumo['dimhex_conhecimento']}")
+
+    return resultado
+
 
 def gerar_dados_treino():
+    """Gera dataset de treino sintético."""
     np.random.seed(42)
     n = 500
     df = pd.DataFrame({
@@ -23,126 +64,160 @@ def gerar_dados_treino():
         'TILs': np.random.beta(1, 3, n),
         'ECOG': np.random.choice([0, 1, 2, 3], n, p=[0.4, 0.3, 0.2, 0.1])
     })
-    df['target'] = df.apply(lambda r: 2 if r['ctDNA'] > 0.6 and r['ECOG'] < 3 else (0 if r['ctDNA'] < 0.3 or r['ECOG'] >= 3 else 1), axis=1)
+    df['target'] = df.apply(
+        lambda r: 2 if r['ctDNA'] > 0.6 and r['ECOG'] < 3
+        else (0 if r['ctDNA'] < 0.3 or r['ECOG'] >= 3 else 1), axis=1
+    )
     return df
+
 
 def main():
     print("=" * 80)
-    print("🧬 AI Doctor – Plataforma de Oncologia de Precisão (Produção)")
+    print("  DIMHEX AI Doctor v3.0 — Plataforma de Oncologia de Precisão")
+    print("  Protocolo de Aprendizagem Contínua — Ciclo a cada 4 horas")
+    print("  " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print("=" * 80)
 
-    # 1. Dados de treino
+    # =========================================================================
+    # 1. POVOAMENTO DO RAG (auto-seed se vazio)
+    # =========================================================================
+    print("\n[1/6] Verificando base RAG...")
+    rag_povoado = verificar_rag_povoado()
+
+    if not rag_povoado:
+        print("  RAG vazio — executando povoamento inicial...")
+        seed_result = executar_seed_rag()
+        print(f"  RAG povoado com sucesso.")
+    else:
+        print("  RAG já povoado — pulando seed.")
+
+    # =========================================================================
+    # 2. DADOS DE TREINO + MODELO
+    # =========================================================================
+    print("\n[2/6] Treinando modelo de decisão...")
     df_treino = gerar_dados_treino()
     df_treino.to_csv("historico_treino.csv", index=False)
 
-    # 2. Indexar ChromaDB
-    print("[1] Indexando ChromaDB...")
-    chroma = BancoVetorialChromaDB()
-    for _, row in df_treino.head(100).iterrows():
-        vetor = np.array([row['ctDNA'], np.log1p(row['CTC'])/10.0, row['TMB']/50.0, row['PD_L1'], row['TILs']])
-        chroma.indexar_caso_clinico(row['patient_id'], vetor, {"ECOG": row['ECOG'], "ctDNA": row['ctDNA']})
-    print(f"   ✅ {chroma.collection.count()} vetores indexados.")
-
-    # 3. Modelo de decisão (simples)
-    print("[2] Treinando modelo de decisão...")
     from sklearn.tree import DecisionTreeClassifier
+    import pickle
+
     model = DecisionTreeClassifier(max_depth=5, random_state=42)
     X = df_treino[['ctDNA', 'CTC', 'TMB', 'PD_L1', 'TILs', 'ECOG']]
     y = df_treino['target']
     model.fit(X, y)
+
     class ModelWrapper:
         def __init__(self, model, feature_names):
             self.model = model
             self.feature_names = feature_names
-    model_wrapped = ModelWrapper(model, ['ctDNA', 'CTC', 'TMB', 'PD_L1', 'TILs', 'ECOG'])
-    os.makedirs(os.path.dirname(CONFIG["MODEL_PATH"]), exist_ok=True)
-    import pickle
-    with open(CONFIG["MODEL_PATH"], 'wb') as f:
-        pickle.dump(model, f)
-    atualizar_explicador_shap(model_wrapped, df_treino)
-    print("   ✅ Modelo e SHAP gerados.")
 
-    # 4. Agente
+    model_wrapped = ModelWrapper(model, ['ctDNA', 'CTC', 'TMB', 'PD_L1', 'TILs', 'ECOG'])
+
+    os.makedirs(os.path.dirname(os.getenv("MODEL_PATH", "./models/decision_model.pkl")), exist_ok=True)
+    with open("./models/decision_model.pkl", 'wb') as f:
+        pickle.dump(model, f)
+
+    from core.explicador import atualizar_explicador_shap
+    atualizar_explicador_shap(model_wrapped, df_treino)
+    print(f"   Modelo treinado e SHAP gerado.")
+
+    # =========================================================================
+    # 3. AGENTE ONCOLÓGICO
+    # =========================================================================
+    print("\n[3/6] Inicializando Agente Oncológico de Precisão...")
+    from core.agente import AgenteOncologicoPrecisao
     agente = AgenteOncologicoPrecisao(df_treino)
 
-    # 5. Validador e Auditor
+    from infrastructure.validacao import SuiteValidacaoProspectiva
+    from infrastructure.audit import AuditorClinico
     validador = SuiteValidacaoProspectiva()
     auditor = AuditorClinico()
 
-    # 6. Simular coorte de validação
-    print("[3] Validando em coorte prospectiva...")
-    coorte = [validador.simular_caso_tcga(f"VAL-{i:04d}") for i in range(5)]
-    for paciente in coorte:
+    # Validar em coorte prospectiva
+    print("   Validando em coorte prospectiva (5 casos)...")
+    from core.explicador import ExplicadorSHAPClinico
+    for i in range(5):
+        paciente = validador.simular_caso_tcga(f"VAL-{i:04d}")
         agente.executar_ciclo(paciente, ciclo_id=0)
-        if paciente["ctDNA"] > 0.6:
-            acao = "TROCAR_LINHA" if paciente["ecog_real"] < 3 else "REDUZIR"
-        else:
-            acao = "INTENSIFICAR_MODERADO" if paciente["ecog_real"] <= 2 else "OBSERVAR"
-        status = validador.avaliar_concordancia(acao, paciente["decisao_comite_tumores"], paciente["ecog_real"])
-        shap_vals = ExplicadorSHAPClinico.calcular_valores_shap(
-            {"ctDNA": paciente["ctDNA"], "TMB": paciente["TMB"], "PD_L1": paciente["PD_L1"]},
-            0.25, paciente["ecog_real"], acao
+        status = validador.avaliar_concordancia(
+            "INTENSIFICAR" if paciente["ctDNA"] > 0.6 else "MANUTENCAO",
+            paciente["decisao_comite_tumores"],
+            paciente["ecog_real"]
         )
-        relatorio = ExplicadorSHAPClinico.formatar_relatorio_xai(
-            acao, {"esquema": "Docetaxel + Ramucirumabe", "classe": "Antiangiogênico"},
-            shap_vals, paciente["ecog_real"]
-        )
-        auditor.registrar_evento(
-            patient_id=paciente["id"],
-            acao=acao,
-            dose=agente.dose_atual,
-            linha=agente.linha_terapeutica,
-            ecog=paciente["ecog_real"],
-            eficacia=agente.clonal.eficacia_relativa(),
-            estado=agente.estado_atual,
-            relatorio_xai=relatorio,
-            shap_contrib=shap_vals
-        )
-        print(f"👤 {paciente['id']} | Ação: {acao} | Status: {status}")
-
+        print(f"   {paciente['id']} | Status: {status}")
     print(validador.relatorio())
 
-    # 7. DIMHEX v2.0 — Motor de Probabilidade Terapeutica
-    print("[4] Inicializando DIMHEX v2.0 — Probabilistic Treatment Engine...")
+    # =========================================================================
+    # 4. DIMHEX v2.1 — MOTOR DE INTELIGÊNCIA MÉDICA
+    # =========================================================================
+    print("\n[4/6] Inicializando DIMHEX v2.1...")
+    dimhex_engine = None
     try:
         from core.dimhex import DIMHEX
         dimhex_engine = DIMHEX()
-
-        # Conectar DIMHEX ao agente (ativa Camada 2: Evidence-Driven)
         dimhex_engine.conectar_agente(agente)
         agente.evidence_driven = dimhex_engine.evidence_driven
 
-        dimhex_status = dimhex_engine.obter_status()
-        print(f"   DIMHEX v{dimhex_status['versao']} | Ciclo: #{dimhex_status['ciclo_atual']}")
-        print(f"   Base de conhecimento: {dimhex_status['base_conhecimento']['total_indexados']} documentos")
-        print(f"   Pesquisa ativa: {dimhex_status['pesquisa_ativa']}")
-        print(f"   Fontes: {', '.join(dimhex_status['fontes_ativas'])}")
-        print(f"   Agente conectado: {dimhex_status.get('agente_conectado', False)}")
-        print(f"   Motor de Probabilidade: {agente.motor_prob.obter_resumo()['versao']}")
-        print(f"   Otimizador: {agente.otimizador.obter_resumo()['versao']}")
-        print(f"   CVM: {agente.cvm.obter_resumo()['versao']}")
+        status = dimhex_engine.obter_status()
+        print(f"   DIMHEX v{status['versao']}")
+        print(f"   Ciclo atual: #{status['ciclo_atual']}")
+        print(f"   Base de conhecimento: {status['base_conhecimento']['total_indexados']} docs")
+        print(f"   Fontes ativas: {', '.join(status['fontes_ativas'])}")
+        print(f"   Pesquisa ativa: {status['pesquisa_ativa']}")
+        print(f"   Agente conectado: {status.get('agente_conectado', False)}")
+        print(f"   Pipeline cânceres raros: {status.get('pipeline_raros_ativo', False)}")
+        print(f"   Senciência: coeficiente {status.get('senciencia', {}).get('coeficiente_sabedoria', 0):.4f}")
     except Exception as e:
-        print(f"   Aviso: DIMHEX v2.0 nao disponivel ({e})")
-        dimhex_engine = None
+        print(f"   AVISO: DIMHEX não disponível ({e})")
 
-    # 8. Scheduler (inclui DIMHEX a cada 240 min)
-    print("[5] Iniciando scheduler (Aprendizado + DIMHEX)...")
+    # =========================================================================
+    # 5. EXECUTAR PRIMEIRO CICLO DIMHEX IMEDIATO (boot strap)
+    # =========================================================================
+    print("\n[5/6] Executando primeiro ciclo DIMHEX (bootstrap)...")
+    if dimhex_engine and dimhex_engine.config.get("pesquisa_ativa", True):
+        try:
+            relatorio = dimhex_engine.executar_ciclo_completo()
+            coleta = relatorio.get("coleta", {})
+            avaliacao = relatorio.get("avaliacao", {})
+            integracao = relatorio.get("integracao", {})
+
+            print(f"\n   Bootstrap DIMHEX concluído:")
+            print(f"   Coletados: {coleta.get('total_achados', 0)}")
+            print(f"   Relevantes: {avaliacao.get('total_relevantes', 0)}")
+            print(f"   Taxa relevância: {avaliacao.get('taxa_relevancia', 0):.1%}")
+            print(f"   Indexados: {integracao.get('total_indexados', 0)}")
+            print(f"   Duração: {relatorio.get('duracao_segundos', 0):.1f}s")
+        except Exception as e:
+            print(f"   AVISO: Bootstrap falhou (sistema continua normal): {e}")
+    else:
+        print("   Pesquisa DIMHEX desativada — pulando bootstrap.")
+
+    # =========================================================================
+    # 6. SCHEDULER — PROTOCOLO DE APRENDIZAGEM A CADA 4 HORAS
+    # =========================================================================
+    print("\n[6/6] Iniciando Protocolo de Aprendizagem...")
+    from infrastructure.scheduler import iniciar_scheduler
     scheduler = iniciar_scheduler()
-    print(f"   Aprendizado continuo: {CONFIG['SCHEDULE_INTERVAL_HOURS']}h")
-    print(f"   DIMHEX pesquisa: {CONFIG['DIMHEX_INTERVAL_MINUTES']}min")
 
-    print("=" * 80)
-    print("  AI Doctor + DIMHEX em execucao. Pressione Ctrl+C para encerrar.")
-    print("=" * 80)
+    intervalo = CONFIG.get("DIMHEX_INTERVAL_MINUTES", 240)
+    print(f"\n{'='*80}")
+    print(f"  DIMHEX AI Doctor v3.0 — EXECUTANDO")
+    print(f"  Protocolo: Ciclo DIMHEX a cada {intervalo} minutos ({intervalo//60}h)")
+    print(f"  Health check: a cada 10 minutos")
+    print(f"  Auto-povoamento RAG: diário")
+    print(f"  Pressione Ctrl+C para encerrar")
+    print(f"{'='*80}\n")
 
-    # Mantém o script vivo
+    # Loop principal
+    import time
     try:
         while True:
-            import time
             time.sleep(60)
     except KeyboardInterrupt:
-        print("\n⏹️ Encerrando...")
+        print("\n  Encerrando DIMHEX AI Doctor...")
         scheduler.shutdown()
+        print("  Sistema encerrado com sucesso.")
+
 
 if __name__ == "__main__":
     main()
