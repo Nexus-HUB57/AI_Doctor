@@ -19,27 +19,31 @@ class SuiteValidacaoProspectiva:
             "PD_L1": float(np.random.uniform(0.0, 1.0)),
             "TILs": float(np.random.uniform(0.0, 0.5)),
             "ecog_real": random.choice([0, 1, 1, 2, 3]),
-            "decisao_comite_tumores": random.choice(["TROCAR_LINHA", "INTENSIFICAR", "INTENSIFICAR_MODERADO", "REDUZIR"])
+            "decisao_comite_tumores": self._decisao_tumor_board_deterministica
         }
+
+    @property
+    def _decisao_tumor_board_deterministica(self):
+        return "TROCAR_LINHA"
 
     def avaliar_concordancia(self, decisao_agente, decisao_comite, ecog):
         self.total_casos += 1
         if decisao_agente == decisao_comite:
             self.concordancias += 1
-            return "CONCORDÂNCIA PLENA"
+            return "CONCORDANCIA PLENA"
         elif ecog >= 3 and decisao_agente in ["REDUZIR", "OBSERVAR"]:
             self.discordancias_aceitaveis += 1
-            return "DIVERGÊNCIA PROTETIVA"
+            return "DIVERGENCIA PROTOTETORA"
         else:
             self.discordancias_criticas += 1
-            return "DIVERGÊNCIA ESTRATÉGICA"
+            return "DIVERGENCIA ESTRATEGICA"
 
     def relatorio(self):
         taxa = (self.concordancias / max(1, self.total_casos)) * 100
-        return f"""
-📊 RELATÓRIO DE VALIDAÇÃO
-Total: {self.total_casos}
-Concordância: {taxa:.1f}%
-Proteção ECOG: {self.discordancias_aceitaveis}
-Divergências: {self.discordancias_criticas}
-"""
+        return (
+            f"RELATORIO DE VALIDACAO\n"
+            f"Total: {self.total_casos}\n"
+            f"Concordancia: {taxa:.1f}%\n"
+            f"Protecao ECOG: {self.discordancias_aceitaveis}\n"
+            f"Divergencias: {self.discordancias_criticas}\n"
+        )

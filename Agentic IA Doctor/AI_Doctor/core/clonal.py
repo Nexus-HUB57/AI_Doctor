@@ -29,7 +29,6 @@ class DinamicaClonalResistencia:
     def prever_resistencia_em(self, janela):
         if len(self.historico_eficacia) < 5:
             return 999
-        import numpy as np
         tendencia = np.polyfit(range(len(self.historico_eficacia)), self.historico_eficacia, 1)[0]
         if tendencia >= 0:
             return 999

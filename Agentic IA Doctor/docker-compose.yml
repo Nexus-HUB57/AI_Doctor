@@ -1,32 +1,30 @@
-version: '3.8'
-
 services:
   ai_doctor_db:
     image: postgres:15-alpine
-    container_name: ai_doctor_postgres_cluster
+    container_name: ai_doctor_postgres
     restart: always
     environment:
-      POSTGRES_USER: medical_admin
-      POSTGRES_PASSWORD: hospital_secure_password_2026
-      POSTGRES_DB: ai_doctor_audit_db
+      POSTGRES_USER: ${POSTGRES_USER:-medical_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_secure_password}
+      POSTGRES_DB: ${POSTGRES_DB:-ai_doctor_audit_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_clinical_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U medical_admin -d ai_doctor_audit_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-medical_admin} -d ${POSTGRES_DB:-ai_doctor_audit_db}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   ai_doctor_app:
     build: .
-    container_name: ai_doctor_engine_instance
+    container_name: ai_doctor_engine
     restart: always
     ports:
       - "8501:8501"
     environment:
-      - DATABASE_URL=postgresql+psycopg2://medical_admin:hospital_secure_password_2026@ai_doctor_db:5432/ai_doctor_audit_db
+      - DB_URL=postgresql://${POSTGRES_USER:-medical_admin}:${POSTGRES_PASSWORD:-changeme_secure_password}@ai_doctor_db:5432/${POSTGRES_DB:-ai_doctor_audit_db}
       - CHROMA_DB_PATH=/app/chroma_db
     volumes:
       - chroma_vector_data:/app/chroma_db
@@ -34,6 +32,11 @@ services:
     depends_on:
       ai_doctor_db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   postgres_clinical_data:

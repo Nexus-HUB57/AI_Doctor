@@ -1,4 +1,0 @@
-# Após reflexão, se o desfecho é conhecido (ex: resposta avaliada em 6 meses)
-# Chamar:
-aprendizado = AprendizadoContinuo(agente, agente.vetor_store)
-aprendizado.atualizar_com_desfecho(patient_id, "response")

@@ -4,16 +4,34 @@ import requests
 
 class TCGAConnectorReal:
     def baixar_dados_clinicos(self, cancer_type="LUAD", limit=200):
-        url = f"https://api.gdc.cancer.gov/cases?filters={{\"op\":\"and\",\"content\":[{{\"op\":\"in\",\"content\":{{\"field\":\"projects.project_id\",\"value\":[\"TCGA-{cancer_type}\"]}}}}]}}&fields=case_id,diagnoses,demographic&size={limit}"
+        filters = {
+            "op": "and",
+            "content": [{
+                "op": "in",
+                "content": {
+                    "field": "projects.project_id",
+                    "value": [f"TCGA-{cancer_type}"]
+                }
+            }]
+        }
+        params = {
+            "filters": json.dumps(filters),
+            "fields": "case_id,diagnoses,demographic",
+            "size": limit
+        }
         try:
-            response = requests.get(url, timeout=15)
+            response = requests.get(
+                "https://api.gdc.cancer.gov/cases",
+                params=params,
+                timeout=15
+            )
             response.raise_for_status()
             casos = response.json().get('data', {}).get('hits', [])
             if not casos:
                 return self._gerar_coorte_sintetica(limit)
             return self._extrair_biomarcadores(casos)
         except Exception as e:
-            print(f"⚠️ GDC API Offline ({e}). Acionando Fallback Sintético.")
+            print(f"GDC API Offline ({e}). Acionando Fallback Sintetico.")
             return self._gerar_coorte_sintetica(limit)
 
     def _extrair_biomarcadores(self, casos):
@@ -21,7 +39,8 @@ class TCGAConnectorReal:
         for case in casos:
             diag = case.get('diagnoses', [{}])[0]
             stage = diag.get('tumor_stage', 'stage i')
-            ctDNA = 0.15 + 0.15 * (len(stage) if stage else 1) + np.random.normal(0, 0.05)
+            stage_num = sum(c.isdigit() for c in stage)
+            ctDNA = 0.15 + 0.08 * stage_num + np.random.normal(0, 0.05)
             records.append({
                 'patient_id': case['case_id'],
                 'ctDNA': float(np.clip(ctDNA, 0.01, 1.0)),
@@ -50,3 +69,5 @@ class TCGAConnectorReal:
                 'outcome': 'response' if ctDNA < 0.4 else 'progression'
             })
         return pd.DataFrame(records)
+
+import json

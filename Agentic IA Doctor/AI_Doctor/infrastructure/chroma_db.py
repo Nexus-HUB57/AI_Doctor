@@ -1,11 +1,13 @@
-import numpy as np
 import chromadb
 from chromadb.config import Settings
 from config import CONFIG
+import os
 
 class BancoVetorialChromaDB:
     def __init__(self, colecao_nome="ai_doctor_tumores"):
-        self.client = chromadb.Client(Settings(anonymized_telemetry=False))
+        persist_dir = CONFIG.get("CHROMA_PERSIST_DIR", "./chroma_db")
+        os.makedirs(persist_dir, exist_ok=True)
+        self.client = chromadb.PersistentClient(path=persist_dir, settings=Settings(anonymized_telemetry=False))
         self.collection = self.client.get_or_create_collection(name=colecao_nome)
 
     def indexar_caso_clinico(self, caso_id, vetor, metadados):
@@ -19,8 +21,8 @@ class BancoVetorialChromaDB:
             n_results=min(top_k, self.collection.count())
         )
         casos = []
-        if resultados and resultados['metadados']:
-            for i, meta in enumerate(resultados['metadados'][0]):
+        if resultados and resultados.get('metadatas'):
+            for i, meta in enumerate(resultados['metadatas'][0]):
                 meta_copia = dict(meta)
                 meta_copia['distancia'] = resultados['distances'][0][i] if 'distances' in resultados else 0.0
                 casos.append(meta_copia)

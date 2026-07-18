@@ -1,17 +1,16 @@
 import datetime
 import json
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, JSON
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 from config import CONFIG
 
 Base = declarative_base()
 
 class DecisaoClinicaAudit(Base):
     __tablename__ = 'decisoes_auditoria_medica'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     patient_id = Column(String(50), index=True)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc))
     conduta_acao = Column(String(50))
     dosagem_mg = Column(Float)
     linha_terapeutica = Column(Integer)
@@ -22,11 +21,12 @@ class DecisaoClinicaAudit(Base):
     shap_contrib = Column(JSON)
 
 class AuditorClinico:
-    def __init__(self, db_url=CONFIG["DB_URL"]):
+    def __init__(self, db_url=None):
+        url = db_url or CONFIG["DB_URL"]
         self.engine = create_engine(
-            db_url,
-            pool_size=20,
-            max_overflow=10,
+            url,
+            pool_size=5,
+            max_overflow=5,
             pool_timeout=30,
             pool_pre_ping=True
         )
