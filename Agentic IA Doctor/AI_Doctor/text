@@ -1,0 +1,25 @@
+AI_Doctor/
+├── config.py                 # Configurações centralizadas
+├── data_connectors.py        # Conexão TCGA / MIMIC-III
+├── embedding_model.py        # ClinicalBERT / BioBERT + ChromaDB
+├── models/
+│   ├── decision_model.pkl    # Modelo treinado (gerado)
+│   └── shap_explainer.pkl    # Explainer SHAP (gerado)
+├── core/
+│   ├── agente.py             # Agente Oncológico de Precisão
+│   ├── genoma.py             # Paradigma Terapêutico Avançado
+│   ├── clonal.py             # Dinâmica Clonal e Resistência
+│   ├── fisiologia.py         # ECOG / Reservas Orgânicas
+│   ├── emocao.py             # Sistema Límbico Artificial
+│   ├── memoria.py            # RAG – Memória Clínica Atemporal
+│   └── explicador.py         # SHAP / XAI
+├── infrastructure/
+│   ├── chroma_db.py          # Banco Vetorial ChromaDB
+│   ├── audit.py              # Auditoria PostgreSQL (com Pooling)
+│   ├── scheduler.py          # Aprendizado Contínuo (APScheduler)
+│   └── validacao.py          # Suíte de Validação Prospectiva
+├── dashboard/
+│   └── app.py                # Streamlit Dashboard
+├── main.py                   # Orquestrador Principal
+├── requirements.txt          # Dependências
+└── README.md                 # Instruções de Deploy
