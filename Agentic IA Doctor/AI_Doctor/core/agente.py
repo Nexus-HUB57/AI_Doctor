@@ -8,6 +8,10 @@ from .fisiologia import FisiologiaSistemica
 from .emocao import EstadoEmocionalPaciente
 from .memoria import MemoriaCasosClinicos
 from .explicador import ExplicadorSHAPClinico
+from .motor_probabilidade import ProbabilidadeTerapeutica
+from .evidence_driven import EvidenceDrivenTherapy
+from .otimizador_multiobjetivo import OtimizadorMultiObjetivo
+from .clinical_validation import ClinicalValidationModule
 from config import CONFIG
 
 class AgenteOncologicoPrecisao:
@@ -32,6 +36,15 @@ class AgenteOncologicoPrecisao:
         self.erros_consecutivos = 0
         self.total_mutacoes = 0
         self.ultimo_ciclo_mutacao = -100
+
+        # === CAMADAS PROBABILISTICAS v2.0 ===
+        self.motor_prob = ProbabilidadeTerapeutica()
+        self.evidence_driven = EvidenceDrivenTherapy(self.motor_prob)
+        self.otimizador = OtimizadorMultiObjetivo()
+        self.cvm = ClinicalValidationModule()
+        self.subtipo_tumoral = "NSCLC_KRAS_G12C"  # default
+        self.ultimo_quadro_probabilistico = None
+        self.ultima_validacao_cvm = None
 
         self._construir_matriz_empirica()
 
@@ -266,7 +279,96 @@ class AgenteOncologicoPrecisao:
             self.ultimo_ciclo_mutacao = ciclo_atual
             print(f"   ✅ Novo paradigma adotado | Janela: {self.paradigma.janela_prognostica} | Modo: {self.paradigma.modo_terapia}")
 
-    # --- Ciclo Principal ---
+    # --- Decisao com Camadas Probabilisticas (v2.0) ---
+    def _decidir_com_camadas(self, prob_emp, cenarios, ultima_linha, ciclo_id):
+        """
+        Decide a acao terapeutica usando as 4 camadas probabilisticas.
+        Fallback: se as camadas nao puderem calcular, usa o metodo legado.
+        """
+        try:
+            # Preparar biomarcadores normalizados
+            biomarcadores = {
+                'ctDNA': float(ultima_linha.get('ctDNA', 0.5)),
+                'CTC': float(ultima_linha.get('CTC', 10)),
+                'TMB': float(ultima_linha.get('TMB', 8)),
+                'PD_L1': float(ultima_linha.get('PD_L1', 0.2)),
+                'TILs': float(ultima_linha.get('TILs', 0.1)),
+            }
+
+            reserva_media = float(np.mean([
+                self.fisiologia.reserva_renal,
+                self.fisiologia.reserva_hepatica,
+                self.fisiologia.reserva_hematologica,
+            ]))
+
+            # CAMADA 1: Calcular probabilidades completas
+            quadro_prob = self.motor_prob.calcular_completo(
+                subtipo=self.subtipo_tumoral,
+                linha=max(1, self.linha_terapeutica),
+                biomarcadores=biomarcadores,
+                dose_atual=self.dose_atual,
+                reserva_fisiologica=reserva_media,
+                ecog=self.fisiologia.ecog,
+                eficacia_clonal=self.clonal.eficacia_relativa(),
+                ciclo=ciclo_id,
+            )
+
+            self.ultimo_quadro_probabilistico = quadro_prob
+
+            # CAMADA 3: Otimizar acao multi-objetivo
+            resultado_otimizador = self.otimizador.otimizar_acao(
+                probabilidades=quadro_prob,
+                fisiologia=self.fisiologia,
+                paradigma=self.paradigma,
+                dose_atual=self.dose_atual,
+                linha_atual=self.linha_terapeutica,
+                eficacia_clonal=self.clonal.eficacia_relativa(),
+                ciclo=ciclo_id,
+                emocoes=self.emocoes,
+            )
+
+            acao = resultado_otimizador["acao_otima"]
+            confianca = resultado_otimizador["utilidade_total"]
+
+            # CAMADA 4: Validacao cientifica da decisao
+            contexto_clinico = self.estado_atual or ""
+            contexto_clinico += f" ctDNA={biomarcadores['ctDNA']:.2f}"
+            contexto_clinico += f" TMB={biomarcadores['TMB']:.0f}"
+            contexto_clinico += f" PD-L1={biomarcadores['PD_L1']:.1f}"
+
+            validacao = self.cvm.validar_decisao(
+                acao=acao,
+                contexto_clinico=contexto_clinico,
+                probabilidades=quadro_prob,
+                subtipo=self.subtipo_tumoral,
+                linha=max(1, self.linha_terapeutica),
+            )
+
+            self.ultima_validacao_cvm = validacao
+
+            # Log probabilistico
+            p_cura = quadro_prob["cura"]["probabilidade_cura"]
+            p_resp = quadro_prob["resposta"]["probabilidade_resposta"]
+            p_tox = quadro_prob["toxicidade"]["probabilidade_toxicidade_grave"]
+            indice_ev = validacao["indice_evidencia"]
+            print(f"   [v2.0] P(resp)={p_resp:.1%} P(cura)={p_cura:.1%} P(tox)={p_tox:.1%} "
+                  f"IT={quadro_prob['indice_terapeutico']:.2f} Evidencia={indice_ev:.0f}/100 "
+                  f"Acao={acao}")
+
+            # Se a evidencia e INSUFICIENTE (< 40), aplicar cautela extra
+            if validacao["classificacao"] == "INSUFICIENTE":
+                if acao in ("INTENSIFICAR", "INTENSIFICAR_MODERADO"):
+                    acao = "MANTER_DOSE"
+                    print(f"   [CVM] Acao rebaixada para MANTER_DOSE (evidencia insuficiente)")
+
+            return acao, confianca
+
+        except Exception as e:
+            # Fallback: usar metodo legado
+            print(f"   [v2.0] Fallback para decisao legada: {e}")
+            return self._reagir(prob_emp, cenarios)
+
+    # --- Ciclo Principal (v2.0 com camadas probabilisticas) ---
     def executar_ciclo(self, nova_medicao, ciclo_id):
         self.df_historico.loc[len(self.df_historico)] = nova_medicao
         self._atualizar_indicadores_linha()
@@ -276,7 +378,11 @@ class AgenteOncologicoPrecisao:
         self.estado_atual = self._perceber_estado(ultima_linha)
         cenarios = self._gerar_cenarios_prognosticos(ultima_linha)
         prob_emp = self.matriz_probabilidade.get(self.estado_atual, {})
-        acao, confianca = self._reagir(prob_emp, cenarios)
+
+        # === DECISAO v2.0: Camadas Probabilisticas ===
+        acao, confianca = self._decidir_com_camadas(
+            prob_emp, cenarios, ultima_linha, ciclo_id
+        )
 
         # Execução
         if acao == 'TROCAR_LINHA':

@@ -332,6 +332,12 @@ class RegistroFontesPesquisa:
     """
     Registro central de todas as fontes de pesquisa disponiveis.
     Gerencia instanciacao e coordenacao entre fontes.
+
+    Fontes disponiveis:
+    - PubMed: artigos cientificos via NCBI E-utilities
+    - ClinicalTrials.gov: ensaios clinicos ativos
+    - WHO: indicadores e alertas globais de saude
+    - google_scholar: cobertura ampliada com scraping (preprints, conferencias, livros)
     """
 
     def __init__(self):
@@ -340,12 +346,30 @@ class RegistroFontesPesquisa:
             "clinical_trials": ClinicalTrialsConnector(),
             "who": WHOAlertsConnector(),
         }
+        # Google Scholar: instanciar com try/except (depende de beautifulsoup4)
+        try:
+            from infrastructure.google_scholar import GoogleScholarConnector
+            self.fontes["google_scholar"] = GoogleScholarConnector()
+        except Exception as e:
+            print(f"   [RegistroFontes] Google Scholar desativado: {e}")
         self._historico_execucoes: List[Dict] = []
+        self._queries_expandidas: List[str] = []  # Feedback loop de auto sabedoria
+
+    def adicionar_queries_expandidas(self, queries: List[str]):
+        """Adiciona queries geradas pela auto sabedoria ao proximo ciclo."""
+        self._queries_expandidas = list(set(queries))
+
+    def _obter_queries_adicionais(self) -> List[str]:
+        """Retorna queries expandidas para injeção no ciclo."""
+        queries = self._queries_expandidas[:5]  # Limitar a 5 queries extras
+        self._queries_expandidas = self._queries_expandidas[5:]
+        return queries
 
     def executar_ciclo_pesquisa(self, data_inicio: str = None, data_fim: str = None,
                                  max_por_fonte: int = 50) -> Dict[str, List[Dict]]:
         """
         Executa ciclo completo de pesquisa em todas as fontes ativas.
+        Injeta queries expandidas pela auto sabedoria no PubMed e Google Scholar.
         Retorna dict com nome da fonte -> lista de resultados.
         """
         hoje = datetime.date.today().isoformat()
@@ -356,6 +380,9 @@ class RegistroFontesPesquisa:
         data_inicio = data_inicio or padrao_inicio
         data_fim = data_fim or hoje
 
+        # Obter queries do feedback loop de auto sabedoria
+        queries_adicionais = self._obter_queries_adicionais()
+
         todos_resultados = {}
         total_geral = 0
 
@@ -363,12 +390,20 @@ class RegistroFontesPesquisa:
         print(f"  DIMHEX — Ciclo de Pesquisa Iniciado")
         print(f"  Periodo: {data_inicio} ate {data_fim}")
         print(f"  Fontes ativas: {len(self.fontes)}")
+        if queries_adicionais:
+            print(f"  Queries expandidas (sabedoria): {len(queries_adicionais)}")
         print(f"{'='*60}")
 
         for nome, fonte in self.fontes.items():
             print(f"\n   [{nome}] Buscando...")
             try:
+                # Injetar queries expandidas no PubMed e Google Scholar
+                termos_extra = None
+                if nome in ("pubmed", "google_scholar") and queries_adicionais:
+                    termos_extra = queries_adicionais[:3]
+
                 resultados = fonte.buscar(
+                    termos_busca=termos_extra,
                     data_inicio=data_inicio,
                     data_fim=data_fim,
                     max_resultados=max_por_fonte

@@ -102,18 +102,27 @@ def main():
 
     print(validador.relatorio())
 
-    # 7. DIMHEX — Primeiro ciclo de pesquisa medica
-    print("[4] Inicializando DIMHEX — Digital Medical Health Explorer...")
+    # 7. DIMHEX v2.0 — Motor de Probabilidade Terapeutica
+    print("[4] Inicializando DIMHEX v2.0 — Probabilistic Treatment Engine...")
     try:
         from core.dimhex import DIMHEX
         dimhex_engine = DIMHEX()
+
+        # Conectar DIMHEX ao agente (ativa Camada 2: Evidence-Driven)
+        dimhex_engine.conectar_agente(agente)
+        agente.evidence_driven = dimhex_engine.evidence_driven
+
         dimhex_status = dimhex_engine.obter_status()
         print(f"   DIMHEX v{dimhex_status['versao']} | Ciclo: #{dimhex_status['ciclo_atual']}")
         print(f"   Base de conhecimento: {dimhex_status['base_conhecimento']['total_indexados']} documentos")
         print(f"   Pesquisa ativa: {dimhex_status['pesquisa_ativa']}")
         print(f"   Fontes: {', '.join(dimhex_status['fontes_ativas'])}")
+        print(f"   Agente conectado: {dimhex_status.get('agente_conectado', False)}")
+        print(f"   Motor de Probabilidade: {agente.motor_prob.obter_resumo()['versao']}")
+        print(f"   Otimizador: {agente.otimizador.obter_resumo()['versao']}")
+        print(f"   CVM: {agente.cvm.obter_resumo()['versao']}")
     except Exception as e:
-        print(f"   Aviso: DIMHEX nao disponivel ({e})")
+        print(f"   Aviso: DIMHEX v2.0 nao disponivel ({e})")
         dimhex_engine = None
 
     # 8. Scheduler (inclui DIMHEX a cada 240 min)

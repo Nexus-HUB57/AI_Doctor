@@ -37,8 +37,8 @@ CONFIG = {
     "DIMHEX_REQUEST_TIMEOUT": int(os.getenv("DIMHEX_REQUEST_TIMEOUT", "30")),
     # Ativar/desativar pesquisa DIMHEX
     "DIMHEX_PESQUISA_ATIVA": os.getenv("DIMHEX_PESQUISA_ATIVA", "true").lower() == "true",
-    # Fontes ativas (JSON array: pubmed, clinical_trials, who)
-    "DIMHEX_ACTIVE_SOURCES": os.getenv("DIMHEX_ACTIVE_SOURCES", '["pubmed", "clinical_trials"]'),
+    # Fontes ativas (JSON array: pubmed, clinical_trials, who, google_scholar)
+    "DIMHEX_ACTIVE_SOURCES": os.getenv("DIMHEX_ACTIVE_SOURCES", '["pubmed", "clinical_trials", "google_scholar"]'),
     # Caminho para persistencia de estado do DIMHEX
     "DIMHEX_STATE_PATH": os.getenv("DIMHEX_STATE_PATH", "./dimhex_estado.json"),
 }
