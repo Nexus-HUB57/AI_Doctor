@@ -74,6 +74,44 @@ class ScorerRelevanciaClinica:
         "CANCER_APPENDICE": ["appendiceal", "appendix cancer", "carcinoid", "neuroendocrine appendix", "pseudomyxoma", "HIPEC"],
         "CANCER_PARATIREOIDE": ["parathyroid carcinoma", "parathyroid cancer", "malignant hyperparathyroidism", "CDC73 mutation"],
         "CANCER_AMPULAR": ["ampullary carcinoma", "ampulla of vater", "periampullary", "duodenal papilla"],
+        # === MAMA ===
+        "MAMA_HER2_POSITIVO": ["HER2 positive breast", "trastuzumab", "pertuzumab", "T-DXd", "HER2 breast cancer", "trastuzumab emtansine", "HER2 amplified"],
+        "MAMA_HR_POSITIVO_LUMINAL": ["hormone receptor breast", "luminal breast cancer", "ER positive", "progesterone receptor", "CDK4/6 inhibitor", "palbociclib", "letrozole", "endocrine therapy breast"],
+        # === PRÓSTATA ===
+        "PROSTATA_HORMOSSENSIVEL": ["hormone sensitive prostate", "androgen deprivation", "prostate cancer", "PSA", "abiraterone", "enzalutamide", "prostate adenocarcinoma"],
+        "PROSTATA_CASTRACAO_RESISTENTE": ["castration resistant prostate", "CRPC", "mCRPC", "PSA progression", "R-CHOP", "docetaxel prostate", "apalutamide", "darolutamide", "177Lu-PSMA"],
+        # === PÂNCREAS ===
+        "PANCREAS_PDAC": ["pancreatic ductal adenocarcinoma", "PDAC", "pancreatic cancer", "FOLFIRINOX", "gemcitabine nab-paclitaxel", "KRAS pancreatic", "CA 19-9 pancreatic"],
+        "PANCREAS_NEUROENDOCRINO": ["pancreatic neuroendocrine", "PanNET", "pNET", "somatostatin analog", "everolimus neuroendocrine", "lu-177 DOTATATE pancreatic"],
+        # === CÉREBRO ===
+        "CEREBRO_GBM": ["glioblastoma", "GBM", "glioblastoma multiforme", "temozolomide", "MGMT", "tumor treating fields", "IDH wildtype glioma"],
+        "CEREBRO_ASTROCITOMA_IDH": ["IDH mutant astrocytoma", "IDH1 glioma", "low grade glioma", "1p/19q", "oligodendroglioma", "vorasidenib"],
+        "CEREBRO_MEDULOBLASTOMA": ["medulloblastoma", "posterior fossa tumor", "SHH medulloblastoma", "Group 3 medulloblastoma", "craniospinal irradiation"],
+        # === FÍGADO ===
+        "FIGADO_HCC": ["hepatocellular carcinoma", "HCC", "liver cancer", "alpha fetoprotein", "atresia hepática", "Child-Pugh", "atezolizumab bevacizumab HCC", "transarterial chemoembolization"],
+        # === SANGUE ===
+        "SANGUE_LINFOMA_DLBCL": ["diffuse large B-cell lymphoma", "DLBCL", "R-CHOP", "CAR-T lymphoma", "axi-cel", "polatuzumab", "CD20 positive lymphoma"],
+        "SANGUE_LINFOMA_FOLICULAR": ["follicular lymphoma", "indolent lymphoma", "obinutuzumab", "rituximab maintenance", "tazemetostat EZH2", "PI3K inhibitor lymphoma"],
+        "SANGUE_MIELOMA_MULTIPL0": ["multiple myeloma", "plasma cell myeloma", "daratumumab", "bortezomib", "lenalidomide", "BCMA", "smoldering myeloma", "MGUS"],
+        "SANGUE_LEUCEMIA_MIELOIDE_AGLA": ["acute myeloid leukemia", "AML", "myeloblast", "venetoclax", "FLT3", "cytarabine", "7+3 AML", "myelodysplasia progression"],
+        # === MEDULAR ===
+        "MEDULAR_MDS": ["myelodysplastic syndrome", "MDS", "myelodysplasia", "azacitidine", "luspatercept", "ring sideroblast", "del(5q)"],
+        # === GASTROINTESTINAL ===
+        "GI_COLORRETAL_MSI_H": ["colorectal cancer", "MSI-H colon", "microsatellite instability", "FOLFOX", "bevacizumab colorectal", "KRAS wildtype colorectal", "encorafenib cetuximab"],
+        "GI_GASTRICO_HER2": ["gastric cancer", "stomach cancer", "HER2 gastric", "trastuzumab gastric", "KEYNOTE-811", "capecitabine oxaliplatin gastric", "CEA gastric"],
+        "GI_ESOFAGO": ["esophageal cancer", "esophageal squamous", "esophageal adenocarcinoma", "neoadjuvant chemoradiation esophageal", "CROSS trial", "PD-1 esophageal"],
+        # === PELE ===
+        "PELE_MELANOMA_BRAF": ["BRAF melanoma", "BRAF V600E melanoma", "dabrafenib", "trametinib", "BRAF mutation skin", "vemurafenib melanoma"],
+        "PELE_MELANOMA_CUTANEO": ["cutaneous melanoma", "melanoma", "nivolumab melanoma", "ipilimumab", "lifileucel TIL", "checkpoint inhibitor melanoma"],
+        # === GENITURINÁRIO ===
+        "GU_RENAL_CELULAR": ["renal cell carcinoma", "RCC", "clear cell kidney", "nephrectomy", "VHL mutation", "pazopanib", "sunitinib", "cabozantinib renal"],
+        "GU_BEXIGA_UROTELIAL": ["urothelial cancer", "bladder cancer", "transitional cell", "BCG", "cystectomy", "enfortumab vedotin", "erdafitinib FGFR3"],
+        # === OUTROS ===
+        "GINECOLOGICO_CERVICAL_HPV": ["cervical cancer", "HPV cervical", "Pap smear", "cervical squamous", "chemoradiation cervical", "tisotumab vedotin"],
+        "ENDOCRINO_TIREOIDE": ["thyroid cancer", "papillary thyroid", "follicular thyroid", "iodine-131", "thyroglobulin", "lenvatinib thyroid", "selpercatinib RET"],
+        "PLEURAL_MESOTELIOMA": ["mesothelioma", "pleural mesothelioma", "asbestos", "nivolumabe ipilimumabe mesotelioma", "pemetrexed mesothelioma"],
+        "OSSEO_OSTEOSARCOMA": ["osteosarcoma", "bone sarcoma", "limb salvage", "osteoid", "MAP protocol osteosarcoma"],
+        "OSSEO_SARCOMA_EWING": ["Ewing sarcoma", "EWS-FLI1", "bone tumor young", "PNET", "small round blue cell"],
     }
 
     # Pesos por tipo de publicacao (prioridade para evidencia forte)

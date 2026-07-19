@@ -89,6 +89,153 @@ class EvidenceDrivenTherapy:
             "duodenal papilla carcinoma", "ampullary adenocarcinoma",
             "ampuloma", "ca 19-9 ampullary",
         ],
+        # === MAMA ===
+        "MAMA_HER2_POSITIVO": [
+            "her2 positive breast", "trastuzumab", "pertuzumab", "T-DXd", "trastuzumab emtansine",
+            "her2 amplification breast", "margetuximab", "HER2 breast cancer",
+        ],
+        "MAMA_HR_POSITIVO_LUMINAL": [
+            "hormone receptor positive breast", "luminal breast", "er positive", "cdk4/6",
+            "palbociclib", "ribociclib", "abemaciclib", "letrozole", "fulvestrant", "endocrine therapy",
+            "alpelisib", "pi3k inhibitor breast", "serd breast", "elacestrant",
+        ],
+        # === PRÓSTATA ===
+        "PROSTATA_HORMOSSENSIVEL": [
+            "hormone sensitive prostate cancer", "androgen deprivation therapy", "adt prostate",
+            "abiraterone", "enzalutamide", "apalutamide", "docetaxel prostate",
+            "radical prostatectomy", "psa screening", "goserelin", "degarelix",
+        ],
+        "PROSTATA_CASTRACAO_RESISTENTE": [
+            "castration resistant prostate", "crpc", "mcrpc", "psa progression prostate",
+            "177lu-psma-617", "pluvicto", "cabazitaxel prostate", "olaparib prostate",
+            "rucaparib prostate", "parp inhibitor prostate",
+        ],
+        # === PÂNCREAS ===
+        "PANCREAS_PDAC": [
+            "pancreatic ductal adenocarcinoma", "pdac", "pancreatic cancer",
+            "folfirinox pancreatic", "gemcitabine nab-paclitaxel", "ca 19-9",
+            "kras g12d pancreatic", "smad4 pancreatic", "adjuvant pancreatic",
+        ],
+        "PANCREAS_NEUROENDOCRINO": [
+            "pancreatic neuroendocrine tumor", "pannet", "pnet", "somatostatin analog",
+            "everolimus neuroendocrine", "lu-177 dotatate", "sunitinib net",
+            "chromogranin a pancreatic", "gastrinoma", "insulinoma",
+        ],
+        # === CÉREBRO ===
+        "CEREBRO_GBM": [
+            "glioblastoma", "gbm", "temozolomide", "mgmt promoter", "tumor treating fields",
+            "idh wildtype glioma", "bevacizumab glioma", "carmustine wafer",
+            "gliadel", "egfrviii glioblastoma",
+        ],
+        "CEREBRO_ASTROCITOMA_IDH": [
+            "idh mutant astrocytoma", "idh1 glioma", "low grade glioma",
+            "1p19q codeletion", "vorasidenib", "ivosidenib glioma",
+            "oligodendroglioma", "pcv chemotherapy glioma",
+        ],
+        "CEREBRO_MEDULOBLASTOMA": [
+            "medulloblastoma", "posterior fossa tumor", "shh medulloblastoma",
+            "group 3 medulloblastoma", "craniospinal irradiation",
+            "vismodegib medulloblastoma", "sonidegib medulloblastoma",
+        ],
+        # === FÍGADO ===
+        "FIGADO_HCC": [
+            "hepatocellular carcinoma", "hcc", "liver cancer", "alpha fetoprotein",
+            "child-pugh", "atezolizumab bevacizumab hcc", "sorafenib hcc",
+            "lenvatinib hcc", "transarterial chemoembolization", "tace hcc",
+            "regorafenib hcc", "cabozantinib hcc",
+        ],
+        # === SANGUE ===
+        "SANGUE_LINFOMA_DLBCL": [
+            "diffuse large b-cell lymphoma", "dlbcl", "r-chop", "car-t lymphoma",
+            "axi-cel", "tisagenlecleucel", "polatuzumab", "cd20 lymphoma",
+            "double hit lymphoma", "pola-r-chp",
+        ],
+        "SANGUE_LINFOMA_FOLICULAR": [
+            "follicular lymphoma", "indolent lymphoma", "obinutuzumab",
+            "rituximab maintenance", "tazemetostat", "ezh2 lymphoma",
+            "pi3k inhibitor lymphoma", "lenalidomide lymphoma", "mosunetuzumab",
+        ],
+        "SANGUE_MIELOMA_MULTIPL0": [
+            "multiple myeloma", "plasma cell myeloma", "daratumumab", "bortezomib",
+            "lenalidomide", "bcma", "car-t myeloma", "idecabtagene vicleucel",
+            "selinexor", "belantamab mafodotin", "cytogenetics myeloma",
+        ],
+        "SANGUE_LEUCEMIA_MIELOIDE_AGLA": [
+            "acute myeloid leukemia", "aml", "venetoclax aml", "flt3 aml",
+            "cytarabine", "7+3 aml", "midostaurin", "gilteritinib",
+            "enasidenib", "ivosidenib aml", "myeloid sarcoma",
+        ],
+        # === MEDULAR ===
+        "MEDULAR_MDS": [
+            "myelodysplastic syndrome", "mds", "azacitidine", "decitabine",
+            "luspatercept", "ring sideroblast", "del5q mds", "ipss mds",
+            "eprenetapopt", "venetoclax mds", "tp53 mds",
+        ],
+        # === GASTROINTESTINAL ===
+        "GI_COLORRETAL_MSI_H": [
+            "colorectal cancer", "colon cancer", "rectal cancer", "msi-h colorectal",
+            "folfox", "folfiri", "bevacizumab colorectal", "cetuximab",
+            "encorafenib", "trifluridine", "tas-102", "kras wildtype colorectal",
+        ],
+        "GI_GASTRICO_HER2": [
+            "gastric cancer", "stomach cancer", "her2 gastric", "trastuzumab gastric",
+            "keynote-811", "capecitabine gastric", "ramucirumab gastric",
+            "t-dxd gastric", "perioperative gastric", "fLOT gastric",
+        ],
+        "GI_ESOFAGO": [
+            "esophageal cancer", "esophageal squamous", "esophageal adenocarcinoma",
+            "cross trial esophageal", "chemoradiation esophageal", "fLOT esophageal",
+            "keynote-590 esophageal", "checkmate 648", "t-dxd esophageal",
+        ],
+        # === PELE ===
+        "PELE_MELANOMA_BRAF": [
+            "braf melanoma", "braf v600e", "dabrafenib", "trametinib",
+            "vemurafenib", "encorafenib", "binimetinib", "targeted therapy melanoma",
+            "atlas trial", "combo i BRAF melanoma",
+        ],
+        "PELE_MELANOMA_CUTANEO": [
+            "cutaneous melanoma", "melanoma", "nivolumab melanoma", "ipilimumab",
+            "pembrolizumab melanoma", "lifileucel", "til therapy melanoma",
+            "relatlimab", "t-vec", "oncolytic virus melanoma",
+        ],
+        # === GENITURINÁRIO ===
+        "GU_RENAL_CELULAR": [
+            "renal cell carcinoma", "rcc", "clear cell kidney", "nivolumab cabozantinib",
+            "pembrolizumab axitinib", "lenvatinib pembrolizumab", "pazopanib",
+            "sunitinib", "belzutifano", "hif-2 alpha", "von hippel lindau",
+        ],
+        "GU_BEXIGA_UROTELIAL": [
+            "urothelial cancer", "bladder cancer", "transitional cell carcinoma",
+            "bcg bladder", "enfortumab vedotin", "sacituzumab bladder",
+            "erdafitinib", "pembrolizumab bladder", "atezolizumab bladder",
+            "cystectomy", "neoadjuvant bladder",
+        ],
+        # === OUTROS ===
+        "GINECOLOGICO_CERVICAL_HPV": [
+            "cervical cancer", "hpv cervical", "p16 cervical", "chemoradiation cervical",
+            "tisotumab vedotin", "pembrolizumab cervical", "hpv vaccine",
+            "fertility sparing cervical", "brachytherapy cervical",
+        ],
+        "ENDOCRINO_TIREOIDE": [
+            "thyroid cancer", "papillary thyroid", "follicular thyroid", "iodine 131",
+            "lenvatinib thyroid", "sorafenib thyroid", "selpercatinib ret thyroid",
+            "larotrectinib ntrk thyroid", "thyroglobulin", "anaplastic thyroid",
+        ],
+        "PLEURAL_MESOTELIOMA": [
+            "mesothelioma", "pleural mesothelioma", "asbestos related cancer",
+            "nivolumabe ipilimumabe mesothelioma", "pemetrexed mesothelioma",
+            "cisplatin mesothelioma", "tremelimumabe mesothelioma",
+        ],
+        "OSSEO_OSTEOSARCOMA": [
+            "osteosarcoma", "bone sarcoma", "limb salvage surgery",
+            "map protocol osteosarcoma", "mifamurtide", "euramos",
+            "high grade osteosarcoma", "lung metastasis osteosarcoma",
+        ],
+        "OSSEO_SARCOMA_EWING": [
+            "ewing sarcoma", "ews-fli1", "pnet", "ewing tumor",
+            "vdc ie protocol", "high dose chemotherapy ewing",
+            "larotrectinib ewing", "trabectedin ewing",
+        ],
     }
 
     # Classificacao de forca de evidencia (adaptado Oxford CEBM)

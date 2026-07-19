@@ -129,6 +129,276 @@ class ProbabilidadeTerapeutica:
             3: {"prior": 0.06, "IC95": (0.02, 0.15), "n_pacientes": 33,
                 "referencia": "Terapias experimentais pancreato-ampulares"},
         },
+
+        # === MAMA HER2+ ===
+        "MAMA_HER2_POSITIVO": {
+            1: {"prior": 0.72, "IC95": (0.66, 0.78), "n_pacientes": 1200,
+                "referencia": "CLEOPATRA trial (trastuzumabe+pertuzumabe+docetaxel)"},
+            2: {"prior": 0.61, "IC95": (0.53, 0.68), "n_pacientes": 520,
+                "referencia": "DESTINY-Breast03 (T-DXd vs T-DM1)"},
+            3: {"prior": 0.28, "IC95": (0.20, 0.38), "n_pacientes": 280,
+                "referencia": "EMILIA trial (T-DM1) + tucatinib combo"},
+        },
+
+        # === MAMA HR+/LUMINAL ===
+        "MAMA_HR_POSITIVO_LUMINAL": {
+            1: {"prior": 0.45, "IC95": (0.40, 0.50), "n_pacientes": 2400,
+                "referencia": "PALOMA-3 + MONARCH-2 (CDK4/6 + endocrinoterapia)"},
+            2: {"prior": 0.32, "IC95": (0.26, 0.39), "n_pacientes": 850,
+                "referencia": "SOLAR-1 (alpelisibe + fulvestranto, PIK3CA mutado)"},
+            3: {"prior": 0.18, "IC95": (0.12, 0.26), "n_pacientes": 420,
+                "referencia": "CAPE-Met (capecitabina monoterapia)"},
+        },
+
+        # === PRÓSTATA HORMOSSSENSÍVEL ===
+        "PROSTATA_HORMOSSENSIVEL": {
+            1: {"prior": 0.65, "IC95": (0.60, 0.70), "n_pacientes": 1800,
+                "referencia": "CHAARTED + STAMPEDE (ADT + docetaxel)"},
+            2: {"prior": 0.40, "IC95": (0.34, 0.47), "n_pacientes": 1100,
+                "referencia": "Abiraterona + prednisona pós-quimioterapia (COU-AA-301)"},
+            3: {"prior": 0.22, "IC95": (0.16, 0.30), "n_pacientes": 620,
+                "referencia": "CABAZITAXEL (TROPIC trial)"},
+        },
+
+        # === PRÓSTATA CASTRAÇÃO-RESISTENTE ===
+        "PROSTATA_CASTRACAO_RESISTENTE": {
+            1: {"prior": 0.55, "IC95": (0.49, 0.61), "n_pacientes": 1500,
+                "referencia": "LATITUDE + STAMPEDE (abiraterona + ADT) + ENZAMET (enzalutamida)"},
+            2: {"prior": 0.35, "IC95": (0.28, 0.43), "n_pacientes": 890,
+                "referencia": "PROSPER (apalutamida) + SPARTAN (darolutamida)"},
+            3: {"prior": 0.18, "IC95": (0.12, 0.26), "n_pacientes": 480,
+                "referencia": "177Lu-PSMA-617 (TheraP trial, VISION)"},
+        },
+
+        # === PÂNCREAS PDAC ===
+        "PANCREAS_PDAC": {
+            1: {"prior": 0.32, "IC95": (0.25, 0.40), "n_pacientes": 760,
+                "referencia": "PRODIGE 4/ACCORD 11 (FOLFIRINOX) + NAPOLI-1 (nab-paclitaxel+gem)"},
+            2: {"prior": 0.16, "IC95": (0.10, 0.24), "n_pacientes": 410,
+                "referencia": "NAPOLI-3 (nal-IRI + 5-FU/LV) em 2a linha"},
+            3: {"prior": 0.08, "IC95": (0.03, 0.16), "n_pacientes": 220,
+                "referencia": "Liposomal irinotecan + fluorouracil (NAPOLI-1 refratário)"},
+        },
+
+        # === PÂNCREAS NEUROENDÓCRINO ===
+        "PANCREAS_NEUROENDOCRINO": {
+            1: {"prior": 0.40, "IC95": (0.30, 0.51), "n_pacientes": 350,
+                "referencia": "RADIANT-3 (everolimo) + CLARINET (lanreotido)"},
+            2: {"prior": 0.25, "IC95": (0.16, 0.37), "n_pacientes": 220,
+                "referencia": "NETTER-1 (Lu-177 DOTATATE) para PanNET G1/G2"},
+            3: {"prior": 0.12, "IC95": (0.05, 0.23), "n_pacientes": 140,
+                "referencia": "Sunitinibe (A6181114) + PRRT refratário"},
+        },
+
+        # === GBM ===
+        "CEREBRO_GBM": {
+            1: {"prior": 0.28, "IC95": (0.22, 0.35), "n_pacientes": 950,
+                "referencia": "Stupp protocol (temozolomida + RT) + EF-14 (TTFIELDS)"},
+            2: {"prior": 0.12, "IC95": (0.07, 0.20), "n_pacientes": 380,
+                "referencia": "BELOB trial (bevacizumabe + lomustina)"},
+            3: {"prior": 0.05, "IC95": (0.02, 0.12), "n_pacientes": 210,
+                "referencia": "REGOMA (regorafenibe) + tumor treating fields"},
+        },
+
+        # === ASTROCITOMA IDH ===
+        "CEREBRO_ASTROCITOMA_IDH": {
+            1: {"prior": 0.42, "IC95": (0.33, 0.52), "n_pacientes": 320,
+                "referencia": "CATNON (radioquimioterapia com temozolomida) IDH-mutado"},
+            2: {"prior": 0.18, "IC95": (0.10, 0.29), "n_pacientes": 180,
+                "referencia": "Ivosidenib (AG-120) IDH1-mutado + vorasidenib INDIGO"},
+            3: {"prior": 0.08, "IC95": (0.03, 0.18), "n_pacientes": 95,
+                "referencia": "Bevacizumabe + lomustina em glioma recorrente"},
+        },
+
+        # === MEDULOBLASTOMA ===
+        "CEREBRO_MEDULOBLASTOMA": {
+            1: {"prior": 0.60, "IC95": (0.50, 0.70), "n_pacientes": 280,
+                "referencia": "SIOP PNET 5 (risco padrão) + St. Jude meduloblastoma protocol"},
+            2: {"prior": 0.25, "IC95": (0.15, 0.38), "n_pacientes": 150,
+                "referencia": "High-dose chemotherapy + autologous stem cell rescue"},
+            3: {"prior": 0.10, "IC95": (0.04, 0.21), "n_pacientes": 85,
+                "referencia": "Lorenzini et al. (reirradiação + temozolomida)"},
+        },
+
+        # === HCC ===
+        "FIGADO_HCC": {
+            1: {"prior": 0.35, "IC95": (0.28, 0.43), "n_pacientes": 1100,
+                "referencia": "IMbrave150 (atezolizumabe + bevacizumabe) + HIMALAYA (durvalumabe+tremelimumabe)"},
+            2: {"prior": 0.20, "IC95": (0.14, 0.28), "n_pacientes": 650,
+                "referencia": "REFLECT (lenvatinibe vs sorafenibe) + cabozantinibe (CELESTIAL)"},
+            3: {"prior": 0.10, "IC95": (0.05, 0.18), "n_pacientes": 380,
+                "referencia": "Regorafenibe (RESORCE) + ramucirumabe (REACH-2 AFP-high)"},
+        },
+
+        # === DLBCL ===
+        "SANGUE_LINFOMA_DLBCL": {
+            1: {"prior": 0.78, "IC95": (0.73, 0.83), "n_pacientes": 2200,
+                "referencia": "GELA LNH03-2B (R-CHOP) + POLARIX (pola-R-CHP vs R-CHOP)"},
+            2: {"prior": 0.45, "IC95": (0.37, 0.53), "n_pacientes": 680,
+                "referencia": "SCHOLAR-1 pooled + CAR-T (ZUMA-1 axi-cel, JULIET tisagenlecleucel)"},
+            3: {"prior": 0.25, "IC95": (0.16, 0.36), "n_pacientes": 320,
+                "referencia": "Lisocabtagene maraleucel (TRANSCEND) + loncastuximab (LOMBARD)"},
+        },
+
+        # === LINFOMA FOLICULAR ===
+        "SANGUE_LINFOMA_FOLICULAR": {
+            1: {"prior": 0.88, "IC95": (0.83, 0.92), "n_pacientes": 1200,
+                "referencia": "GALLIUM (obinutuzumabe vs rituximabe) + bendamustina"},
+            2: {"prior": 0.60, "IC95": (0.52, 0.68), "n_pacientes": 520,
+                "referencia": "ZUMA-5 (axi-cel) + GALLIUM 2a linha (R2: rituximabe+lenalidomida)"},
+            3: {"prior": 0.35, "IC95": (0.25, 0.46), "n_pacientes": 280,
+                "referencia": "PI3K inhibitors (copanlisibe, duvelisib) + EZH2 (tazemetostat)"},
+        },
+
+        # === MIELOMA MÚLTIPLO ===
+        "SANGUE_MIELOMA_MULTIPL0": {
+            1: {"prior": 0.82, "IC95": (0.77, 0.86), "n_pacientes": 1800,
+                "referencia": "MAIA (daratumumabe+lenalidomida+dexa) + PERSEUS (D-VRd)"},
+            2: {"prior": 0.55, "IC95": (0.48, 0.62), "n_pacientes": 950,
+                "referencia": "CASTOR (daratumumabe+bortezomibe+dexa) + CANDOR (D-Kd)"},
+            3: {"prior": 0.30, "IC95": (0.22, 0.39), "n_pacientes": 580,
+                "referencia": "Pomalidomida+dexa + selinexor (STORM) + belantamab mafodotin"},
+        },
+
+        # === LMA ===
+        "SANGUE_LEUCEMIA_MIELOIDE_AGLA": {
+            1: {"prior": 0.70, "IC95": (0.64, 0.76), "n_pacientes": 1100,
+                "referencia": "7+3 (antraciclina + citarabina) + VIALE-A (venetoclaxe+azacitidina)"},
+            2: {"prior": 0.35, "IC95": (0.27, 0.44), "n_pacientes": 480,
+                "referencia": "FLAG-IDA + gilteritinibe (ADMIRAL) FLT3-ITD"},
+            3: {"prior": 0.15, "IC95": (0.08, 0.25), "n_pacientes": 260,
+                "referencia": "ENLIVEN (enasidenib IDH2) + ivosidenib (AG-120) + GLASGOW (venetoclaxe combo)"},
+        },
+
+        # === MDS ===
+        "MEDULAR_MDS": {
+            1: {"prior": 0.45, "IC95": (0.37, 0.54), "n_pacientes": 680,
+                "referencia": "AZA-001 (azacitidina) + COMMANDS (eprenetapopt + azacitidina)"},
+            2: {"prior": 0.28, "IC95": (0.20, 0.38), "n_pacientes": 350,
+                "referencia": "Luspatercept (MEDALIST) para MDS com sideroblastos em anel"},
+            3: {"prior": 0.12, "IC95": (0.06, 0.22), "n_pacientes": 180,
+                "referencia": "Venetoclaxe + azacitidina (MDS com TP53) + decitabina"},
+        },
+
+        # === COLORRETAL MSI-H ===
+        "GI_COLORRETAL_MSI_H": {
+            1: {"prior": 0.55, "IC95": (0.48, 0.62), "n_pacientes": 900,
+                "referencia": "KEYNOTE-177 (pembrolizumabe 1a linha MSI-H) + CheckMate 142 (nivolumabe+ipilimumabe)"},
+            2: {"prior": 0.38, "IC95": (0.29, 0.48), "n_pacientes": 520,
+                "referencia": "TRIBE2 (FOLFOXIRI + bevacizumabe) encorafenib + cetuximabe BRAF"},
+            3: {"prior": 0.15, "IC95": (0.08, 0.25), "n_pacientes": 310,
+                "referencia": "TAS-102 + bevacizumabe (SUNLIGHT) + fruquintinib (FRESCO-2)"},
+        },
+
+        # === GÁSTRICO HER2+ ===
+        "GI_GASTRICO_HER2": {
+            1: {"prior": 0.47, "IC95": (0.40, 0.54), "n_pacientes": 850,
+                "referencia": "ToGA trial (trastuzumabe + quimioterapia) + KEYNOTE-811 (pembro + trastuzumabe + quimio)"},
+            2: {"prior": 0.28, "IC95": (0.21, 0.36), "n_pacientes": 480,
+                "referencia": "DESTINY-Gastric01 (T-DXd) para HER2+ 2a linha"},
+            3: {"prior": 0.12, "IC95": (0.06, 0.22), "n_pacientes": 260,
+                "referencia": "Ramucirumabe + paclitaxel (RAINBOW) + nivolumabe (ATTRACTION-2)"},
+        },
+
+        # === ESÔFAGO ===
+        "GI_ESOFAGO": {
+            1: {"prior": 0.47, "IC95": (0.41, 0.53), "n_pacientes": 1050,
+                "referencia": "CheckMate 648 (nivolumabe + quimiorradiação) + KEYNOTE-590 (pembro + quimio)"},
+            2: {"prior": 0.27, "IC95": (0.20, 0.35), "n_pacientes": 580,
+                "referencia": "DESTINY-Esophageal (T-DXd HER2+) + ramucirumabe + paclitaxel (RAINBOW)"},
+            3: {"prior": 0.12, "IC95": (0.06, 0.21), "n_pacientes": 300,
+                "referencia": "Taxano monoterapia + irinotecano em esôfago refratário"},
+        },
+
+        # === MELANOMA BRAF ===
+        "PELE_MELANOMA_BRAF": {
+            1: {"prior": 0.70, "IC95": (0.64, 0.76), "n_pacientes": 1400,
+                "referencia": "COMBI-d/v (dabrafenibe+trametinibe) + DREAMseq (sequência ICI vs alvo)"},
+            2: {"prior": 0.48, "IC95": (0.40, 0.56), "n_pacientes": 720,
+                "referencia": "COLUMBUS (encorafenibe+binimetinibe) + RELATIVITY-047 (relatlimabe+nivo)"},
+            3: {"prior": 0.25, "IC95": (0.17, 0.35), "n_pacientes": 380,
+                "referencia": "T-VEC (OncoVex) + talimogene laherparepvec + IL-2"},
+        },
+
+        # === MELANOMA CUTÂNEO ===
+        "PELE_MELANOMA_CUTANEO": {
+            1: {"prior": 0.58, "IC95": (0.52, 0.64), "n_pacientes": 1600,
+                "referencia": "CheckMate 067 (nivolumabe+ipilimumabe) + KEYNOTE-006 (pembrolizumabe)"},
+            2: {"prior": 0.38, "IC95": (0.30, 0.46), "n_pacientes": 850,
+                "referencia": "RELATIVITY-047 (nivolumabe+relatlimabe) + T-VEC + ICI"},
+            3: {"prior": 0.18, "IC95": (0.11, 0.27), "n_pacientes": 420,
+                "referencia": "TIL therapy (Lifileucel) + oncolytic virus + BCG"},
+        },
+
+        # === RCC ===
+        "GU_RENAL_CELULAR": {
+            1: {"prior": 0.62, "IC95": (0.56, 0.68), "n_pacientes": 1500,
+                "referencia": "CheckMate 9ER (nivo+cabozantinibe) + KEYNOTE-426 (pembro+axitinibe) + CLEAR"},
+            2: {"prior": 0.40, "IC95": (0.33, 0.48), "n_pacientes": 820,
+                "referencia": "LITESPARK-005 (belzutifano) + METEOR (cabozantinibe 2a linha)"},
+            3: {"prior": 0.20, "IC95": (0.13, 0.29), "n_pacientes": 450,
+                "referencia": "HIF-2α inhibitor (belzutifano) + lenvatinibe+everolimo"},
+        },
+
+        # === BEXIGA UROTELIAL ===
+        "GU_BEXIGA_UROTELIAL": {
+            1: {"prior": 0.50, "IC95": (0.43, 0.57), "n_pacientes": 1100,
+                "referencia": "JAVELIN Bladder 100 (avelumabe manutenção) + EV-302 (enfortumab vedotin+pembro)"},
+            2: {"prior": 0.32, "IC95": (0.25, 0.40), "n_pacientes": 650,
+                "referencia": "EV-301 (enfortumab vedotin) + sacituzumab govitecan TROPION-B01"},
+            3: {"prior": 0.15, "IC95": (0.09, 0.24), "n_pacientes": 350,
+                "referencia": "Taxano (paclitaxel/docetaxel) + erdafitinib FGFR3"},
+        },
+
+        # === CERVICAL HPV ===
+        "GINECOLOGICO_CERVICAL_HPV": {
+            1: {"prior": 0.52, "IC95": (0.44, 0.60), "n_pacientes": 780,
+                "referencia": "KEYNOTE-826 (pembro + quimiorradiação/QT) + OUTBACK (QT adjuvante)"},
+            2: {"prior": 0.25, "IC95": (0.17, 0.35), "n_pacientes": 420,
+                "referencia": "Tisotumabe vedotin (innovaTV 204) + KEYNOTE-158 (pembro)"},
+            3: {"prior": 0.10, "IC95": (0.04, 0.20), "n_pacientes": 220,
+                "referencia": "Ado-trastuzumabe (HER2+) + bintrafusp alfa (TGF-β/PD-L1 bifuncional)"},
+        },
+
+        # === TIREOIDE ===
+        "ENDOCRINO_TIREOIDE": {
+            1: {"prior": 0.55, "IC95": (0.46, 0.64), "n_pacientes": 480,
+                "referencia": "SELECT (lenvatinibe) + DECISION (sorafenibe) para carcinoma diferenciado"},
+            2: {"prior": 0.30, "IC95": (0.20, 0.42), "n_pacientes": 280,
+                "referencia": "Lenvatinibe 2a linha + selpercatinib (LIBRETTO-001 RET+)"},
+            3: {"prior": 0.15, "IC95": (0.07, 0.27), "n_pacientes": 140,
+                "referencia": "Dabrafenibe+trametinib (BRAF V600E) + larotrectinib (NTRK)"},
+        },
+
+        # === MESOTELIOMA ===
+        "PLEURAL_MESOTELIOMA": {
+            1: {"prior": 0.40, "IC95": (0.33, 0.48), "n_pacientes": 720,
+                "referencia": "CheckMate 743 (nivolumabe+ipilimumabe) vs quimio (pemetrexede+platina)"},
+            2: {"prior": 0.22, "IC95": (0.15, 0.31), "n_pacientes": 380,
+                "referencia": "Nivolumabe monoterapia + pembrolizumabe 2a linha"},
+            3: {"prior": 0.08, "IC95": (0.03, 0.17), "n_pacientes": 200,
+                "referencia": "Tremelimumabe + durvalumabe (DREAM3R) + gemcitabina paliativa"},
+        },
+
+        # === OSTEOSSARCOMA ===
+        "OSSEO_OSTEOSARCOMA": {
+            1: {"prior": 0.58, "IC95": (0.48, 0.68), "n_pacientes": 380,
+                "referencia": "MAP protocolo (metotrexato+doxorrubicina+cisplatina) + EURAMOS-1"},
+            2: {"prior": 0.18, "IC95": (0.10, 0.29), "n_pacientes": 180,
+                "referencia": "Ifosfamida + etoposido + mifamurtida (adjuvante)"},
+            3: {"prior": 0.08, "IC95": (0.02, 0.18), "n_pacientes": 95,
+                "referencia": "Ciclofosfamida + topotecano + trabectedina"},
+        },
+
+        # === SARCOMA DE EWING ===
+        "OSSEO_SARCOMA_EWING": {
+            1: {"prior": 0.65, "IC95": (0.55, 0.74), "n_pacientes": 320,
+                "referencia": "VDC/IE protocolo (vincristina+doxorrubicina+ciclofosfamida/ifosfamida+etoposido)"},
+            2: {"prior": 0.22, "IC95": (0.13, 0.34), "n_pacientes": 160,
+                "referencia": "High-dose chemotherapy + stem cell rescue (EURO-E.W.I.N.G. 99)"},
+            3: {"prior": 0.10, "IC95": (0.04, 0.21), "n_pacientes": 85,
+                "referencia": "Irinotecano + temozolomida + trabectedina (larotrectinib NTRK)"},
+        },
     }
 
     # Priors de toxicidade grau >= 3 por classe terapeutica
@@ -148,6 +418,30 @@ class ProbabilidadeTerapeutica:
         "PRRT (Lu-177)": 0.25,
         "Anti-angiogenico + Quimioterapia": 0.52,
         "Inibidor mTOR + Quimioterapia": 0.42,
+        # === CLASSES TERAPEUTICAS EXPANDIDAS v4.0 ===
+        "Terapia Alvo HER2 (mAb)": 0.35,
+        "CDK4/6 Inibidor + Endocrinoterapia": 0.28,
+        "Terapia Alvo BRAF/MEK": 0.45,
+        "Combinacao ICI Duplo (CTLA-4+PD-1)": 0.55,
+        "Combinacao ICI + Antiangiogenico": 0.48,
+        "Inibidor PARP": 0.30,
+        "Terapia Alvo VEGFR/TKI": 0.42,
+        "Imunoterapia + Quimiorradiacao": 0.52,
+        "Proteassoma Inibidor (Bortezomibe)": 0.58,
+        "Anticorpo Anti-CD38": 0.42,
+        "Terapia Alvo FLT3": 0.48,
+        "Terapia Alvo IDH1/2": 0.22,
+        "Inibidor BCL-2 (Venetoclaxe)": 0.38,
+        "TTF (Tumor Treating Fields)": 0.08,
+        "Combinacao ICI + Quimioterapia": 0.50,
+        "ADC Trop-2 (Sacituzumabe)": 0.52,
+        "Terapia Alvo NTRK": 0.20,
+        "ADC HER2 (T-DXd)": 0.50,
+        "Car-T Terapia Celular": 0.65,
+        "Lu-177 PSMA": 0.28,
+        "Bi-specifico CD20xCD3": 0.45,
+        "PI3K Inibidor": 0.40,
+        "Anti-CD30 ADC (Brentuximabe)": 0.38,
     }
 
     # Pesos dos biomarcadores na likelihood P(resposta|biomarcadores)
