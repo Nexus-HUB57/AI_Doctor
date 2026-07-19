@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-07-19T14:58:42.587965",
+  "versao": "4.0",
+  "duracao_povoamento_segundos": 23.3,
+  "resumo_colecoes": {
+    "ai_doctor_tumores": 1900,
+    "dimhex_conhecimento": 71,
+    "chroma_persist_dir": "./chroma_db"
+  },
+  "validacao": {
+    "total_casos": 1900,
+    "subtipos_cobertos": 38,
+    "subtipos_faltantes": [
+      "PANCREAS_ADENOCARCINOMA",
+      "FIGADO_COLANGIOCARCINOMA",
+      "SANGUE_LEUCEMIA_LINFOCITICA_CRONICA",
+      "OSSO_OSTEOSSARCOMA",
+      "OSSO_CONDROSSARCOMA",
+      "MEDULAR_MIELOMA_MULTIPL0",
+      "SANGUE_LEUCEMIA_AGLA_PROMIELOCITICA"
+    ]
+  },
+  "conhecimento_cientifico": {
+    "total": 58,
+    "indexados": 58
+  },
+  "casos_clinicos": {
+    "total": 1900,
+    "indexados": 1900,
+    "subtipos": 38
+  },
+  "protocolos_terapeuticos": {
+    "total": 13,
+    "indexados": 13
+  }
+}
