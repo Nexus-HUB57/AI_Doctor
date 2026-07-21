@@ -62,6 +62,17 @@ async function startServer() {
   });
   app.use('/api/', apiLimiter);
 
+  // Stricter rate limit for authentication endpoints (prevent brute-force)
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Only 10 login attempts per 15 minutes
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: 'Muitas tentativas de login. Tente novamente em 15 minutos.' },
+  });
+  app.use('/trpc/auth.login', authLimiter);
+  app.use('/trpc/auth.register', authLimiter);
+
   // Stricter rate limit for AI endpoints (Gemini calls are expensive)
   const aiLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
@@ -295,7 +306,10 @@ Do not return any markdown or commentary outside the JSON array.`;
         return res.status(400).json({ success: false, error: 'Query is required' });
       }
       const client = getGemini();
-      const systemPrompt = `You are an expert oncologist with deep knowledge of advanced cancer therapies. Context: ${context}. ${patientData ? `Patient: ${JSON.stringify(patientData)}` : ''}`;
+      // PHI WARNING: Patient data is sent to Gemini API.
+      // In production with real patients, ensure BAA (Business Associate Agreement)
+      // with Google Cloud and enable PHI anonymization pipeline before this point.
+      const systemPrompt = `You are an expert oncologist with deep knowledge of advanced cancer therapies. Context: ${context}. ${patientData ? `Patient (ANONYMIZED for AI processing): ${JSON.stringify(patientData)}` : ''}`;
       const prompt = `Knowledge Base:\n${knowledgeBase.substring(0, 3000)}\n\nUser Query: ${query}\n\nProvide a comprehensive, evidence-based response.`;
       const response = await client.models.generateContent({
         model: 'gemini-3.5-flash',
@@ -378,14 +392,15 @@ Retorne APENAS o JSON, sem markdown.`;
         const validationData = JSON.parse(responseText.trim());
         res.json(validationData);
       } catch (parseErr) {
-        // Fallback response if parsing fails
-        res.json({
-          validated: true,
-          evidence_score: 75,
-          phase: 'Fase II-III',
-          description: `Análise de ${interventionDescriptions[intervention] || intervention}`,
-          recommendation: 'Recomendado com monitoramento clínico',
-          citation: 'Baseado em literatura oncológica contemporânea e ensaios clínicos.'
+        // Go Live Fix: Never return fabricated clinical evidence scores.
+        // If AI response is unparseable, return an explicit uncertainty signal.
+        console.error('Failed to parse AI validation response:', parseErr);
+        res.status(502).json({
+          success: false,
+          error: 'Serviço de validação indisponível. Tente novamente.',
+          validated: false,
+          evidence_score: null,
+          phase: null,
         });
       }
     } catch (error: any) {
@@ -466,6 +481,14 @@ Structure your response in three clearly marked sections:
     app.set('trust proxy', 1);
   }
 
+  // Setup Telemedicine Endpoints (available in ALL environments)
+  try {
+    setupTelemedicineEndpoints(app, getGemini);
+    console.log('Telemedicine endpoints integrated successfully.');
+  } catch (err) {
+    console.warn('Telemedicine endpoints not available:', (err as Error).message);
+  }
+
   if (!isProd) {
     console.log('Integrating Vite dev server middleware...');
     const vite = await createViteServer({
@@ -473,8 +496,6 @@ Structure your response in three clearly marked sections:
       appType: 'spa',
     });
     app.use(vite.middlewares);
-    // Setup Telemedicine Endpoints
-    setupTelemedicineEndpoints(app, getGemini);
   } else {
     console.log('Serving production static assets...');
     app.use(express.static(path.resolve(__dirname, 'dist')));

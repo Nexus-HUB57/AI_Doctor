@@ -113,8 +113,9 @@ def main():
 
     model_wrapped = ModelWrapper(model, ['ctDNA', 'CTC', 'TMB', 'PD_L1', 'TILs', 'ECOG'])
 
-    os.makedirs(os.path.dirname(os.getenv("MODEL_PATH", "./models/decision_model.pkl")), exist_ok=True)
-    with open("./models/decision_model.pkl", 'wb') as f:
+    model_path = os.getenv("MODEL_PATH", "./models/decision_model.pkl")
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    with open(model_path, 'wb') as f:
         pickle.dump(model, f)
 
     from core.explicador import atualizar_explicador_shap
@@ -208,13 +209,28 @@ def main():
     print(f"  Pressione Ctrl+C para encerrar")
     print(f"{'='*80}\n")
 
-    # Loop principal
+    # Loop principal com graceful shutdown (SIGTERM para Docker)
     import time
+    import signal
+    import sys
+
+    shutdown_event = False
+
+    def handle_signal(signum, frame):
+        global shutdown_event
+        shutdown_event = True
+        print(f"\n  Recebido sinal {signum}, encerrando...")
+
+    signal.signal(signal.SIGTERM, handle_signal)
+    signal.signal(signal.SIGINT, handle_signal)
+
     try:
-        while True:
+        while not shutdown_event:
             time.sleep(60)
-    except KeyboardInterrupt:
-        print("\n  Encerrando DIMHEX AI Doctor...")
+    except Exception as e:
+        print(f"  Erro inesperado: {e}")
+    finally:
+        print("  Encerrando DIMHEX AI Doctor...")
         scheduler.shutdown()
         print("  Sistema encerrado com sucesso.")
 

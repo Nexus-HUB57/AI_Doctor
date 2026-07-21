@@ -22,7 +22,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.fullstack.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
       - nginx_logs:/var/log/nginx
     depends_on:
@@ -71,6 +71,8 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - S3_BUCKET=${S3_BUCKET:-ai-doctor-files}
+      - S3_ENCRYPTION=AES256
+      - S3_MAX_FILE_SIZE_MB=100
       # Scientific APIs
       - PUBMED_API_KEY=${PUBMED_API_KEY:-}
       - SERPAPI_KEY=${SERPAPI_KEY:-}
@@ -89,6 +91,7 @@ services:
       retries: 3
       start_period: 20s
     deploy:
+      replicas: 2  # NOW SAFE: auth uses MySQL, not in-memory Map
       resources:
         limits:
           memory: 1G
@@ -121,7 +124,8 @@ services:
       - DIMHEX_ACTIVE_SOURCES=["pubmed","clinical_trials","google_scholar"]
       - DIMHEX_MEMORY_PATH=/data/dimhex_memoria.json
       - DIMHEX_WISDOM_PATH=/data/dimhex_sabedoria.json
-      - CHROMA_HOST=http://chromadb:8000
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
     volumes:
       - agente_data:/data
     depends_on:

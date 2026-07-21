@@ -96,14 +96,15 @@ const ECG_PATH =
 const ECG_LENGTH = 420;
 
 /* ─────────────────────────────────────────────
-   TEST CREDENTIALS
+   DEV-ONLY TEST CREDENTIALS (stripped in production)
    ───────────────────────────────────────────── */
-const TEST_CREDS = [
+const IS_DEV = process.env.NODE_ENV !== 'production';
+const TEST_CREDS = IS_DEV ? [
   { label: 'Paciente',    email: 'patient@example.com',    password: 'password123', icon: Heart,        color: 'text-emerald-400' },
   { label: 'Médico',      email: 'doctor@example.com',     password: 'password123', icon: Shield,       color: 'text-cyan-400' },
   { label: 'Pesquisador', email: 'researcher@example.com', password: 'password123', icon: FlaskConical, color: 'text-purple-400' },
   { label: 'Admin',       email: 'admin@example.com',      password: 'admin123',    icon: Users,        color: 'text-amber-400' },
-] as const;
+] as const : [] as const;
 
 /* ─────────────────────────────────────────────
    ROLE OPTIONS (register)
@@ -128,7 +129,7 @@ export default function GoLiveLoginPage() {
   const [role, setRole] = useState<UserRole>(UserRole.PATIENT);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [showCreds, setShowCreds] = useState(false);
+  const [showCreds, setShowCreds] = useState(IS_DEV ? false : false);
   const [shakeKey, setShakeKey] = useState(0);
 
   /* ── derived ── */
@@ -615,9 +616,9 @@ export default function GoLiveLoginPage() {
               </motion.div>
             </motion.form>
 
-            {/* ── Test Credentials (login only) ── */}
+            {/* ── Test Credentials (login only, DEV only) ── */}
             <AnimatePresence>
-              {mode === 'login' && (
+              {IS_DEV && mode === 'login' && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}

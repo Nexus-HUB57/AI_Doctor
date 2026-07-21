@@ -322,6 +322,22 @@ CREATE INDEX idx_biomarker_status ON biomarkers(patient_id, status);
 CREATE INDEX idx_literature_relevance ON literature_cache(relevance_score DESC);
 
 -- ============================================================================
+-- 18. USUÁRIOS (Users) — Persistent auth storage (replaces in-memory Map)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS users (
+  id VARCHAR(36) PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  role ENUM('patient', 'doctor', 'researcher', 'admin') NOT NULL DEFAULT 'patient',
+  password_hash VARCHAR(255) NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_email (email),
+  INDEX idx_role (role)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================================
 -- VIEWS PARA ANÁLISE
 -- ============================================================================
 
