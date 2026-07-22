@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   Upload, Dna, FlaskConical, BarChart3, GitBranch,
   FileText, Save, RotateCcw, ChevronDown, ChevronUp,
-  AlertTriangle, CheckCircle, Activity, Zap
+  AlertTriangle, CheckCircle, Activity, Zap, TreePine,
+  Download, ZoomIn, ZoomOut, RotateCcwIcon
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -15,11 +16,12 @@ import Button from './base/Button';
 import Badge from './base/Badge';
 import Modal from './base/Modal';
 import {
-  parseSequences, identifyRRNAGenes, classifySequence,
+  parseSequences, identifyRRNAGenes, classifySequence as classifyRRNA,
   computeKmerFrequencies, computeDiversityIndices, computeComposition,
   needlemanWunsch, buildDistanceMatrix, upgmaToNewick,
+  upgma, neighborJoining, computeTreeLayout, classifyTaxon, classifyTaxa,
 } from '../lib/bio';
-import type { ParsedSequence, RRNAGeneHit } from '../lib/bio';
+import type { ParsedSequence, RRNAGeneHit, ClassificationReport as TaxonomyReport, TreeLayoutNode } from '../lib/bio';
 
 // ── Color Palette ──
 const COLORS = {
@@ -28,8 +30,10 @@ const COLORS = {
 };
 const PIE_COLORS = [COLORS.A, COLORS.U, COLORS.G, COLORS.C];
 const SCATTER_COLORS = ['#22d3ee', '#a78bfa', '#f472b6', '#fb923c', '#4ade80', '#fbbf24', '#f87171', '#60a5fa'];
+const TREE_NODE_COLORS = ['#22d3ee', '#a78bfa', '#f472b6', '#fb923c', '#4ade80', '#fbbf24', '#f87171', '#60a5fa', '#34d399', '#c084fc'];
 
-type AnalysisTab = 'upload' | 'composition' | 'kmer' | 'diversity' | 'alignment' | 'phylogeny';
+export type AnalysisTab = 'upload' | 'composition' | 'kmer' | 'diversity' | 'alignment' | 'phylogeny' | 'taxonomy';
+export type PhyloMethod = 'upgma' | 'nj';
 
 // ── Example Sequences for quick demo ──
 const EXAMPLES = [
@@ -43,9 +47,12 @@ export default function LiveBookPanel() {
   const [sequences, setSequences] = useState<ParsedSequence[]>([]);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [activeTab, setActiveTab] = useState<AnalysisTab>('upload');
-  const [alignModalOpen, setAlignModalOpen] = useState(false);
   const [kValue, setKValue] = useState(3);
   const [fileName, setFileName] = useState('');
+  const [phyloMethod, setPhyloMethod] = useState<PhyloMethod>('upgma');
+  const [treeZoom, setTreeZoom] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const currentSeq = sequences[selectedIdx] || null;
 
@@ -69,6 +76,31 @@ export default function LiveBookPanel() {
     reader.readAsText(file);
   }, []);
 
+  // ── Drag & Drop Handler ──
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      if (text) {
+        const parsed = parseSequences(text);
+        if (parsed.length > 0) {
+          setSequences(parsed);
+          setSelectedIdx(0);
+          setActiveTab('composition');
+        }
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); }, []);
+  const handleDragLeave = useCallback(() => setIsDragging(false), []);
+
   // ── Analyze Text Input ──
   const handleAnalyzeText = useCallback(() => {
     if (!rawInput.trim()) return;
@@ -89,6 +121,17 @@ export default function LiveBookPanel() {
     setActiveTab('composition');
   }, []);
 
+  // ── Reset ──
+  const handleReset = useCallback(() => {
+    setRawInput('');
+    setSequences([]);
+    setSelectedIdx(0);
+    setActiveTab('upload');
+    setFileName('');
+    setTreeZoom(1);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }, []);
+
   // ── Computed Analyses ──
   const rnaHits = useMemo(() =>
     currentSeq ? identifyRRNAGenes(currentSeq.sequence) : [],
@@ -96,7 +139,7 @@ export default function LiveBookPanel() {
   );
 
   const classification = useMemo(() =>
-    currentSeq ? classifySequence(currentSeq.sequence) : '—',
+    currentSeq ? classifyRRNA(currentSeq.sequence) : '—',
     [currentSeq]
   );
 
@@ -126,10 +169,35 @@ export default function LiveBookPanel() {
     return buildDistanceMatrix(sequences.map(s => ({ id: s.id, sequence: s.sequence })));
   }, [sequences]);
 
+  // ── Advanced Phylogeny (UPGMA / NJ) ──
+  const phyloResult = useMemo(() => {
+    if (!distMatrix || distMatrix.labels.length < 3) return null;
+    if (phyloMethod === 'upgma') {
+      return upgma(distMatrix.labels, distMatrix.matrix);
+    }
+    return neighborJoining(distMatrix.labels, distMatrix.matrix);
+  }, [distMatrix, phyloMethod]);
+
+  const treeLayout = useMemo(() => {
+    if (!phyloResult) return null;
+    return computeTreeLayout(phyloResult.tree, { widthScale: 120, leafSpacing: 36, marginLeft: 100, marginTop: 25 });
+  }, [phyloResult]);
+
   const newickTree = useMemo(() => {
-    if (!distMatrix) return '';
-    return upgmaToNewick(distMatrix);
-  }, [distMatrix]);
+    if (!distMatrix || distMatrix.labels.length < 3) return upgmaToNewick(distMatrix);
+    return phyloResult?.newick || '';
+  }, [distMatrix, phyloResult]);
+
+  // ── Taxonomy Classification ──
+  const taxonomyReport = useMemo((): TaxonomyReport | null =>
+    currentSeq ? classifyTaxon(currentSeq.sequence, currentSeq.id) : null,
+    [currentSeq]
+  );
+
+  const allTaxonomyReports = useMemo((): TaxonomyReport[] =>
+    sequences.length > 0 ? classifyTaxa(sequences.map(s => ({ name: s.id, sequence: s.sequence }))) : [],
+    [sequences]
+  );
 
   const radarData = useMemo(() => {
     if (!composition) return [];
@@ -143,7 +211,7 @@ export default function LiveBookPanel() {
 
   const scatterData = useMemo(() => {
     if (sequences.length < 2) return [];
-    return sequences.map((s, i) => ({
+    return sequences.map((s) => ({
       name: s.id,
       gc: s.gcContent,
       length: s.length,
@@ -168,7 +236,95 @@ export default function LiveBookPanel() {
     return rows;
   };
 
-  // ── Export Results ──
+  // ── SVG Tree Renderer ──
+  const renderTreeSVG = (layout: TreeLayoutNode) => {
+    const widthScale = 120;
+    const maxX = Math.max(...flattenLayout(layout).map(n => n.x)) + 80;
+    const maxY = Math.max(...flattenLayout(layout).map(n => n.y)) + 40;
+    const svgW = Math.max(maxX * treeZoom, 400);
+    const svgH = Math.max(maxY * treeZoom, 150);
+
+    return (
+      <svg width="100%" viewBox={`0 0 ${svgW} ${svgH}`} className="select-none">
+        <style>{`text { font-family: ui-monospace, monospace; }`}</style>
+        {renderTreeEdges(layout, treeZoom)}
+        {renderTreeNodes(layout, treeZoom)}
+      </svg>
+    );
+  };
+
+  const flattenLayout = (node: TreeLayoutNode): TreeLayoutNode[] => {
+    const result: TreeLayoutNode[] = [node];
+    for (const child of node.children) {
+      result.push(...flattenLayout(child));
+    }
+    return result;
+  };
+
+  const renderTreeEdges = (node: TreeLayoutNode, zoom: number) => (
+    <g key={`edges-${node.node.name}`}>
+      {node.children.map((child) => {
+        const px = node.x * zoom;
+        const py = node.y * zoom;
+        const cx = child.x * zoom;
+        const cy = child.y * zoom;
+        return (
+          <g key={`edge-${child.node.name}`}>
+            <line x1={px} y1={py} x2={cx} y2={py} stroke="#3f3f46" strokeWidth={1} />
+            <line x1={cx} y1={py} x2={cx} y2={cy} stroke="#3f3f46" strokeWidth={1} />
+          </g>
+        );
+      })}
+      {node.children.map((child) => renderTreeEdges(child, zoom))}
+    </g>
+  );
+
+  const renderTreeNodes = (node: TreeLayoutNode, zoom: number, depth = 0) => {
+    const isLeaf = node.children.length === 0;
+    const color = isLeaf ? TREE_NODE_COLORS[depth % TREE_NODE_COLORS.length] : '#a1a1aa';
+    return (
+      <g key={`node-${node.node.name}`}>
+        <circle cx={node.x * zoom} cy={node.y * zoom} r={isLeaf ? 3 : 2} fill={color} />
+        {isLeaf && (
+          <text x={node.x * zoom + 6} y={node.y * zoom + 3.5} fill={color} fontSize={9} fontWeight="bold">
+            {node.node.name}
+          </text>
+        )}
+        {node.children.map((child) => renderTreeNodes(child, zoom, depth + 1))}
+      </g>
+    );
+  };
+
+  // ── Export JSON ──
+  const exportJSON = useCallback(() => {
+    if (!currentSeq) return;
+    const comp = composition || computeComposition(currentSeq.sequence);
+    const div = diversity || computeDiversityIndices(currentSeq.sequence, kValue);
+    const data = {
+      sequence: {
+        id: currentSeq.id,
+        length: currentSeq.length,
+        gcContent: currentSeq.gcContent,
+      },
+      rnaIdentification: rnaHits,
+      rnaClassification: classification,
+      composition: comp,
+      diversityIndices: div,
+      taxonomy: taxonomyReport,
+      phylogeny: phyloResult ? {
+        method: phyloResult.method,
+        newick: phyloResult.newick,
+        taxonCount: phyloResult.distanceMatrix.names.length,
+      } : null,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${currentSeq.id}_analysis.json`; a.click();
+    URL.revokeObjectURL(url);
+  }, [currentSeq, composition, diversity, classification, rnaHits, taxonomyReport, phyloResult, kValue]);
+
+  // ── Export CSV ──
   const exportCSV = useCallback(() => {
     if (!currentSeq) return;
     const comp = composition || computeComposition(currentSeq.sequence);
@@ -179,14 +335,9 @@ export default function LiveBookPanel() {
       `Length,${currentSeq.length}`,
       `GC_Content,${currentSeq.gcContent}%`,
       `Classification,${classification}`,
-      `A%,${comp.A}`,
-      `U%,${comp.U}`,
-      `G%,${comp.G}`,
-      `C%,${comp.C}`,
-      `Shannon_Entropy,${div.shannon}`,
-      `Simpson_Index,${div.simpson}`,
-      `Pielou_Evenness,${div.evenness}`,
-      `K-mer_Richness,${div.richness}`,
+      `A%,${comp.A}`, `U%,${comp.U}`, `G%,${comp.G}`, `C%,${comp.C}`,
+      `Shannon_Entropy,${div.shannon}`, `Simpson_Index,${div.simpson}`,
+      `Pielou_Evenness,${div.evenness}`, `K-mer_Richness,${div.richness}`,
       ...rnaHits.map(h => `rRNA_${h.gene}_Confidence,${h.confidence}%`),
     ].join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -196,6 +347,7 @@ export default function LiveBookPanel() {
     URL.revokeObjectURL(url);
   }, [currentSeq, composition, diversity, classification, rnaHits, kValue]);
 
+  // ── Export Newick ──
   const exportNewick = useCallback(() => {
     if (!newickTree) return;
     const blob = new Blob([newickTree], { type: 'text/plain' });
@@ -213,6 +365,7 @@ export default function LiveBookPanel() {
     { id: 'diversity', label: 'Diversidade', icon: <Activity className="w-3.5 h-3.5" /> },
     { id: 'alignment', label: 'Alinhamento', icon: <GitBranch className="w-3.5 h-3.5" /> },
     { id: 'phylogeny', label: 'Filogenia', icon: <Dna className="w-3.5 h-3.5" /> },
+    { id: 'taxonomy', label: 'Taxonomia', icon: <TreePine className="w-3.5 h-3.5" /> },
   ];
 
   return (
@@ -227,15 +380,21 @@ export default function LiveBookPanel() {
             LiveBook-rRNA
           </h2>
           <p className="text-xs text-zinc-500 mt-0.5">
-            Analise bioinformatica de rRNA — parse, identifique, alinhe e construa filogenias
+            Analise bioinformatica de rRNA — parse, identifique, alinhe, classifique e construa filogenias
           </p>
         </div>
         <div className="flex gap-2">
+          <Button variant="ghost" size="sm" icon={Download} onClick={exportJSON} disabled={!currentSeq}>
+            JSON
+          </Button>
           <Button variant="ghost" size="sm" icon={FileText} onClick={exportCSV} disabled={!currentSeq}>
             CSV
           </Button>
           <Button variant="ghost" size="sm" icon={Save} onClick={exportNewick} disabled={!newickTree}>
             Newick
+          </Button>
+          <Button variant="ghost" size="sm" icon={RotateCcw} onClick={handleReset}>
+            Reset
           </Button>
         </div>
       </div>
@@ -260,14 +419,14 @@ export default function LiveBookPanel() {
       {/* ═══════════════ UPLOAD TAB ═══════════════ */}
       {activeTab === 'upload' && (
         <div className="grid lg:grid-cols-2 gap-5">
-          {/* File Upload */}
           <Card>
             <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
               <Upload className="w-4 h-4 text-cyan-400" />
               Upload FASTA / FASTQ / Sequencia
             </h3>
-            <label className="block w-full border-2 border-dashed border-zinc-700 hover:border-cyan-500/50 rounded-xl p-8 text-center cursor-pointer transition-colors group">
+            <label className={`block w-full border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors group ${isDragging ? 'border-cyan-400 bg-cyan-500/5' : 'border-zinc-700 hover:border-cyan-500/50'}`}>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".fasta,.fa,.fna,.fastq,.fq,.txt"
                 onChange={handleFileUpload}
@@ -277,7 +436,7 @@ export default function LiveBookPanel() {
               <p className="text-sm text-zinc-400 group-hover:text-cyan-300">
                 {fileName || 'Clique ou arraste um arquivo FASTA / FASTQ'}
               </p>
-              <p className="text-[10px] text-zinc-600 mt-1">.fasta .fna .fastq .fq .txt</p>
+              <p className="text-[10px] text-zinc-600 mt-1">.fasta .fa .fna .fastq .fq .txt</p>
             </label>
 
             <div className="mt-4 pt-4 border-t border-zinc-800">
@@ -302,7 +461,6 @@ export default function LiveBookPanel() {
             </div>
           </Card>
 
-          {/* Examples */}
           <Card>
             <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-emerald-400" />
@@ -351,7 +509,6 @@ export default function LiveBookPanel() {
       {/* ═══════════════ COMPOSITION TAB ═══════════════ */}
       {activeTab === 'composition' && currentSeq && (
         <div className="grid lg:grid-cols-3 gap-5">
-          {/* Stats Cards */}
           <Card className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -360,7 +517,6 @@ export default function LiveBookPanel() {
               </h3>
               <Badge variant="primary" size="sm">{currentSeq.length} nt</Badge>
             </div>
-
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
               {composition && (
                 <>
@@ -381,21 +537,13 @@ export default function LiveBookPanel() {
                 <div className="text-[11px] font-bold text-emerald-400 leading-tight mt-0.5">{classification}</div>
               </div>
             </div>
-
-            {/* Charts Row */}
             <div className="grid md:grid-cols-2 gap-5">
               <div>
                 <p className="text-[10px] font-bold uppercase text-zinc-500 mb-2">Distribuicao Nucleotidica</p>
                 <ResponsiveContainer width="100%" height={200}>
                   <PieChart>
-                    <Pie
-                      data={radarData}
-                      dataKey="value"
-                      nameKey="base"
-                      cx="50%" cy="50%" outerRadius={70} innerRadius={35}
-                      label={({ name, value }) => `${name}: ${value}%`}
-                      labelLine={false}
-                    >
+                    <Pie data={radarData} dataKey="value" nameKey="base" cx="50%" cy="50%" outerRadius={70} innerRadius={35}
+                      label={({ name, value }) => `${name}: ${value}%`} labelLine={false}>
                       {radarData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
                     </Pie>
                     <Tooltip contentStyle={{ background: '#18181b', border: '1px solid #3f3f46', borderRadius: '8px', fontSize: '11px' }} />
@@ -416,8 +564,6 @@ export default function LiveBookPanel() {
               </div>
             </div>
           </Card>
-
-          {/* rRNA Gene Hits */}
           <Card>
             <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
               <Dna className="w-4 h-4 text-rose-400" />
@@ -429,14 +575,10 @@ export default function LiveBookPanel() {
                   <div key={hit.gene} className="p-3 bg-zinc-900/40 border border-zinc-800 rounded-lg">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm font-black text-white">{hit.gene} rRNA</span>
-                      <Badge variant={hit.confidence >= 70 ? 'success' : 'warning'} size="sm">
-                        {hit.confidence}%
-                      </Badge>
+                      <Badge variant={hit.confidence >= 70 ? 'success' : 'warning'} size="sm">{hit.confidence}%</Badge>
                     </div>
                     <p className="text-[10px] text-zinc-500 mb-1">{hit.region}</p>
-                    <p className="text-[10px] text-zinc-400 font-mono">
-                      Pos: {hit.start}–{hit.end} | Consenso: {hit.consensusMatch}%
-                    </p>
+                    <p className="text-[10px] text-zinc-400 font-mono">Pos: {hit.start}–{hit.end} | Consenso: {hit.consensusMatch}%</p>
                   </div>
                 ))}
               </div>
@@ -460,11 +602,7 @@ export default function LiveBookPanel() {
             </h3>
             <div className="flex items-center gap-2">
               <label className="text-[10px] text-zinc-500">k =</label>
-              <select
-                value={kValue}
-                onChange={(e) => setKValue(Number(e.target.value))}
-                className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-cyan-500"
-              >
+              <select value={kValue} onChange={(e) => setKValue(Number(e.target.value))} className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-cyan-500">
                 {[2, 3, 4, 5].map(k => <option key={k} value={k}>{k}</option>)}
               </select>
             </div>
@@ -536,11 +674,7 @@ export default function LiveBookPanel() {
             </h3>
             {sequences.length >= 2 && (
               <div className="flex items-center gap-2">
-                <select
-                  value={selectedIdx}
-                  onChange={(e) => setSelectedIdx(Number(e.target.value))}
-                  className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none"
-                >
+                <select value={selectedIdx} onChange={(e) => setSelectedIdx(Number(e.target.value))} className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none">
                   {sequences.map((s, i) => <option key={s.id} value={i}>{s.id}</option>)}
                 </select>
                 <span className="text-[10px] text-zinc-500">vs</span>
@@ -550,7 +684,6 @@ export default function LiveBookPanel() {
               </div>
             )}
           </div>
-
           {alignResult ? (
             <div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
@@ -571,19 +704,13 @@ export default function LiveBookPanel() {
                   <div className="text-lg font-black text-amber-400">{alignResult.gaps}</div>
                 </div>
               </div>
-
               <div className="bg-black/40 rounded-xl p-3 overflow-x-auto max-h-[300px] overflow-y-auto">
                 {renderAlignment(alignResult).map((row, i) => (
                   <div key={i} className="font-mono text-[9px] leading-tight">
                     <span className="text-zinc-600 inline-block w-10 text-right mr-2">{row.pos}</span>
-                    <span className="text-cyan-400">{row.a}</span>
-                    <br />
-                    <span className="text-zinc-600 inline-block w-10 mr-2" />
-                    <span className="text-emerald-500">{row.match}</span>
-                    <br />
-                    <span className="text-zinc-600 inline-block w-10 mr-2" />
-                    <span className="text-purple-400">{row.b}</span>
-                    <br className="mb-1" />
+                    <span className="text-cyan-400">{row.a}</span><br />
+                    <span className="text-zinc-600 inline-block w-10 mr-2" /><span className="text-emerald-500">{row.match}</span><br />
+                    <span className="text-zinc-600 inline-block w-10 mr-2" /><span className="text-purple-400">{row.b}</span><br className="mb-1" />
                   </div>
                 ))}
               </div>
@@ -592,9 +719,7 @@ export default function LiveBookPanel() {
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <GitBranch className="w-10 h-10 text-zinc-700 mb-3" />
               <p className="text-sm text-zinc-500">Carregue pelo menos 2 sequencias para visualizar o alinhamento.</p>
-              <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>
-                Carregar Sequencias
-              </Button>
+              <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>Carregar Sequencias</Button>
             </div>
           )}
         </Card>
@@ -603,29 +728,47 @@ export default function LiveBookPanel() {
       {/* ═══════════════ PHYLOGENY TAB ═══════════════ */}
       {activeTab === 'phylogeny' && (
         <div className="grid lg:grid-cols-2 gap-5">
-          <Card>
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <Dna className="w-4 h-4 text-rose-400" />
-              Arvore Filogenetica (UPGMA)
-            </h3>
-            {newickTree ? (
-              <div>
-                <div className="bg-black/40 rounded-xl p-3 mb-3 overflow-x-auto">
-                  <p className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Newick Format</p>
-                  <p className="text-[10px] text-cyan-400 font-mono break-all">{newickTree}</p>
-                </div>
-                <Button variant="ghost" size="sm" icon={Save} onClick={exportNewick}>
-                  Exportar Newick
-                </Button>
+          {/* Tree Visualization */}
+          <Card className="lg:col-span-2">
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Dna className="w-4 h-4 text-rose-400" />
+                Arvore Filogenetica
+              </h3>
+              <div className="flex items-center gap-2">
+                <select value={phyloMethod} onChange={(e) => setPhyloMethod(e.target.value as PhyloMethod)} className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-cyan-500">
+                  <option value="upgma">UPGMA</option>
+                  <option value="nj">Neighbor-Joining</option>
+                </select>
+                <button onClick={() => setTreeZoom(z => Math.min(z + 0.2, 3))} className="p-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors cursor-pointer">
+                  <ZoomIn className="w-3.5 h-3.5" />
+                </button>
+                <button onClick={() => setTreeZoom(z => Math.max(z - 0.2, 0.4))} className="p-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors cursor-pointer">
+                  <ZoomOut className="w-3.5 h-3.5" />
+                </button>
+                <Button variant="ghost" size="sm" icon={Save} onClick={exportNewick} disabled={!newickTree}>Exportar Newick</Button>
+              </div>
+            </div>
+
+            {treeLayout ? (
+              <div className="bg-black/40 rounded-xl p-4 overflow-x-auto">
+                {renderTreeSVG(treeLayout)}
+              </div>
+            ) : distMatrix && distMatrix.labels.length >= 2 ? (
+              <div className="bg-black/40 rounded-xl p-3">
+                <p className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Newick Format (2 sequencias — UPGMA simples)</p>
+                <p className="text-[10px] text-cyan-400 font-mono break-all">{newickTree}</p>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Dna className="w-10 h-10 text-zinc-700 mb-3" />
                 <p className="text-sm text-zinc-500">Necessario pelo menos 2 sequencias para gerar a arvore.</p>
+                <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>Carregar Sequencias</Button>
               </div>
             )}
           </Card>
 
+          {/* Distance Matrix */}
           <Card>
             <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-amber-400" />
@@ -648,11 +791,7 @@ export default function LiveBookPanel() {
                         <td className="p-1.5 text-cyan-400 font-bold max-w-[80px] truncate bg-zinc-900/30">{distMatrix.labels[i]}</td>
                         {row.map((val, j) => {
                           const intensity = val === 0 ? 'text-emerald-500' : val < 0.3 ? 'text-emerald-400' : val < 0.6 ? 'text-amber-400' : 'text-rose-400';
-                          return (
-                            <td key={j} className={`p-1.5 text-center border border-zinc-900/30 ${intensity}`}>
-                              {val === 0 ? '—' : val.toFixed(4)}
-                            </td>
-                          );
+                          return <td key={j} className={`p-1.5 text-center border border-zinc-900/30 ${intensity}`}>{val === 0 ? '—' : val.toFixed(4)}</td>;
                         })}
                       </tr>
                     ))}
@@ -668,7 +807,7 @@ export default function LiveBookPanel() {
 
           {/* GC vs Length Scatter */}
           {scatterData.length >= 2 && (
-            <Card className="lg:col-span-2">
+            <Card>
               <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-purple-400" />
                 Espaco GC x Comprimento
@@ -690,15 +829,105 @@ export default function LiveBookPanel() {
         </div>
       )}
 
+      {/* ═══════════════ TAXONOMY TAB ═══════════════ */}
+      {activeTab === 'taxonomy' && (
+        <div className="grid lg:grid-cols-2 gap-5">
+          {/* Single Sequence Taxonomy */}
+          <Card>
+            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+              <TreePine className="w-4 h-4 text-emerald-400" />
+              Classificacao Taxonomica — {currentSeq?.id || '—'}
+            </h3>
+            {taxonomyReport ? (
+              <div>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="p-3 bg-zinc-900/50 rounded-lg border border-zinc-800">
+                    <div className="text-[10px] text-zinc-500 uppercase font-bold mb-1">rRNA Tipo</div>
+                    <div className="text-lg font-black text-cyan-400">{taxonomyReport.rnaType}</div>
+                  </div>
+                  <div className="p-3 bg-zinc-900/50 rounded-lg border border-zinc-800">
+                    <div className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Confianca</div>
+                    <div className={`text-lg font-black ${taxonomyReport.overallConfidence >= 50 ? 'text-emerald-400' : taxonomyReport.overallConfidence >= 25 ? 'text-amber-400' : 'text-rose-400'}`}>{taxonomyReport.overallConfidence}%</div>
+                  </div>
+                </div>
+
+                {taxonomyReport.lineage.length > 0 ? (
+                  <div className="space-y-0">
+                    {taxonomyReport.lineage.map((taxon, i) => (
+                      <div key={i} className="flex items-center gap-2 py-1.5 border-b border-zinc-900/50 last:border-0">
+                        <span className="text-[9px] text-zinc-600 uppercase font-bold w-14 shrink-0">{taxon.rank}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-white truncate">{taxon.name}</span>
+                            <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                              <div className="h-full rounded-full transition-all" style={{ width: `${taxon.confidence}%`, backgroundColor: taxon.confidence >= 70 ? '#10b981' : taxon.confidence >= 40 ? '#f59e0b' : '#ef4444' }} />
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-zinc-500 w-8 text-right">{taxon.confidence}%</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3 bg-zinc-900/30 border border-zinc-800 rounded-lg">
+                    <p className="text-xs text-zinc-500">{taxonomyReport.summary}</p>
+                  </div>
+                )}
+
+                <div className="mt-4 p-3 bg-black/40 rounded-lg">
+                  <p className="text-[10px] text-zinc-500 font-mono leading-relaxed">{taxonomyReport.summary}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <TreePine className="w-10 h-10 text-zinc-700 mb-3" />
+                <p className="text-sm text-zinc-500">Nenhuma sequencia carregada.</p>
+                <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>Carregar Sequencia</Button>
+              </div>
+            )}
+          </Card>
+
+          {/* Batch Taxonomy */}
+          <Card>
+            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-amber-400" />
+              Classificacao em Lote ({allTaxonomyReports.length} sequencias)
+            </h3>
+            {allTaxonomyReports.length > 0 ? (
+              <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                {allTaxonomyReports.map((report, i) => (
+                  <div key={i} className="p-3 bg-zinc-900/40 border border-zinc-800 rounded-lg">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold text-white truncate">{report.sequenceName}</span>
+                      <Badge variant={report.overallConfidence >= 50 ? 'success' : report.overallConfidence >= 25 ? 'warning' : 'danger'} size="sm">{report.overallConfidence}%</Badge>
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <Badge variant="primary" size="sm">{report.rnaType}</Badge>
+                      {report.lineage.length > 0 && (
+                        <span className="text-[10px] text-zinc-400">
+                          {report.lineage.slice(-2).map(t => t.name).join(' > ')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <p className="text-sm text-zinc-500">Carregue sequencias para classificacao em lote.</p>
+              </div>
+            )}
+          </Card>
+        </div>
+      )}
+
       {/* No sequence loaded fallback */}
-      {!currentSeq && activeTab !== 'upload' && (
+      {!currentSeq && activeTab !== 'upload' && activeTab !== 'phylogeny' && activeTab !== 'taxonomy' && (
         <Card>
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <Upload className="w-12 h-12 text-zinc-700 mb-3" />
             <p className="text-sm text-zinc-400">Nenhuma sequencia carregada.</p>
-            <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>
-              Carregar Sequencia
-            </Button>
+            <Button variant="secondary" size="sm" className="mt-3" onClick={() => setActiveTab('upload')}>Carregar Sequencia</Button>
           </div>
         </Card>
       )}
