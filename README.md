@@ -115,23 +115,15 @@ Pipeline de Retrieval-Augmented Generation alimentado por base de conhecimento d
 Interface humanizada e empática para pacientes. Analisa o tom emocional das mensagens e formula respostas acolhedoras e cientificamente embasadas. Nunca prescreve — sempre orienta e apoia, incentivando o paciente a confiar em seus médicos.
 
 ### LiveBook-rRNA (Bioinformática)
-Centro de controle para análise de sequências de rRNA com **10 tipos de análise** integrados:
+Módulo completo de bioinformática de rRNA com **5 abas de análise** executadas inteiramente no browser (zero backend dependency):
 
-| Análise | Descrição |
-|---|---|
-| **Composição Nucleotídica** | Frequência A/U/G/C, conteúdo GC, gráficos pizza e radar |
-| **K-mer** | Frequência de k-mers com k=2..5, gráfico de barras interativo |
-| **Diversidade** | Shannon H, Simpson 1-D, Pielou J, riqueza — índices ecológicos |
-| **Alinhamento** | Needleman-Wunsch global com score, identidade, similaridade e gaps |
-| **Filogenia UPGMA** | Árvore ultramétrica com visualização SVG, exportação Newick |
-| **Filogenia NJ** | Neighbor-Joining (sem relógio molecular), árvore aditiva com SVG |
-| **Matriz de Distâncias** | Tabela interativa com heatmap por nível de divergência |
-| **Identificação rRNA** | Scan de regiões conservadas 16S/18S/23S/5S com scores de confiança |
-| **Taxonomia** | Classificação SILVA-like com 11 clados de referência e linhagem completa |
-| **Scatter GC×Len** | Espaço fenotípico GC vs comprimento com cores por sequência |
-
-**Formatos suportados:** FASTA (.fasta, .fa, .fna), FASTQ (.fastq, .fq) via upload ou drag-and-drop, texto puro.
-**Exportação:** CSV, JSON (completo), Newick (.nwk). Algoritmos puros em TypeScript — zero dependências externas.
+| Aba | Algoritmos | Descrição |
+|-----|-----------|----------|
+| **Sequência & Parser** | FASTA Parser, rRNA Classifier | Parser FASTA robusto, identificação automática de 16S/18S/23S/5S/28S/12S por comprimento, GC e motifs conservados, 6 presets de organismos reais (E. coli, S. aureus, P. aeruginosa, H. sapiens, S. cerevisiae), exportação FASTA |
+| **Composição & Diversidade** | GC Content, k-mer, Shannon, Simpson | GC content global + sliding window profile, análise k-mer (k=2..6) com gráficos, índices de Shannon (H, Hmax, equitabilidade) e Simpson (D, 1/D), composição nucleotídica visual |
+| **Alinhamento NW** | Needleman-Wunsch, Complemento | Alinhamento global com scoring configurável (match/mismatch/gap), identidade, mismatches, gaps, notação midline, complemento e reverse complemento |
+| **Filogenia** | UPGMA, p-distance | Matriz de distâncias por p-distance (via NW), árvore filogenética UPGMA com formato Newick, suporte a N sequências |
+| **Estrutura 2D** | Nussinov DP O(n³) | Predição de estrutura secundária com DP, visualização circular SVG, notação dot-bracket, MFE estimado, sequência colorida por base |
 
 ### Módulos Especializados
 
@@ -231,7 +223,7 @@ AI_Doctor/
 │   ├── App.tsx                    # Router principal
 │   ├── main.tsx                   # Entry point React
 │   ├── components/
-│   │   ├── LiveBookPanel.tsx      # Hub rRNA (10 análises, filogenia, taxonomia)
+│   │   ├── LiveBookPanel.tsx      # Hub rRNA (5 abas bioinformática)
 │   │   ├── OncoResearchPanel.tsx  # Protocolo DIMHEX
 │   │   ├── MedicalBoardPanel.tsx  # Junta Médica PhD
 │   │   ├── TelemedicineChatbot.tsx# Chat paciente
@@ -255,6 +247,7 @@ AI_Doctor/
 │   │       ├── StatCard.tsx, TabGroup.tsx, ErrorBoundary.tsx
 │   ├── services/
 │   │   ├── gemini-service.ts      # Integração Google Gemini
+│   │   ├── rnaBioinformatics.ts   # Motor rRNA: FASTA, NW, UPGMA, Nussinov, k-mer
 │   │   ├── persistence.ts         # Camada de persistência
 │   │   ├── db.ts                  # Conexão MySQL/TiDB (Drizzle)
 │   │   ├── schema.ts              # Schema do banco
@@ -262,15 +255,6 @@ AI_Doctor/
 │   │   ├── telemedicine_orchestrator.ts   # Telemedicina
 │   │   └── literature_integration.ts      # PubMed/Scholar
 │   ├── hooks/                     # Custom hooks (tRPC, auth, data)
-│   ├── lib/
-│   │   └── bio/                   # Bioinformática (client-side, zero deps)
-│   │       ├── index.ts           # Barrel export
-│   │       ├── parsers.ts         # FASTA/FASTQ parsing + validação
-│   │       ├── analysis.ts        # K-mer, Shannon, Simpson, composição
-│   │       ├── alignment.ts       # Needleman-Wunsch + distância + UPGMA simples
-│   │       ├── phylogeny.ts       # UPGMA, Neighbor-Joining, Newick, SVG layout
-│   │       ├── taxonomy.ts        # Classificação taxonômica SILVA-like (11 clados)
-│   │       └── rna-tools.ts        # Identificação 16S/18S/23S/5S
 │   ├── contexts/                  # Auth + Navigation contexts
 │   ├── styles/                    # Themes e configurações visuais
 │   └── types/                     # TypeScript type definitions
@@ -407,6 +391,7 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
 | **17** | DIMHEX v2.1, 4 camadas probabilísticas, Senciência, pipeline cânceres raros |
 | **18** | RAG povoado (585 registros), protocolo aprendizagem 4h, auto-seed |
+| **19** | **LiveBook-rRNA v2.0:** Módulo bioinformática completo — FASTA parser, identificação 16S/18S/23S/5S, GC profile, k-mer, Shannon/Simpson, Needleman-Wunsch, UPGMA, Nussinov |
 
 ---
 
