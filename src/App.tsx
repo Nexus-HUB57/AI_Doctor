@@ -40,10 +40,24 @@ function PanelLoader() {
 // Estado compartilhado para componentes que dependem de props
 const SharedStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sequence, setSequence] = useState('AUGCGAUUCGAUCCGAAUUCGGC');
-  const [agents, setAgents] = useState<Agent[]>([
-    { id: 'a1', name: 'Seq-Parser', role: 'Análise de Motifs', pid: 1001, status: 'ACTIVE', color: '#10b981', description: 'Parser de sequências biológicas', prompt: 'Analise a sequência fornecida' },
-    { id: 'a2', name: 'Fold-Engine', role: 'Predição Estrutural', pid: 1002, status: 'SYNCED', color: '#3b82f6', description: 'Predição de estrutura secundária de rRNA', prompt: 'Prediza a estrutura da sequência' },
-    { id: 'a3', name: 'Mut-Detector', role: 'Detecção de Mutações', pid: 1003, status: 'IDLE', color: '#f59e0b', description: 'Detecção de mutações compensatórias', prompt: 'Detecte mutações na sequência' },
+
+  // ── 15 Hybrid Agents — PhD-level Oncology Specialists ──
+  const [agents] = useState<Agent[]>([
+    { id: 'a01', name: 'Dr. Oncologia Molecular', role: 'Biologia Molecular do Cancer', pid: 1001, status: 'ACTIVE', color: '#10b981', description: 'PhD — Mecanismos moleculares de resistencia a drogas, vias de sinalizacao tumoral (H=28)', prompt: 'Analise mecanismos moleculares e mutacoes driver' },
+    { id: 'a02', name: 'Dr. Imunooncologia', role: 'Imunooncologia e CAR-T', pid: 1002, status: 'ACTIVE', color: '#3b82f6', description: 'PhD — Otimizacao de terapias baseadas em celulas T, checkpoint inhibitors (H=32)', prompt: 'Avalie resposta imune e estrategias imunoterapicas' },
+    { id: 'a03', name: 'Dr. Nanotecnologia Medica', role: 'Nanomedicina Oncologica', pid: 1003, status: 'SYNCED', color: '#a855f7', description: 'PhD — Sistemas de entrega inteligente, teranostica, hipertermia plasmônica (H=24)', prompt: 'Projete nanopartículas para entrega direcionada' },
+    { id: 'a04', name: 'Dr. Oncologia Clinica', role: 'Oncologia Clinica', pid: 1004, status: 'ACTIVE', color: '#ef4444', description: 'MD, PhD — Protocolos de tratamento, ensaios clínicos, prognóstico (H=38)', prompt: 'Defina protocolo terapeutico baseado em evidencias' },
+    { id: 'a05', name: 'Dr. Patologia Oncologica', role: 'Patologia e Diagnostico Molecular', pid: 1005, status: 'SYNCED', color: '#f59e0b', description: 'MD, PhD — Histopatologia, marcadores prognósticos, classificação tumoral (H=29)', prompt: 'Analise histopatologia e marcadores tumorais' },
+    { id: 'a06', name: 'Dr. Radiologia Oncologica', role: 'Radioterapia e Radiocirurgia', pid: 1006, status: 'IDLE', color: '#06b6d4', description: 'PhD — Radioterapia de intensidade modulada, SBRT, protonterapia (H=26)', prompt: 'Planeje fracionamento radioterapico otimo' },
+    { id: 'a07', name: 'Dr. Bioinformatica Oncologica', role: 'Bioinformatica e Genomica', pid: 1007, status: 'ACTIVE', color: '#22d3ee', description: 'PhD — Analise de dados omicos, NGS, bioinformatica estrutural (H=22)', prompt: 'Processe dados genômicos e identifique variantes' },
+    { id: 'a08', name: 'Dr. Oncologia Pediatrica', role: 'Oncologia Pediatrica', pid: 1008, status: 'IDLE', color: '#f472b6', description: 'MD, PhD — Tumores solidos pediatricos, leucemias, neuroblastoma (H=21)', prompt: 'Adapte protocolos para pacientes pediatricos' },
+    { id: 'a09', name: 'Dr. Medicina Integrativa', role: 'Medicina Integrativa e Suporte', pid: 1009, status: 'IDLE', color: '#34d399', description: 'PhD — Cuidados paliativos, suporte nutricional, qualidade de vida (H=18)', prompt: 'Avalie qualidade de vida e suporte integrativo' },
+    { id: 'a10', name: 'Dr. Genomica Oncologica', role: 'Genomica e Medicina de Precisao', pid: 1010, status: 'ACTIVE', color: '#8b5cf6', description: 'PhD — Sequenciamento de nova geracao, variantes somáticas, farmacogenômica (H=25)', prompt: 'Identifique mutações driver e guie terapia alvo' },
+    { id: 'a11', name: 'Dr. Epidemiologia Oncologica', role: 'Epidemiologia e Saude Publica', pid: 1011, status: 'IDLE', color: '#fb923c', description: 'PhD — Estudos de coorte, rastreamento, incidência e mortalidade (H=27)', prompt: 'Analise dados epidemiologicos e fatores de risco' },
+    { id: 'a12', name: 'Dr. Cirurgia Oncologica', role: 'Cirurgia Oncologica', pid: 1012, status: 'ACTIVE', color: '#f87171', description: 'MD, PhD — Cirurgia minimamente invasiva, margins cirurgicos, estadiamento (H=31)', prompt: 'Avalie ressecabilidade e tecnica cirurgica' },
+    { id: 'a13', name: 'Dr. Psico-Oncologia', role: 'Psico-Oncologia', pid: 1013, status: 'IDLE', color: '#c084fc', description: 'PhD — Adesao ao tratamento, impacto psicologico, intervenções cognitivas (H=16)', prompt: 'Avalie adesao e impacto psicologico do diagnostico' },
+    { id: 'a14', name: 'Dr. Farmacocinetica Oncologica', role: 'Farmacocinetica e Farmacodinamica', pid: 1014, status: 'SYNCED', color: '#fbbf24', description: 'PhD — Doseamento otimo, interacoes medicamentosas, toxicidade (H=20)', prompt: 'Calcule dose e monitore toxicidade de quimioterápicos' },
+    { id: 'a15', name: 'Dr. Oncologia Translacional', role: 'Oncologia Translacional', pid: 1015, status: 'ACTIVE', color: '#60a5fa', description: 'PhD — Ponte laboratório-clínica, biomarcadores, medicina de precisão (H=28)', prompt: 'Traduza descobertas laboratoriais em aplicacao clinica' },
   ]);
   const [logs, setLogs] = useState<LogMessage[]>([]);
 
@@ -64,7 +78,7 @@ const SharedStateProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const clearLogs = useCallback(() => setLogs([]), []);
 
   return (
-    <SharedStateContext.Provider value={{ sequence, setSequence, agents, setAgents, addLog, clearLogs, logs }}>
+    <SharedStateContext.Provider value={{ sequence, setSequence, agents, setAgents: () => {}, addLog, clearLogs, logs }}>
       {children}
     </SharedStateContext.Provider>
   );
