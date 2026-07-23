@@ -4,7 +4,7 @@
 
 ### Plataforma de Oncologia de Precisão Humanizada
 
-**15 especialistas PhD virtuais | Protocolo DIMHEX | RAG com Gemini | Telemedicina empática**
+**15 especialistas PhD virtuais | Protocolo DIMHEX | RAG 6 Estágios | Auto-Cura | rRNA Bioinformática | Telemedicina empática**
 
 [![CI](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml)
 [![CD](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml)
@@ -115,7 +115,7 @@ Pipeline de Retrieval-Augmented Generation alimentado por base de conhecimento d
 Interface humanizada e empática para pacientes. Analisa o tom emocional das mensagens e formula respostas acolhedoras e cientificamente embasadas. Nunca prescreve — sempre orienta e apoia, incentivando o paciente a confiar em seus médicos.
 
 ### LiveBook-rRNA (Bioinformática)
-Módulo completo de bioinformática de rRNA com **5 abas de análise** executadas inteiramente no browser (zero backend dependency):
+Módulo completo de bioinformática de rRNA com **7 abas de análise** executadas inteiramente no browser (zero backend dependency):
 
 | Aba | Algoritmos | Descrição |
 |-----|-----------|----------|
@@ -124,6 +124,8 @@ Módulo completo de bioinformática de rRNA com **5 abas de análise** executada
 | **Alinhamento NW** | Needleman-Wunsch, Complemento | Alinhamento global com scoring configurável (match/mismatch/gap), identidade, mismatches, gaps, notação midline, complemento e reverse complemento |
 | **Filogenia** | UPGMA, p-distance | Matriz de distâncias por p-distance (via NW), árvore filogenética UPGMA com formato Newick, suporte a N sequências |
 | **Estrutura 2D** | Nussinov DP O(n³) | Predição de estrutura secundária com DP, visualização circular SVG, notação dot-bracket, MFE estimado, sequência colorida por base |
+| **RAG Pipeline** | BM25, TF-IDF, Cross-Encoder | **NOVO** Pipeline RAG médico 6 estágios: Recursive Chunking (Langchain-style), TF-IDF + N-gram expansion, BM25 scoring com field boosting, Cross-encoder re-ranking, Context window assembly com source attribution, Síntese LLM. Base pré-carregada com 6 documentos médicos (DIMHEX, NCCN, ESMO, farmacogenômica) |
+| **Auto-Cura DIMHEX** | Self-Healing, Wisdom Engine | **NOVO** Motor de auto-cura com 5 métricas quânticas (fidelity, coherence, decoherence, entanglement, superposition), 6 algoritmos de cura (recalibrate, stabilize, reboot, amplify, shield, resync), ciclo OBSERVAR→DETECTAR→DIAGNOSTICAR→PRESCREVER→EXECUTAR, e Wisdom Engine com aprendizado exponencial de padrões, insights e memória de decisões |
 
 ### Módulos Especializados
 
@@ -223,7 +225,7 @@ AI_Doctor/
 │   ├── App.tsx                    # Router principal
 │   ├── main.tsx                   # Entry point React
 │   ├── components/
-│   │   ├── LiveBookPanel.tsx      # Hub rRNA (5 abas bioinformática)
+│   │   ├── LiveBookPanel.tsx      # Hub rRNA (7 abas: bioinfo + RAG + auto-cura)
 │   │   ├── OncoResearchPanel.tsx  # Protocolo DIMHEX
 │   │   ├── MedicalBoardPanel.tsx  # Junta Médica PhD
 │   │   ├── TelemedicineChatbot.tsx# Chat paciente
@@ -248,12 +250,22 @@ AI_Doctor/
 │   ├── services/
 │   │   ├── gemini-service.ts      # Integração Google Gemini
 │   │   ├── rnaBioinformatics.ts   # Motor rRNA: FASTA, NW, UPGMA, Nussinov, k-mer
+│   │   ├── medicalRagEngine.ts   # **NOVO** RAG 6 estágios: Chunking, TF-IDF, BM25, Rerank, Context, Generate
+│   │   ├── selfHealingEngine.ts  # **NOVO** Auto-cura dos agentes: 5 métricas, 6 skills, diagnóstico
+│   │   ├── wisdomEngine.ts       # **NOVO** DIMHEX Pilar 3: padrões, insights, memória de decisões
 │   │   ├── persistence.ts         # Camada de persistência
 │   │   ├── db.ts                  # Conexão MySQL/TiDB (Drizzle)
 │   │   ├── schema.ts              # Schema do banco
 │   │   ├── medical_board_orchestrator.ts  # Orquestração da junta
 │   │   ├── telemedicine_orchestrator.ts   # Telemedicina
 │   │   └── literature_integration.ts      # PubMed/Scholar
+│   ├── lib/bio/                   # **NOVO** Biblioteca bioinformática modular
+│   │   ├── parsers.ts            # FASTA/FASTQ parsers
+│   │   ├── analysis.ts           # k-mer, diversidade, composição
+│   │   ├── alignment.ts          # Needleman-Wunsch, distâncias
+│   │   ├── phylogeny.ts          # UPGMA, Neighbor-Joining, Newick
+│   │   ├── taxonomy.ts           # Classificação taxonômica
+│   │   └── rna-tools.ts          # Identificação de genes rRNA (conserved regions)
 │   ├── hooks/                     # Custom hooks (tRPC, auth, data)
 │   ├── contexts/                  # Auth + Navigation contexts
 │   ├── styles/                    # Themes e configurações visuais
@@ -392,6 +404,9 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **17** | DIMHEX v2.1, 4 camadas probabilísticas, Senciência, pipeline cânceres raros |
 | **18** | RAG povoado (585 registros), protocolo aprendizagem 4h, auto-seed |
 | **19** | **LiveBook-rRNA v2.0:** Módulo bioinformática completo — FASTA parser, identificação 16S/18S/23S/5S, GC profile, k-mer, Shannon/Simpson, Needleman-Wunsch, UPGMA, Nussinov |
+| **20** | **RAG Pipeline Médico 6 Estágios:** Recursive Chunking, TF-IDF + N-gram, BM25 scoring, Cross-encoder re-ranking, Context assembly, Síntese LLM. Base pré-carregada com 6 documentos clínicos. Inspirado no LiveBook-rRNA reestruturado |
+| **21** | **Self-Healing Engine:** Motor reativo de auto-cura dos 15 agentes PhD com 5 métricas, 6 algoritmos de cura, diagnóstico automático de anomalias e ciclo completo OBSERVAR→EXECUTAR |
+| **22** | **Wisdom Engine (DIMHEX Pilar 3):** Auto-sabedoria com reconhecimento de padrões, insight bank, memória de decisões, crescimento exponencial de sabedoria, e sugestões preventivas wisdom-guided |
 
 ---
 

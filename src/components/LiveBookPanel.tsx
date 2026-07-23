@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import {
   Zap, Microscope, Activity, ChevronRight, Save, RefreshCw,
   Upload, FileText, Dna, BarChart3, GitBranch, Target, Search,
   Download, Beaker, AlertTriangle, CheckCircle2, Info, X,
-  ChevronDown, ChevronUp, Copy, AlignLeft, TreePine, Hash
+  ChevronDown, ChevronUp, Copy, AlignLeft, TreePine, Hash,
+  Brain, Shield, Cpu, Database, Atom
 } from 'lucide-react';
 import Card from './base/Card';
 import Button from './base/Button';
@@ -15,8 +16,14 @@ import {
   type SequenceStats, type KMerResult, type DiversityIndices,
   type NWAlignment, type DistanceMatrix, type GCProfile,
 } from '../services/rnaBioinformatics';
+import { medicalRAGPipeline, MEDICAL_KNOWLEDGE_BASE } from '../services/medicalRagEngine';
+import type { RAGQueryResult } from '../services/medicalRagEngine';
+import { runHealingCycle, generateHealthyAgentStates, getHealingHistory, getLastHealingCycle } from '../services/selfHealingEngine';
+import type { HealingCycle } from '../services/selfHealingEngine';
+import { processWisdomCycle, getWisdomState, getWisdomPatterns, getWisdomInsights } from '../services/wisdomEngine';
+import type { WisdomState, WisdomPattern, WisdomInsight } from '../services/wisdomEngine';
 
-type TabId = 'sequence' | 'composition' | 'alignment' | 'phylogeny' | 'structure';
+type TabId = 'sequence' | 'composition' | 'alignment' | 'phylogeny' | 'structure' | 'rag' | 'healing';
 
 const BASE_COLORS: Record<string, string> = { G: '#f87171', C: '#60a5fa', A: '#fbbf24', U: '#34d399' };
 
@@ -26,6 +33,8 @@ const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
   { id: 'alignment', label: 'Alinhamento NW', icon: <AlignLeft className="w-4 h-4" /> },
   { id: 'phylogeny', label: 'Filogenia', icon: <TreePine className="w-4 h-4" /> },
   { id: 'structure', label: 'Estrutura 2D', icon: <Dna className="w-4 h-4" /> },
+  { id: 'rag', label: 'RAG Pipeline', icon: <Brain className="w-4 h-4" /> },
+  { id: 'healing', label: 'Auto-Cura DIMHEX', icon: <Shield className="w-4 h-4" /> },
 ];
 
 export default function LiveBookPanel() {
@@ -37,6 +46,59 @@ export default function LiveBookPanel() {
   const [alignSubject, setAlignSubject] = useState('');
   const [windowSize, setWindowSize] = useState(50);
   const [presetNotice, setPresetNotice] = useState('');
+  // RAG state
+  const [ragQuery, setRagQuery] = useState('');
+  const [ragResult, setRagResult] = useState<RAGQueryResult | null>(null);
+  const [ragLoading, setRagLoading] = useState(false);
+  // Healing state
+  const [agentIds] = useState<string[]>([
+    'dr_atlas', 'dra_elara', 'dr_kai', 'dra_vex', 'dr_nexus',
+    'dra_mika', 'dr_orion', 'dra_luna', 'dr_sig', 'dra_nova',
+    'dr_flux', 'dra_aura', 'dr_echo', 'dra_pulse', 'dr_cortex',
+  ]);
+  const [healingCycles, setHealingCycles] = useState<HealingCycle[]>([]);
+  const [wisdomState, setWisdomState] = useState<WisdomState | null>(null);
+  const [wisdomPatterns, setWisdomPatterns] = useState<WisdomPattern[]>([]);
+  const [wisdomInsights, setWisdomInsights] = useState<WisdomInsight[]>([]);
+  const helixRef = useRef<HTMLCanvasElement>(null);
+
+  // --- RAG Query Handler ---
+  const handleRAGQuery = useCallback(async () => {
+    if (!ragQuery.trim() || ragLoading) return;
+    setRagLoading(true);
+    setRagResult(null);
+    try {
+      const result = await medicalRAGPipeline(ragQuery, MEDICAL_KNOWLEDGE_BASE);
+      setRagResult(result);
+    } catch (err) {
+      console.error('RAG query error:', err);
+    } finally {
+      setRagLoading(false);
+    }
+  }, [ragQuery, ragLoading]);
+
+  // --- Healing Cycle Handler ---
+  const handleRunHealingCycle = useCallback(() => {
+    const states = generateHealthyAgentStates(agentIds);
+    // Inject some realistic anomalies for demonstration
+    const randomAgent = agentIds[Math.floor(Math.random() * agentIds.length)];
+    if (states[randomAgent]) {
+      states[randomAgent].fidelity = 0.3 + Math.random() * 0.2;
+      states[randomAgent].coherence = 0.25 + Math.random() * 0.2;
+    }
+    const secondAgent = agentIds[(agentIds.indexOf(randomAgent) + 3) % agentIds.length];
+    if (states[secondAgent]) {
+      states[secondAgent].decoherence = 0.5 + Math.random() * 0.2;
+    }
+
+    const cycle = runHealingCycle(states);
+    const wisdom = processWisdomCycle(cycle);
+
+    setHealingCycles(prev => [...prev, cycle]);
+    setWisdomState(wisdom.updatedWisdomState);
+    setWisdomPatterns(getWisdomPatterns());
+    setWisdomInsights(getWisdomInsights());
+  }, [agentIds]);
 
   const currentSeq = fastaRecords[selectedIdx]?.sequence ?? '';
 
@@ -610,6 +672,166 @@ ${p.sequence}`;
                 </Card>
               </div>
             </>
+          )}
+        </div>
+      )}
+
+      {/* ═══════ TAB: RAG PIPELINE ═══════ */}
+      {activeTab === 'rag' && (
+        <div className="space-y-4">
+          <Card>
+            <div className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+              <Brain className="w-4 h-4 text-purple-400" /> Pipeline RAG Médico — 6 Estágios
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
+              {['Extract', 'Encode', 'Retrieve', 'Rerank', 'Augment', 'Generate'].map((stage, i) => {
+                const colors = ['text-blue-400', 'text-emerald-400', 'text-purple-400', 'text-amber-400', 'text-cyan-400', 'text-rose-400'];
+                const bgs = ['bg-blue-500/10 border-blue-500/20', 'bg-emerald-500/10 border-emerald-500/20', 'bg-purple-500/10 border-purple-500/20', 'bg-amber-500/10 border-amber-500/20', 'bg-cyan-500/10 border-cyan-500/20', 'bg-rose-500/10 border-rose-500/20'];
+                const descs = ['Chunking recursivo', 'TF-IDF + N-gram', 'BM25 scoring', 'Cross-encoder', 'Context window', 'Síntese LLM'];
+                return (
+                  <div key={stage} className={`p-2 rounded-lg border text-center ${bgs[i]}`}>
+                    <div className={`text-[10px] font-bold ${colors[i]}`}>{stage}</div>
+                    <div className="text-[9px] text-slate-500">{descs[i]}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                <input
+                  value={ragQuery} onChange={e => setRagQuery(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleRAGQuery()}
+                  placeholder="Pergunte sobre protocolo DIMHEX, câncer de mama, biomarcadores..."
+                  className="w-full h-9 pl-8 pr-3 text-xs bg-slate-800 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500/50"
+                />
+              </div>
+              <Button variant="primary" size="sm" onClick={handleRAGQuery} disabled={ragLoading}>
+                {ragLoading ? 'Buscando...' : 'Consultar RAG'}
+              </Button>
+            </div>
+          </Card>
+
+          {ragResult && (
+            <>
+              <Card>
+                <div className="flex gap-4 text-[10px] text-slate-500 mb-3">
+                  <span>Documentos: {ragResult.pipeline.documentsScanned}</span>
+                  <span>Recuperados: {ragResult.pipeline.retrieved}</span>
+                  <span>Rerankeds: {ragResult.pipeline.reranked}</span>
+                  <span>Contexto: {ragResult.pipeline.contextChars} chars</span>
+                </div>
+                {ragResult.answer && (
+                  <div className="p-3 bg-slate-800/50 rounded-lg mb-3">
+                    <div className="text-[10px] text-slate-500 uppercase mb-1">Resposta RAG</div>
+                    <div className="text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">{ragResult.answer}</div>
+                  </div>
+                )}
+              </Card>
+              {ragResult.retrieved.length > 0 && (
+                <Card>
+                  <div className="text-[10px] text-slate-500 uppercase mb-2">Fontes Recuperadas</div>
+                  <div className="space-y-1.5">
+                    {ragResult.retrieved.map((r, i) => (
+                      <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-slate-800/30 border border-slate-700/20 hover:border-slate-600/30 transition-colors">
+                        <span className="text-[9px] text-slate-600 font-mono w-4 text-right">#{i + 1}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs text-slate-300 font-medium truncate">{r.title}</div>
+                          <div className="text-[9px] text-slate-600">{r.agent} · {r.source}</div>
+                        </div>
+                        <span className="text-[9px] text-amber-400 font-mono bg-amber-500/10 px-1.5 py-0.5 rounded">{r.score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ═══════ TAB: AUTO-CURA DIMHEX ═══════ */}
+      {activeTab === 'healing' && (
+        <div className="space-y-4">
+          <Card>
+            <div className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-emerald-400" /> Motor de Auto-Cura — DIMHEX Wisdom Engine
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+              {wisdomState ? [
+                { label: 'Ciclos', value: wisdomState.totalCyclesProcessed.toString(), color: 'text-blue-400' },
+                { label: 'Wisdom Score', value: (wisdomState.wisdomScore * 100).toFixed(1) + '%', color: 'text-emerald-400' },
+                { label: 'Padrões', value: wisdomState.patternsCount.toString(), color: 'text-amber-400' },
+                { label: 'Insights', value: wisdomState.insightsCount.toString(), color: 'text-purple-400' },
+              ].map(s => (
+                <div key={s.label} className="p-2 bg-slate-800/50 rounded-lg text-center">
+                  <div className={`text-lg font-bold ${s.color}`}>{s.value}</div>
+                  <div className="text-[10px] text-slate-500">{s.label}</div>
+                </div>
+              )) : (
+                <div className="col-span-4 text-center text-xs text-slate-500 py-4">Nenhum ciclo executado. Clique em "Executar Ciclo" para iniciar.</div>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button variant="primary" size="sm" onClick={handleRunHealingCycle}>
+                <Zap className="w-3.5 h-3.5 mr-1" /> Executar Ciclo de Cura
+              </Button>
+              <Button variant="secondary" size="sm" onClick={() => { setHealingCycles([]); setWisdomState(null); setWisdomPatterns([]); setWisdomInsights([]); }}>
+                <RefreshCw className="w-3.5 h-3.5 mr-1" /> Resetar
+              </Button>
+            </div>
+          </Card>
+
+          {healingCycles.length > 0 && (
+            <Card>
+              <div className="text-[10px] text-slate-500 uppercase mb-2">Ultimo Ciclo de Cura</div>
+              {(() => { const last = healingCycles[healingCycles.length - 1]; return (
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {[
+                    { label: 'Agentes', value: last.agentsMonitored },
+                    { label: 'Anomalias', value: last.anomaliesDetected },
+                    { label: 'Criticas', value: last.anomaliesCritical, color: last.anomaliesCritical > 0 ? 'text-red-400' : 'text-slate-300' },
+                    { label: 'Acoes', value: last.healingActionsExecuted },
+                    { label: 'Sucesso', value: (last.healingSuccessRate * 100).toFixed(0) + '%', color: last.healingSuccessRate > 0.7 ? 'text-emerald-400' : 'text-amber-400' },
+                    { label: 'Duracao', value: last.durationMs + 'ms' },
+                  ].map(m => (
+                    <div key={m.label} className="p-2 bg-slate-800/30 rounded-lg text-center">
+                      <div className={`text-sm font-bold ${'color' in m && m.color ? m.color : 'text-slate-300'}`}>{m.value}</div>
+                      <div className="text-[9px] text-slate-500">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+              ); })()}
+              {healingCycles[healingCycles.length - 1].reports.length > 0 && (
+                <div className="mt-3 space-y-1">
+                  <div className="text-[10px] text-slate-500 uppercase">Anomalias Detectadas</div>
+                  {healingCycles[healingCycles.length - 1].reports.slice(0, 5).map(r => (
+                    <div key={r.id} className={`flex items-center gap-2 text-[10px] p-1.5 rounded ${r.severity === 'critical' ? 'bg-red-500/10 text-red-400' : 'bg-amber-500/10 text-amber-400'}`}>
+                      <AlertTriangle className="w-3 h-3" />
+                      <span className="font-medium">{r.agentName}</span>
+                      <span className="text-slate-500">{r.type.replace('_', ' ')}</span>
+                      <span className="ml-auto font-mono">{(r.value * 100).toFixed(1)}%</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          )}
+
+          {wisdomPatterns.length > 0 && (
+            <Card>
+              <div className="text-[10px] text-slate-500 uppercase mb-2">Padroes de Sabedoria ({wisdomPatterns.length})</div>
+              {wisdomPatterns.slice(0, 5).map(p => (
+                <div key={p.id} className="p-2 mb-1.5 bg-slate-800/30 rounded-lg border border-slate-700/20">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-bold text-purple-400">#{p.frequency}x</span>
+                    <span className="text-xs text-slate-300">{p.pattern.replace(/_/g, ' ')}</span>
+                    <span className="ml-auto text-[9px] text-slate-500">conf: {(p.confidence * 100).toFixed(0)}%</span>
+                  </div>
+                  {p.rootCauseHypothesis && <div className="text-[10px] text-slate-400">{p.rootCauseHypothesis}</div>}
+                </div>
+              ))}
+            </Card>
           )}
         </div>
       )}
