@@ -4,7 +4,7 @@
 
 ### Plataforma de Oncologia de Precisão Humanizada
 
-**15 especialistas PhD virtuais | Protocolo DIMHEX | RAG 6 Estágios | Auto-Cura | rRNA Bioinformática | Telemedicina empática**
+**15 especialistas PhD virtuais | Protocolo DIMHEX | CHIMERA IA Distribuída | RAG 6 Estágios | Auto-Cura | rRNA Bioinformática | Telemedicina empática**
 
 [![CI](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml)
 [![CD](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml)
@@ -248,11 +248,23 @@ AI_Doctor/
 │   │       ├── Button.tsx, Card.tsx, Badge.tsx, Modal.tsx,
 │   │       ├── StatCard.tsx, TabGroup.tsx, ErrorBoundary.tsx
 │   ├── services/
+│   │   ├── chimera/                # **NOVO** CHIMERA: Arquitetura IA Distribuída (9 módulos, 1.692 linhas)
+│   │   │   ├── index.ts            # Barrel export
+│   │   │   ├── live-lab-types.ts   # 30 interfaces do Live Lab Tri-Nuclear
+│   │   │   ├── algorithms.ts       # PROMETHEE II, Cascade, Token Bucket, Budget, RBAC, PII
+│   │   │   ├── observability.ts    # Logger JSON, Metrics Prometheus, Tracer spans
+│   │   │   ├── agent-memory.ts     # Memória 4 tipos (episodic, semantic, working, procedural)
+│   │   │   ├── agent-message-bus.ts # P2P, broadcast, request/reply, handoff, blackboard
+│   │   │   ├── agent-negotiation.ts # Contract Net, Voting, Debate protocols
+│   │   │   ├── semantic-cache.ts   # SHA-256 LRU cache para respostas LLM
+│   │   │   ├── skill-learner.ts    # Rolling performance tracking + auto-tuning
+│   │   │   ├── mcdm-meta-learner.ts # Aprendizado adaptativo de pesos MCDM
+│   │   │   └── routing-evaluator.ts # Accuracy@1/3, MRR, A/B testing
 │   │   ├── gemini-service.ts      # Integração Google Gemini
 │   │   ├── rnaBioinformatics.ts   # Motor rRNA: FASTA, NW, UPGMA, Nussinov, k-mer
-│   │   ├── medicalRagEngine.ts   # **NOVO** RAG 6 estágios: Chunking, TF-IDF, BM25, Rerank, Context, Generate
-│   │   ├── selfHealingEngine.ts  # **NOVO** Auto-cura dos agentes: 5 métricas, 6 skills, diagnóstico
-│   │   ├── wisdomEngine.ts       # **NOVO** DIMHEX Pilar 3: padrões, insights, memória de decisões
+│   │   ├── medicalRagEngine.ts   # RAG 6 estágios: Chunking, TF-IDF, BM25, Rerank, Context, Generate
+│   │   ├── selfHealingEngine.ts  # Auto-cura dos agentes: 5 métricas, 6 skills, diagnóstico
+│   │   ├── wisdomEngine.ts       # DIMHEX Pilar 3: padrões, insights, memória de decisões
 │   │   ├── persistence.ts         # Camada de persistência
 │   │   ├── db.ts                  # Conexão MySQL/TiDB (Drizzle)
 │   │   ├── schema.ts              # Schema do banco
@@ -351,6 +363,63 @@ node scripts/stress-runner.mjs list
 
 ---
 
+## CHIMERA — Arquitetura de Inteligência Artificial Distribuída
+
+O **CHIMERA** (Fase 23) é uma camada de infraestrutura de IA portada do ecossistema LiveBook-rRNA, composta por **9 módulos e 1.692 linhas** de TypeScript puro (zero dependências externas). Prove os fundamentos para orquestração inteligente, comunicação inter-agentes, auto-aprendizado e governança.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    CHIMERA — 9 Módulos                        │
+├─────────────────┬───────────────────────────────────────────────┤
+│ Live Lab        │ PROMETHEE II (MCDM), Cascade Router,          │
+│ Algorithms      │ Token Bucket, Budget Tracker, RBAC, PII Audit │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Observability   │ Logger JSON, Metrics (Prometheus), Tracer    │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Agent Memory    │ 4 tipos: episódica, semântica, trabalho,      │
+│                 │ procedimental — TTL + importância + recall    │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Message Bus     │ P2P, broadcast, request/reply, handoff,       │
+│                 │ blackboard KV — inbox per-agente com TTL     │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Negotiation     │ 3 protocolos: Contract Net, Votação, Debate   │
+│                 │ — para coordenação multi-agente               │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Semantic Cache  │ SHA-256 + LRU — cache de respostas LLM com   │
+│                 │ hit rate tracking, TTL e invalidação         │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Skill Learner   │ Rolling performance, detecção de skills       │
+│                 │ ausentes, sugestão de ajuste de tokens        │
+├─────────────────┼───────────────────────────────────────────────┤
+│ MCDM Meta-      │ Aprendizado adaptativo de pesos por tipo de   │
+│ Learner         │ intent — EWMA + blending com defaults          │
+├─────────────────┼───────────────────────────────────────────────┤
+│ Routing         │ Accuracy@1, Accuracy@3, MRR, custo/efficiency,│
+│ Evaluator       │ cascade hit rate, A/B testing de variantes     │
+└─────────────────┴───────────────────────────────────────────────┘
+```
+
+### Uso (import barrel)
+
+```typescript
+import {
+  // Algoritmos
+  computeMCDMScores, routeIntent, cascadeMatch,
+  matchSkill, composeMetaSkill, TokenBucket, BudgetTracker,
+  maskPIIWithAudit, rbacCheck,
+  // Observabilidade
+  logger, metrics, tracer, createLogger,
+  // Agentes
+  agentMemory, agentBus, agentNegotiator,
+  // Cache & Learning
+  semanticCache, skillLearner, mcdmLearner, routingEvaluator,
+  // Types
+  type LiveLabModel, type Skill, type RoutingResult,
+} from './services/chimera';
+```
+
+---
+
 ## Variáveis de Ambiente
 
 ```env
@@ -407,6 +476,7 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 | **20** | **RAG Pipeline Médico 6 Estágios:** Recursive Chunking, TF-IDF + N-gram, BM25 scoring, Cross-encoder re-ranking, Context assembly, Síntese LLM. Base pré-carregada com 6 documentos clínicos. Inspirado no LiveBook-rRNA reestruturado |
 | **21** | **Self-Healing Engine:** Motor reativo de auto-cura dos 15 agentes PhD com 5 métricas, 6 algoritmos de cura, diagnóstico automático de anomalias e ciclo completo OBSERVAR→EXECUTAR |
 | **22** | **Wisdom Engine (DIMHEX Pilar 3):** Auto-sabedoria com reconhecimento de padrões, insight bank, memória de decisões, crescimento exponencial de sabedoria, e sugestões preventivas wisdom-guided |
+| **23** | **CHIMERA IA Distribuída:** Arquitetura de 9 módulos (1.692 linhas) portada do LiveBook-rRNA — MCDM PROMETHEE II, Cascade Router, Token Bucket, Budget Tracker, RBAC, PII Audit, Observability (Logger + Metrics Prometheus + Tracer), Agent Memory (4 tipos), Message Bus (P2P/broadcast/handoff/blackboard), Negotiation (Contract Net/Voting/Debate), Semantic Cache, Skill Learner, MCDM Meta-Learner, Routing Evaluator (A/B testing) |
 
 ---
 
