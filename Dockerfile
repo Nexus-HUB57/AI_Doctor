@@ -28,9 +28,11 @@ COPY --from=builder /app/dist ./dist
 # Copy server code (root-level entry point + server/ directory)
 COPY --from=builder /app/server.ts ./
 COPY --from=builder /app/server ./server
-COPY --from=builder /app/server_telemedicine_endpoints.js ./
-COPY --from=builder /app/server_brain_analysis_endpoints.js ./
-COPY --from=builder /app/server_moltbook_endpoints.js ./
+COPY --from=builder /app/server_telemedicine_endpoints.ts ./
+COPY --from=builder /app/server_persistence_endpoints.ts ./
+COPY --from=builder /app/server_rag_endpoint.ts ./
+COPY --from=builder /app/server_literature_endpoints.ts ./
+COPY --from=builder /app/server_s3.ts ./
 
 # Copy shared source (services, contexts, components for SSR)
 COPY --from=builder /app/src ./src

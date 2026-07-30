@@ -40,6 +40,7 @@ const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
 export default function LiveBookPanel() {
   const [activeTab, setActiveTab] = useState<TabId>('sequence');
   const [rawFasta, setRawFasta] = useState('');
+  const fastaPlaceholder = '>E.coli K-12 16S rRNA\nAUGCGAUUCGAUCCG...\n\n>S.aureus 16S rRNA\nGGGAGGCAGCAGTGGGG...';
   const [fastaRecords, setFastaRecords] = useState<FASTARecord[]>([]);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [kValue, setKValue] = useState(3);
@@ -334,7 +335,7 @@ ${p.sequence}`;
             </div>
             <textarea value={rawFasta} onChange={e => setRawFasta(e.target.value)}
               className="w-full h-36 bg-slate-900 border border-slate-800 rounded-lg p-3 font-mono text-xs text-cyan-400 focus:ring-2 focus:ring-cyan-500 outline-none resize-none"
-              placeholder={">E.coli K-12 16S rRNA\nAUGCGAUUCGAUCCG...\n\n>S.aureus 16S rRNA\nGGGAGGCAGCAGTGGGG..." />
+              placeholder={fastaPlaceholder} />
             <div className="flex gap-2 mt-3">
               <Button variant="primary" size="sm" icon={Search} onClick={handleParseFASTA}>Parse FASTA</Button>
               {fastaRecords.length > 0 && (

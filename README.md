@@ -8,11 +8,10 @@
 
 [![CI](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/ci.yml)
 [![CD](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml/badge.svg)](https://github.com/Nexus-HUB57/AI_Doctor/actions/workflows/cd.yml)
-[![Tests 201+](https://img.shields.io/badge/tests-201%2B-passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-Vitest_12_suites-brightgreen)]()
 [![Stress Tests 100](https://img.shields.io/badge/stress_tests-100%2F100-blue)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -26,7 +25,7 @@
 
 O **AI_Doctor** é uma plataforma full-stack de oncologia de precisão que vai muito além da análise de dados biomédicos. O sistema orquestra **15 agentes especializados PhD** para deliberar casos clínicos em consenso, integra uma base de conhecimento científico nível PhD atualizada em tempo real via PubMed e Google Scholar, e oferece um canal de telemedicina empático que traduz complexidade oncológica em orientação acessível e esperançosa para o paciente.
 
-Tudo isso construído sobre uma arquitetura production-ready com CI/CD automatizado, Docker, Nginx reverse proxy, 201+ testes automatizados e 100 stress tests E2E que validam resiliência sob carga.
+Tudo isso construído sobre uma arquitetura production-ready com CI/CD automatizado, Docker, Nginx reverse proxy, testes automatizados (Vitest + 12 test suites) e 100 stress tests E2E que validam resiliência sob carga.
 
 ---
 
@@ -96,7 +95,7 @@ Tudo isso construído sobre uma arquitetura production-ready com CI/CD automatiz
 | **Literatura Científica** | PubMed API, Google Scholar (SerpAPI), ClinicalTrials.gov |
 | **CI/CD** | GitHub Actions (lint, type-check, test, build, Docker push) |
 | **Deploy** | Docker multi-stage, Nginx reverse proxy, SSL/TLS ready |
-| **Testes** | Vitest, Testing Library, Supertest, 201+ unitários + 100 stress E2E |
+| **Testes** | Vitest, Testing Library, Supertest, 12 test suites (unit + integração) + 100 stress E2E |
 
 ---
 
@@ -122,7 +121,7 @@ Módulo completo de bioinformática de rRNA com **7 abas de análise** executada
 | **Sequência & Parser** | FASTA Parser, rRNA Classifier | Parser FASTA robusto, identificação automática de 16S/18S/23S/5S/28S/12S por comprimento, GC e motifs conservados, 6 presets de organismos reais (E. coli, S. aureus, P. aeruginosa, H. sapiens, S. cerevisiae), exportação FASTA |
 | **Composição & Diversidade** | GC Content, k-mer, Shannon, Simpson | GC content global + sliding window profile, análise k-mer (k=2..6) com gráficos, índices de Shannon (H, Hmax, equitabilidade) e Simpson (D, 1/D), composição nucleotídica visual |
 | **Alinhamento NW** | Needleman-Wunsch, Complemento | Alinhamento global com scoring configurável (match/mismatch/gap), identidade, mismatches, gaps, notação midline, complemento e reverse complemento |
-| **Filogenia** | UPGMA, p-distance | Matriz de distâncias por p-distance (via NW), árvore filogenética UPGMA com formato Newick, suporte a N sequências |
+| **Filogenia** | UPGMA, Neighbor-Joining, p-distance | Matriz de distâncias por p-distance (via NW), árvores UPGMA e Neighbor-Joining com formato Newick, suporte a N sequências |
 | **Estrutura 2D** | Nussinov DP O(n³) | Predição de estrutura secundária com DP, visualização circular SVG, notação dot-bracket, MFE estimado, sequência colorida por base |
 | **RAG Pipeline** | BM25, TF-IDF, Cross-Encoder | **NOVO** Pipeline RAG médico 6 estágios: Recursive Chunking (Langchain-style), TF-IDF + N-gram expansion, BM25 scoring com field boosting, Cross-encoder re-ranking, Context window assembly com source attribution, Síntese LLM. Base pré-carregada com 6 documentos médicos (DIMHEX, NCCN, ESMO, farmacogenômica) |
 | **Auto-Cura DIMHEX** | Self-Healing, Wisdom Engine | **NOVO** Motor de auto-cura com 5 métricas quânticas (fidelity, coherence, decoherence, entanglement, superposition), 6 algoritmos de cura (recalibrate, stabilize, reboot, amplify, shield, resync), ciclo OBSERVAR→DETECTAR→DIAGNOSTICAR→PRESCREVER→EXECUTAR, e Wisdom Engine com aprendizado exponencial de padrões, insights e memória de decisões |
@@ -144,9 +143,9 @@ Módulo completo de bioinformática de rRNA com **7 abas de análise** executada
 ## Testes & Qualidade
 
 ```
-Testes Unitários/Integração:  201+ passando
+Testes Unitários/Integração:  12 test suites (server + UI + serviços)
 Stress Tests E2E:             100 testes em 10 categorias
-Cobertura:                    Server (65) | UI (116+) | Gemini (20) | RAG
+Cobertura:                    Server (auth, rag, board, literature, persistence, health, env) | UI (navigation, error-boundary, base components, login) | Gemini service
 ```
 
 ### 10 Categorias de Stress Tests
@@ -175,8 +174,8 @@ Cobertura:                    Server (65) | UI (116+) | Gemini (20) | RAG
 ```
 Push/PR → CI Pipeline                    Merge to main → CD Pipeline
 ┌──────────────────────┐                ┌─────────────────────────────┐
-│ 1. Lint & Type Check │                │ 1. Docker Build (multi-stage)│
-│ 2. Unit Tests        │                │ 2. Push to GHCR              │
+│ 1. Type Check (tsc)  │                │ 1. Docker Build (multi-stage)│
+│ 2. Unit Tests (Vitest)│              │ 2. Push to GHCR              │
 │ 3. Build Verification│                │ 3. Deploy (tag trigger)      │
 └──────────────────────┘                └─────────────────────────────┘
 ```
@@ -190,11 +189,11 @@ docker compose -f docker-compose.prod.yml up -d --build
 # Staging
 docker compose -f docker-compose.staging.yml up -d --build
 
-# Com Nginx (recomendado para produção)
-docker compose -f docker-compose.prod.yml -f nginx/nginx.conf up -d
+# Full-stack (todos os 7 serviços: Web + Nginx + MySQL + Redis + ChromaDB + Streamlit + Agente Python)
+docker compose -f docker-compose.fullstack.yml up -d --build
 ```
 
-O Dockerfile utiliza **multi-stage build** (Alpine) com healthcheck automático, e o Nginx está configurado com reverse proxy, SSL/TLS ready, timeouts otimizados para requisições de IA, e headers de segurança.
+O Dockerfile utiliza **multi-stage build** (Alpine) com healthcheck automático, e o Nginx está configurado com reverse proxy, timeouts otimizados para requisições de IA, e headers de segurança. Para SSL/TLS, monte seus certificados em `nginx/ssl/` e ajuste a config do Nginx.
 
 ---
 
@@ -207,7 +206,6 @@ AI_Doctor/
 │   └── cd.yml                     # CD: Docker build & push
 ├── nginx/
 │   ├── nginx.conf                 # Reverse proxy config
-│   └── ssl/                       # Certificados SSL (placeholder)
 ├── server/
 │   ├── index.ts                   # Entry point Express + tRPC
 │   ├── trpc.ts                    # tRPC setup
@@ -250,7 +248,7 @@ AI_Doctor/
 │   ├── services/
 │   │   ├── chimera/                # **NOVO** CHIMERA: Arquitetura IA Distribuída (9 módulos, 1.692 linhas)
 │   │   │   ├── index.ts            # Barrel export
-│   │   │   ├── live-lab-types.ts   # 30 interfaces do Live Lab Tri-Nuclear
+│   │   │   ├── live-lab-types.ts   # 39 interfaces do Live Lab Tri-Nuclear
 │   │   │   ├── algorithms.ts       # PROMETHEE II, Cascade, Token Bucket, Budget, RBAC, PII
 │   │   │   ├── observability.ts    # Logger JSON, Metrics Prometheus, Tracer spans
 │   │   │   ├── agent-memory.ts     # Memória 4 tipos (episodic, semantic, working, procedural)
@@ -291,7 +289,8 @@ AI_Doctor/
 ├── Dockerfile                     # Multi-stage production build
 ├── docker-compose.yml             # Desenvolvimento
 ├── docker-compose.staging.yml     # Staging
-├── docker-compose.prod.yml        # Produção
+├── docker-compose.prod.yml        # Produção (web + Nginx)
+├── docker-compose.fullstack.yml   # Full-stack (7 serviços: Web, Nginx, MySQL, Redis, ChromaDB, Streamlit, Agente)
 ├── vite.config.ts                 # Vite (frontend build)
 ├── vite.stress.config.ts          # Vitest config dedicado (stress)
 ├── tsconfig.json                  # TypeScript config
@@ -344,6 +343,7 @@ npm run dev
 | `npm test` | Executa todos os testes (Vitest) |
 | `npm run lint` | Type check (tsc --noEmit) |
 | `npm run clean` | Remove build artifacts |
+| `make stress` | Executa todos os 100 stress tests |
 
 ### Stress Tests
 
@@ -459,14 +459,14 @@ CLINICALTRIALS_API_KEY=sua_chave_clinicaltrials
 |---|---|
 | **1-3** | Fundação: UI Components, Navigation, Themes, Layout Responsivo |
 | **4-5** | Integração: tRPC + React Query, Módulos Específicos |
-| **6** | Testes: 181 testes unitários (65 server + 116 UI + Gemini) |
+| **6** | Testes: 12 test suites (server + UI + Gemini) |
 | **7** | RAG: Integração com Gemini API, Persistência de Dados |
 | **8** | Refinamento: UX, Segurança (JWT + RBAC + S3), Docker |
 | **9** | Correções críticas, implementação real de funcionalidades |
 | **10** | Testes abrangentes, Error Boundaries, Docker deployment |
 | **11** | Endpoints RAG completos com Gemini API real |
-| **12** | 181 testes expandidos (65 server + 116 UI + Gemini) |
-| **13** | Configuração de produção + 194 testes |
+| **12** | Testes expandidos (server + UI + Gemini) |
+| **13** | Configuração de produção + health check + monitoramento |
 | **14** | CI/CD pipelines, staging/prod, health endpoint, deploy |
 | **15** | Production Hardening: Security, Performance, Accessibility |
 | **16** | Stress Tests 100/100, Go Live UI, validação de carga |
@@ -487,17 +487,19 @@ Todos os relatórios de arquitetura, validação e planejamento estão disponív
 | Relatório | Descrição |
 |-----------|-----------|
 | [01_Arquitetura_Completa_v2.0.pdf](reports/01_Arquitetura_Completa_v2.0.pdf) | Arquitetura completa: stack, DIMHEX, agente oncologico, FENIX, Senciência |
-| [02_Resumo_Desenvolvimento.pdf](reports/02_Resumo_Desenvolvimento.pdf) | 16 fases de desenvolvimento, 201+ testes, 100 stress tests |
+| [02_Resumo_Desenvolvimento.pdf](reports/02_Resumo_Desenvolvimento.pdf) | 16 fases de desenvolvimento, testes automatizados, 100 stress tests |
 | [03_Implementacao_Seguranca.pdf](reports/03_Implementacao_Seguranca.pdf) | JWT, RBAC, Helmet/CORS, rate limiting, S3 seguro, validação de entrada |
 | [04_Roadmap_Deploy_Proximo_Nivel.pdf](reports/04_Roadmap_Deploy_Proximo_Nivel.pdf) | Transição para deploy: infraestrutura, checklist, roadmap pós-deploy |
 | [05_Pipeline_Canceres_Raros.pdf](reports/05_Pipeline_Canceres_Raros.pdf) | 56 termos PubMed, 34 ClinicalTrials, 8 cânceres raros validados |
 | [Relatorio_Validacao_DIMHEX_v2.1_Canceres_Raros.pdf](reports/Relatorio_Validacao_DIMHEX_v2.1_Canceres_Raros.pdf) | Validação completa contra 8 cânceres raros com 18 referências |
+| [06_Expansao_RAG_v4_38_Subtipos.pdf](reports/06_Expansao_RAG_v4_38_Subtipos.pdf) | Expansão do RAG para 38 subtipos tumorais |
+| [07_Technical_Analysis_E2E_Deployment_Roadmap.pdf](reports/07_Technical_Analysis_E2E_Deployment_Roadmap.pdf) | Análise técnica E2E e roadmap de deployment |
 
 ---
 
 ## Deploy — Próximo Nível
 
-### Arquitetura de Produção (7 Serviços)
+### Arquitetura de Produção (Full-Stack: 7 Serviços)
 
 ```
 ┌────────────┐     ┌──────────────┐     ┌────────────────┐
@@ -517,17 +519,20 @@ Todos os relatórios de arquitetura, validação e planejamento estão disponív
 ### Comandos de Deploy
 
 ```bash
-# Desenvolvimento (stack completa)
+# Desenvolvimento (apenas web)
 docker compose up -d --build
 
-# Staging
+# Staging (web only)
 docker compose -f docker-compose.staging.yml up -d --build
 
-# Produção (recomendado com Nginx)
+# Produção (web + Nginx)
 docker compose -f docker-compose.prod.yml up -d --build
 
+# Full-stack (todos os 7 serviços)
+docker compose -f docker-compose.fullstack.yml up -d --build
+
 # Verificar saúde
-curl http://localhost:3001/health
+curl http://localhost:3000/api/health
 docker compose ps
 ```
 
